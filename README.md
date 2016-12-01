@@ -1,26 +1,25 @@
-# linter-pydocstyle
+# linter-mypy
 
-A [Linter][linter] plugin to lint Python docstrings according to the semantics
-and conventions spec'd in [PEP 257][spec].
+A [Linter][linter] plugin to lint Python optional static type as defined in [PEP 484][spec].
 
 In use side-by-side with the flake8 linter:
 
-![Screenshot of pydocstyle feedback](https://cloud.githubusercontent.com/assets/154988/9623112/5ee0bf1e-510a-11e5-815b-a339fa85ebac.png)
+![Screenshot of mypy feedback](https://cloud.githubusercontent.com/assets/154988/9623112/5ee0bf1e-510a-11e5-815b-a339fa85ebac.png)
 
 ## Installation
 
 1.  [Install Linter][install linter].
 
-2.  Install python package [pydocstyle][], run:
+2.  Install python package [mypy-lang][], run:
 
     ```ShellSession
-    pip install pydocstyle
+    pip install mypy-lang
     ```
 
 3.  Install package, run:
 
     ```ShellSession
-    apm install linter-pydocstyle
+    apm install linter-mypy
     ```
 
 ## Configuration
@@ -34,12 +33,12 @@ If using python version management, like [pyenv][], the path configuration will
 need to be set.  For pyenv, the path for pydocstyle is discoverable by executing:
 
 ```ShellSession
-pyenv which pydocstyle
+pyenv which mypy
 ```
 
 [linter]: https://github.com/atom-community/linter
 [install linter]: https://github.com/atom-community/linter#installation
-[pydocstyle]: https://pypi.python.org/pypi/pydocstyle
-[pydocstyle codes]: http://pydocstyle.readthedocs.org/en/latest/error_codes.html
+[mypy]: https://pypi.python.org/pypi/mypy-lang
+[mypy homepage]: http://www.mypy-lang.org/
 [pyenv]: https://github.com/yyuu/pyenv
-[spec]: https://www.python.org/dev/peps/pep-0257/
+[spec]: https://www.python.org/dev/peps/pep-0484/

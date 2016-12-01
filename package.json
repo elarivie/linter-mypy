@@ -1,9 +1,9 @@
 {
-  "name": "linter-pydocstyle",
+  "name": "linter-mypy",
   "main": "./lib/init",
-  "version": "0.4.3",
-  "description": "Lint Python docstrings on the fly.",
-  "repository": "https://github.com/AtomLinter/linter-pydocstyle",
+  "version": "1.0.0",
+  "description": "Lint Python optional static type on the fly.",
+  "repository": "https://github.com/elarivie/linter-mypy",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"

@@ -23,7 +23,7 @@ matrix:
       env: ATOM_CHANNEL=beta
 
 install:
-  - pip install pydocstyle
+  - pip install mypy-lang
 
 # Generic setup follows
 script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'

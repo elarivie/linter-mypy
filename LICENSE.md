@@ -1,6 +1,9 @@
 The MIT License (MIT)
 
-Copyright (c) 2014 Douglas Beck
+Copyright (c) 2016 Éric Larivière
+
+Copyright for portions of project linter-mypy are held by [Douglas Beck, 2014] as part of project "linter-pydocstyle" <https://github.com/AtomLinter/linter-pydocstyle>.
+All other copyright for project linter-mypy are held by [Éric Larivière, 2016].
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

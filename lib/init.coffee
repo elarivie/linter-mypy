@@ -6,40 +6,22 @@ module.exports =
     executablePath:
       title: 'Executable Path'
       type: 'string'
-      default: 'pydocstyle'
-      description: "Path to executable pydocstyle cmd."
+      default: 'mypy'
+      description: "Path to executable mypy cmd."
       order: 1
-    addSelectCodes:
-      type: 'string'
-      default: ''
-      description: ('Comma separated list of error codes to amend. ' +
-        'Available codes: http://www.pydocstyle.org/en/latest/error_codes.html')
-      order: 2
-    ignoreCodes:
-      type: 'string'
-      default: ''
-      description: ('Comma separated list of error codes to ignore. ' +
-        'Available codes: http://www.pydocstyle.org/en/latest/error_codes.html')
-      order: 3
     ignoreFiles:
       type: 'string'
       default: ''
       description: 'Filename pattern to ignore, e.g.: test_; Restart Atom to activate/deactivate.'
-      order: 4
+      order: 2
 
   activate: ->
-    require('atom-package-deps').install('linter-pydocstyle')
+    require('atom-package-deps').install('linter-mypy')
     @subscriptions = new CompositeDisposable
-    @subscriptions.add atom.config.observe 'linter-pydocstyle.executablePath',
+    @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
       (executablePath) =>
         @executablePath = executablePath
-    @subscriptions.add atom.config.observe 'linter-pydocstyle.addSelectCodes',
-      (addSelectCodes) =>
-        @addSelectCodes = addSelectCodes
-    @subscriptions.add atom.config.observe 'linter-pydocstyle.ignoreCodes',
-      (ignoreCodes) =>
-        @ignoreCodes = ignoreCodes
-    @subscriptions.add atom.config.observe 'linter-pydocstyle.ignoreFiles',
+    @subscriptions.add atom.config.observe 'linter-mypy.ignoreFiles',
       (ignoreFiles) =>
         @ignoreFiles = ignoreFiles
 
