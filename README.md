@@ -2,10 +2,6 @@
 
 A [Linter][linter] plugin to lint Python optional static type as defined in [PEP 484][spec].
 
-In use side-by-side with the flake8 linter:
-
-![Screenshot of mypy feedback](https://cloud.githubusercontent.com/assets/154988/9623112/5ee0bf1e-510a-11e5-815b-a339fa85ebac.png)
-
 ## Installation
 
 1.  [Install Linter][install linter].
@@ -26,11 +22,10 @@ In use side-by-side with the flake8 linter:
 
 | Setting                             | Values                                                               |
 | ----------------------------------- | -------------------------------------------------------------------- |
-| Error codes to ignore               | Example: `D100,D101` - [all available error codes][pydocstyle codes] |
-| Path to executable `pydocstyle` cmd | Default: pydocstyle                                                  |
+| Path to executable `mypy` cmd | Default: mypy                                                  |
 
 If using python version management, like [pyenv][], the path configuration will
-need to be set.  For pyenv, the path for pydocstyle is discoverable by executing:
+need to be set.  For pyenv, the path for mypy is discoverable by executing:
 
 ```ShellSession
 pyenv which mypy

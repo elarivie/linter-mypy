@@ -1,0 +1,28 @@
+TODO
+====
+
+### Publish
+
+* Commit source to github
+* Register the extension at Atom.io
+* Put a screen shot on the README, accessible from the web
+
+### Installation procedure
+
+* Need to validate from a clean OS install the installation procedure written in the README file.
+
+### Add settings
+
+* Add boolean settings for the following mypy command line options
+
+		mypy --help
+
+		--disallow-untyped-calls
+		--check-untyped-defs
+		--disallow-subclassing-any
+		--warn-incomplete-stub
+		--warn-redundant-casts
+		--warn-no-return
+		--warn-unused-ignores
+		--fast-parser
+ 

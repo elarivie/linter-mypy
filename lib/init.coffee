@@ -1,5 +1,7 @@
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
+os = require 'os'
+path = require 'path'
 
 module.exports =
   config:
@@ -29,21 +31,27 @@ module.exports =
     @subscriptions.dispose()
 
   lintPath: (filePath)->
-    params = [filePath]
-    if @addSelectCodes
-      params.push("--add-select=" + @addSelectCodes)
-    if @ignoreCodes
-      params.push("--add-ignore=" + @ignoreCodes)
-    options = { stream: 'stderr', allowEmptyStderr: true }
-    return helpers.exec(@executablePath, params, options)
+    params = []
+    params.push("--show-column-numbers")
+    params.push("--hide-error-context")
+    params.push(filePath)
+    rootPath = path.dirname(filePath)
+    options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
+    return helpers.exec(@executablePath, params, options).then ((file) ->
+      lines = file.split(/\r\n|\r|\n/g);
+      for key, val of lines
+        result = result + path.join(rootPath, val) + os.EOL
+      return result
+    ), (err) ->
+      alert("err")
 
   parseMessages: (output) ->
     # parse lint output
-    output = output.replace(/:[\r\n]\s+/mg, " | ") # combine multiline output
     messages = helpers.parse(output,
-                             "^(?<file>.+):(?<line>\\d+).+ \\| (?<message>.+)",
+                             "^(?<file>[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)",
                              {flags: 'gm'})
     messages.forEach (msg) ->
+      msg.type = "Info"
       msg.type = "Info"
     return messages
 
