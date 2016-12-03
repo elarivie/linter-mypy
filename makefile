@@ -54,7 +54,7 @@ atomPublishBuild: AUTHORS HEARTBEAT gitcommit
 
 develop:
 	${APM} develop ${THENAME}
-	cd ~/.atom/dev/packages/${THENAME}
-	${ATOM} -d .
+	${ATOM} -d ~/.atom/dev/packages/${THENAME}
 
 .PHONY: all HEARTBEAT AUTHORS develop gitcommit atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild
+
