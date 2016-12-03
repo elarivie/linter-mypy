@@ -5,6 +5,7 @@
 SHELL=/bin/sh
 
 APM=apm
+ATOM=atom
 CUT=cut
 GIT=git
 GREP=grep
@@ -51,4 +52,9 @@ atomPublishPatch: AUTHORS HEARTBEAT gitcommit
 atomPublishBuild: AUTHORS HEARTBEAT gitcommit
 	${APM} publish build
 
-.PHONY: all HEARTBEAT AUTHORS atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild
+develop:
+	${APM} develop ${THENAME}
+	cd ~/.atom/dev/packages/${THENAME}
+	${ATOM} -d .
+
+.PHONY: all HEARTBEAT AUTHORS develop gitcommit atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild
