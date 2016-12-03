@@ -3,35 +3,15 @@ TODO
 
 This file contains tasks which should be done.
 
-### Add settings
-
-* Add boolean settings for the following mypy command line options
-
-		mypy --help
-
-		--disallow-untyped-calls
-		--check-untyped-defs
-		--disallow-subclassing-any
-		--warn-incomplete-stub
-		--warn-redundant-casts
-		--warn-no-return
-		--warn-unused-ignores
-		--fast-parser
-
 ### Usage
 
 * Need to validate from a clean OS install the installation procedure written in the README file.
-* The reported warnings should be Warnings an not "Information"
 * Put a screen shot on the README, accessible from the web
 * Improve the file filtering settings
-
-### test
-
-* Test corner cases (mypy not installed)
 
 ### Source Code
 
 * Clean the makefile
 * Add comments
 * Find a way to sync VERSION and the package.json version which is updated automatically by Atom.io
-* Add DogTag of buid status, download count
+* Add DogTag of buid status, download count, etc
