@@ -1,15 +1,7 @@
 TODO
 ====
 
-### Publish
-
-* Commit source to github
-* Register the extension at Atom.io
-* Put a screen shot on the README, accessible from the web
-
-### Installation procedure
-
-* Need to validate from a clean OS install the installation procedure written in the README file.
+This file contains tasks which should be done.
 
 ### Add settings
 
@@ -25,4 +17,22 @@ TODO
 		--warn-no-return
 		--warn-unused-ignores
 		--fast-parser
- 
+
+### Usage
+
+* Need to validate from a clean OS install the installation procedure written in the README file.
+* The reported warnings should be Warnings an not "Information"
+* Put a screen shot on the README, accessible from the web
+* Improve the file filtering settings
+
+### test
+
+* Test corner cases (mypy not installed)
+
+### Source Code
+
+* Clean the makefile
+* Add comments
+* Find a way to sync VERSION and the package.json version which is updated automatically by Atom.io
+* Add filter in the .gitignore file for temp and OS generated file.
+* Add DogTag of buid status, download count

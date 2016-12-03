@@ -4,7 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - ?.?.? 20??-??-??
 
-## [Released] - 0.0.0 2016-12-02
+### Added
+- Specs
+
+## [Released] - 0.1.0 2016-12-02
 
 ### Changed
 - Made it works.
