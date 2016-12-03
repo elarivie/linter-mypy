@@ -14,7 +14,7 @@ module.exports =
     ignoreFiles:
       type: 'string'
       default: ''
-      description: 'Filename pattern to ignore, e.g.: test_; Restart Atom to activate/deactivate.'
+      description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
       order: 2
     disallowUntypedCalls:
       type: 'boolean'
@@ -157,6 +157,8 @@ module.exports =
       scope: 'file'
       lintOnFly: false
       lint: (textEditor) =>
-        if (@ignoreFiles == '' || textEditor.getPath().indexOf(@ignoreFiles) == -1)
+        if (@ignoreFiles == '' || !textEditor.getPath().match(@ignoreFiles))
           return @lintPath textEditor.getPath()
             .then @parseMessages
+        else
+          return []

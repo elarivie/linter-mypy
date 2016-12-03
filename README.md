@@ -1,6 +1,6 @@
 # linter-mypy
 
-A [Linter][linter] plugin to lint Python optional static type as defined in [PEP 484][spec].
+An [Atom][atom] [Linter][linter] plugin which display warnings related to Python optional static type as defined in [PEP 484][spec].
 
 ## Installation
 
@@ -37,3 +37,4 @@ pyenv which mypy
 [mypy homepage]: http://www.mypy-lang.org/
 [pyenv]: https://github.com/yyuu/pyenv
 [spec]: https://www.python.org/dev/peps/pep-0484/
+[atom]: https://atom.io/
