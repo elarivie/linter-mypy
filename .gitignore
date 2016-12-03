@@ -1,2 +1,28 @@
-node_modules
+# Generated #
+#############
 .github_changelog_generator
+__pycache__/
+*.py[cod]
+node_modules/
+npm-debug.log
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+*~
+*.lock

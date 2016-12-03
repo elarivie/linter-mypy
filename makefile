@@ -42,13 +42,13 @@ gitcommit:
 	cd ${srcdir}
 	${GIT} commit
 
-atomPublishMajor: AUTHORS HEARTBEAT
+atomPublishMajor: AUTHORS HEARTBEAT gitcommit
 	${APM} publish major
-atomPublishMinor: AUTHORS HEARTBEAT
+atomPublishMinor: AUTHORS HEARTBEAT gitcommit
 	${APM} publish minor
-atomPublishPatch: AUTHORS HEARTBEAT
+atomPublishPatch: AUTHORS HEARTBEAT gitcommit
 	${APM} publish patch
-atomPublishBuild: AUTHORS HEARTBEAT
+atomPublishBuild: AUTHORS HEARTBEAT gitcommit
 	${APM} publish build
 
 .PHONY: all HEARTBEAT AUTHORS atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild

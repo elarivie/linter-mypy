@@ -6,10 +6,10 @@ A [Linter][linter] plugin to lint Python optional static type as defined in [PEP
 
 1.  [Install Linter][install linter].
 
-2.  Install python package [mypy-lang][], run:
+2.  Install python package [mypy-lang][mypy], run:
 
     ```ShellSession
-    pip install mypy-lang
+    pip3 install mypy-lang
     ```
 
 3.  Install package, run:
@@ -22,9 +22,9 @@ A [Linter][linter] plugin to lint Python optional static type as defined in [PEP
 
 | Setting                             | Values                                                               |
 | ----------------------------------- | -------------------------------------------------------------------- |
-| Path to executable `mypy` cmd | Default: mypy                                                  |
+| Path to executable `mypy` cmd       | Default: mypy                                                        |
 
-If using python version management, like [pyenv][], the path configuration will
+If using python version management, like [pyenv][pyenv], the path configuration will
 need to be set.  For pyenv, the path for mypy is discoverable by executing:
 
 ```ShellSession
