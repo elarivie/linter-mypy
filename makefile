@@ -12,6 +12,7 @@ GREP=grep
 DATE=date
 ECHO=echo
 MKDIR=mkdir
+NPM=npm
 TOUCH=touch
 RM=rm
 RM_RF=${RM} -rf
@@ -25,14 +26,15 @@ srcdir=.
 THENAME :=`cat "${srcdir}/NAME"`
 THEVERSION :=`cat "${srcdir}/VERSION"`
 
-all:
-	${srcdir}/BUILDME
+all: npmInstall
+	#${srcdir}/BUILDME
+	./node_modules/npm-check-updates/bin/npm-check-updates
 
 AUTHORS:
 	cd ${srcdir}
-	${ECHO} "Authors\n=======\nWe'd like to thank the following people for their contributions.\n\n" > ${srcdir}/AUTHORS
-	${GIT} log --raw | ${GREP} "^Author: " | ${SORT} | ${UNIQ} | ${CUT} -d ' ' -f2- | ${SED} 's/^/- /' >> ${srcdir}/AUTHORS
-	${GIT} add AUTHORS
+	${ECHO} "Authors\n=======\nWe'd like to thank the following people for their contributions.\n\n" > ${srcdir}/AUTHORS.md
+	${GIT} log --raw | ${GREP} "^Author: " | ${SORT} | ${UNIQ} | ${CUT} -d ' ' -f2- | ${SED} 's/^/- /' >> ${srcdir}/AUTHORS.md
+	${GIT} add AUTHORS.md
 
 HEARTBEAT:
 	cd ${srcdir}
@@ -52,9 +54,11 @@ atomPublishPatch: AUTHORS HEARTBEAT gitcommit
 atomPublishBuild: AUTHORS HEARTBEAT gitcommit
 	${APM} publish build
 
+npmInstall:
+	${NPM} install
+
 develop:
 	${APM} develop ${THENAME}
 	${ATOM} -d ~/.atom/dev/packages/${THENAME}
 
-.PHONY: all HEARTBEAT AUTHORS develop gitcommit atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild
-
+.PHONY: all HEARTBEAT AUTHORS develop gitcommit npmInstall atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild

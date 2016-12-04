@@ -3,6 +3,12 @@
   "main": "./lib/init",
   "version": "1.0.0",
   "description": "Lint Python optional static type on the fly.",
+  "keywords": [
+    "python",
+    "mypy",
+    "lint",
+    "PEP 484"
+  ],
   "repository": "https://github.com/elarivie/linter-mypy",
   "license": "MIT",
   "engines": {
@@ -18,6 +24,9 @@
   "dependencies": {
     "atom-linter": "^8.0.0",
     "atom-package-deps": "^4.0.1"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^2.8.7"
   },
   "package-deps": [
     "linter"

@@ -59,7 +59,7 @@ module.exports =
     fastParser:
       type: 'boolean'
       default: false
-      description: 'enable experimental fast parser'
+      description: 'enable experimental fast parser, this options requires the presence of the typed_ast package.'
       order: 11
 
   activate: ->
@@ -129,7 +129,7 @@ module.exports =
     rootPath = path.dirname(filePath)
     options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
     return helpers.exec(@executablePath, params, options).then ((file) ->
-      lines = file.split(/\r\n|\r|\n/g);
+      lines = file.split(/\r\n|\r|\n/g)
       for key, val of lines
         result = result + path.join(rootPath, val) + os.EOL
       return result
