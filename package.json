@@ -1,7 +1,7 @@
 {
   "name": "linter-mypy",
   "main": "./lib/init",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lint Python optional static type on the fly.",
   "keywords": [
     "python",
@@ -33,13 +33,13 @@
     "linter"
   ],
   "coffeelintConfig": {
-    "indentation" : {
-        "level" : "error",
-        "value" : 2
+    "indentation": {
+      "level": "error",
+      "value": 2
     },
-    "line_endings" : {
-        "value" : "unix",
-        "level" : "error"
+    "line_endings": {
+      "value": "unix",
+      "level": "error"
     },
     "max_line_length": {
       "value": 1024,
