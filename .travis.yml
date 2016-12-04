@@ -23,7 +23,7 @@ matrix:
       env: ATOM_CHANNEL=beta
 
 install:
-  - pip install mypy-lang
+  - python3 -m pip install mypy-lang
 
 # Generic setup follows
 script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
