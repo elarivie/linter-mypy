@@ -44,7 +44,7 @@ HEARTBEAT:
 
 gitcommit:
 	cd ${srcdir}
-	${GIT} commit
+	- ${GIT} commit
 
 atomPublishMajor: AUTHORS HEARTBEAT gitcommit
 	${APM} publish major
