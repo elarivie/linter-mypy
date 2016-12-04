@@ -153,6 +153,7 @@ module.exports =
 
   provideLinter: ->
     provider =
+      name: 'linter-mypy'
       grammarScopes: ['source.python']
       scope: 'file'
       lintOnFly: false
