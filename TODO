@@ -12,5 +12,4 @@ This file contains tasks which should be done.
 
 * Clean the makefile
 * Add comments
-* Find a way to sync VERSION and the package.json version which is updated automatically by Atom.io
 * Add DogTag of buid status, download count, etc

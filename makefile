@@ -29,6 +29,7 @@ THEVERSION :=`cat "${srcdir}/VERSION"`
 all: npmInstall
 	#${srcdir}/BUILDME
 	./node_modules/npm-check-updates/bin/npm-check-updates
+	./node_modules/coffeelint/bin/coffeelint lib/ spec/
 
 AUTHORS:
 	cd ${srcdir}

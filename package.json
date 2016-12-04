@@ -26,9 +26,28 @@
     "atom-package-deps": "^4.0.1"
   },
   "devDependencies": {
-    "npm-check-updates": "^2.8.7"
+    "npm-check-updates": "^2.8.7",
+    "coffeelint": "^1.16.0"
   },
   "package-deps": [
     "linter"
-  ]
+  ],
+  "coffeelintConfig": {
+    "indentation" : {
+        "level" : "error",
+        "value" : 2
+    },
+    "line_endings" : {
+        "value" : "unix",
+        "level" : "error"
+    },
+    "max_line_length": {
+      "value": 1024,
+      "level": "error",
+      "limitComments": true
+    },
+    "eol_last": {
+      "level": "warn"
+    }
+  }
 }
