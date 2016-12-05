@@ -1,7 +1,7 @@
 {
   "name": "linter-mypy",
   "main": "./lib/init",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "description": "Lint Python optional static type on the fly.",
   "keywords": [
