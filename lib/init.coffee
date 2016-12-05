@@ -18,47 +18,47 @@ module.exports =
       order: 2
     disallowUntypedCalls:
       type: 'boolean'
-      default: false
+      default: true
       description: 'disallow calling functions without type annotations from functions with type annotations'
       order: 3
     disallowUntypedDefs:
       type: 'boolean'
-      default: false
+      default: true
       description: 'disallow defining functions without type annotations or with incomplete type annotations'
       order: 4
     checkUntypedDefs:
       type: 'boolean'
-      default: false
+      default: true
       description: 'type check the interior of functions without type annotations'
       order: 5
     disallowSubclassingAny:
       type: 'boolean'
-      default: false
+      default: true
       description: 'disallow subclassing values of type "Any" when defining classes'
       order: 6
     warnIncompleteStub:
       type: 'boolean'
-      default: false
+      default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
       order: 7
     warnRedundantCasts:
       type: 'boolean'
-      default: false
+      default: true
       description: 'warn about casting an expression to its inferred type'
       order: 8
     warnNoReturn:
       type: 'boolean'
-      default: false
+      default: true
       description: 'warn about functions that end without returning'
       order: 9
     warnUnusedIgnores:
       type: 'boolean'
-      default: false
+      default: true
       description: "warn about unneeded '# type: ignore' comments"
       order: 10
     fastParser:
       type: 'boolean'
-      default: false
+      default: true
       description: 'enable experimental fast parser, this options requires the presence of the typed_ast package.'
       order: 11
 
@@ -160,9 +160,15 @@ module.exports =
     messages = helpers.parse(output,
                              "^(?<file>[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)",
                              {flags: 'gm'})
+    result = []
     messages.forEach (msg) ->
       msg.type = "Warning"
-    return messages
+
+      #HACK: Work around false positive of "mypy --disallow-subclassing-any"
+      if !msg.filePath.endsWith("/usr/local/lib/mypy/typeshed/stdlib/3/types.pyi")
+        result.push(msg)
+
+    return result
 
   provideLinter: ->
     provider =
