@@ -2,6 +2,7 @@
   "name": "linter-mypy",
   "main": "./lib/init",
   "version": "1.0.2",
+  "license": "MIT",
   "description": "Lint Python optional static type on the fly.",
   "keywords": [
     "python",
@@ -10,7 +11,6 @@
     "PEP 484"
   ],
   "repository": "https://github.com/elarivie/linter-mypy",
-  "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },

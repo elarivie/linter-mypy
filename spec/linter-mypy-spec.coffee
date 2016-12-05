@@ -1,9 +1,12 @@
 LinterMyPystyle = require '../lib/init'
 path = require 'path'
+{CompositeDisposable} = require 'atom'
+helpers = require 'atom-linter'
 
 goodPath = path.join(__dirname, 'fixtures', 'good.py')
 badPath = path.join(__dirname, 'fixtures', 'bad.py')
 badPathRegex = /.+bad\.py/
+helpPath = path.join(__dirname, 'fixtures', 'mypy.help')
 
 describe "The MyPy provider for Linter", ->
   lint = require('../lib/init').provideLinter().lint
@@ -58,13 +61,31 @@ describe "The MyPy provider for Linter", ->
         msg2 = 'Unsupported operand types for + ("int" and "str")'
         expect(messages[0].text).toBe(msg0)
         expect(messages[0].range).toEqual([[6,11],[6,11]])
-        expect(messages[0].type).toBe('Info')
+        expect(messages[0].type).toBe('Warning')
         expect(messages[0].filePath).toMatch(badPathRegex)
         expect(messages[1].text).toBe(msg1)
         expect(messages[1].range).toEqual([[6,11],[6,11]])
-        expect(messages[1].type).toBe('Info')
+        expect(messages[1].type).toBe('Warning')
         expect(messages[1].filePath).toMatch(badPathRegex)
         expect(messages[2].text).toBe(msg2)
         expect(messages[2].range).toEqual([[6,30],[6,30]])
-        expect(messages[2].type).toBe('Info')
+        expect(messages[2].type).toBe('Warning')
         expect(messages[2].filePath).toMatch(badPathRegex)
+
+  describe "reads mypy.help and fetch mypy --help", ->
+    supportedHelp = null
+    mypyHelp = null
+
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open(helpPath).then (e) ->
+          supportedHelp = e.getText().trim()
+
+    beforeEach ->
+      waitsForPromise ->
+        mypyPath = atom.config.get('linter-mypy.executablePath')
+        helpers.exec(mypyPath, ["--help"], { stream: 'stdout', ignoreExitCode: true}).then (helpMsg) ->
+          mypyHelp = helpMsg.trim()
+
+    it 'Makes sure the supported "mypy" command interface has not change.', ->
+      expect(mypyHelp).toBe(supportedHelp)

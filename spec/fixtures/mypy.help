@@ -1,0 +1,100 @@
+usage: mypy [-h] [-v] [-V] [--python-version x.y] [--platform PLATFORM] [-2]
+            [-s] [--almost-silent] [--disallow-untyped-calls]
+            [--disallow-untyped-defs] [--check-untyped-defs]
+            [--disallow-subclassing-any] [--warn-incomplete-stub]
+            [--warn-redundant-casts] [--warn-no-return]
+            [--warn-unused-ignores] [--hide-error-context] [--fast-parser]
+            [-i] [--cache-dir DIR] [--strict-optional]
+            [--strict-optional-whitelist [GLOB [GLOB ...]]]
+            [--junit-xml JUNIT_XML] [--pdb] [--show-traceback] [--stats]
+            [--inferstats] [--custom-typing MODULE]
+            [--custom-typeshed-dir DIR] [--scripts-are-modules]
+            [--config-file CONFIG_FILE] [--show-column-numbers]
+            [--find-occurrences CLASS.MEMBER] [--cobertura-xml-report DIR]
+            [--html-report DIR] [--linecount-report DIR]
+            [--linecoverage-report DIR] [--memory-xml-report DIR]
+            [--old-html-report DIR] [--txt-report DIR] [--xml-report DIR]
+            [--xslt-html-report DIR] [--xslt-txt-report DIR] [-m MODULE]
+            [-c PROGRAM_TEXT] [-p PACKAGE]
+            [files [files ...]]
+
+optional arguments:
+  -h, --help                show this help message and exit
+  -v, --verbose             more verbose messages
+  -V, --version             show program's version number and exit
+  --python-version x.y      use Python x.y
+  --platform PLATFORM       typecheck special-cased code for the given OS
+                            platform (defaults to sys.platform).
+  -2, --py2                 use Python 2 mode
+  -s, --silent-imports      don't follow imports to .py files
+  --almost-silent           like --silent-imports but reports the imports as
+                            errors
+  --disallow-untyped-calls  disallow calling functions without type
+                            annotations from functions with type annotations
+  --disallow-untyped-defs   disallow defining functions without type
+                            annotations or with incomplete type annotations
+  --check-untyped-defs      type check the interior of functions without type
+                            annotations
+  --disallow-subclassing-any
+                            disallow subclassing values of type 'Any' when
+                            defining classes
+  --warn-incomplete-stub    warn if missing type annotation in typeshed, only
+                            relevant with --check-untyped-defs enabled
+  --warn-redundant-casts    warn about casting an expression to its inferred
+                            type
+  --warn-no-return          warn about functions that end without returning
+  --warn-unused-ignores     warn about unneeded '# type: ignore' comments
+  --hide-error-context      Hide context notes before errors
+  --fast-parser             enable experimental fast parser
+  -i, --incremental         enable experimental module cache
+  --cache-dir DIR           store module cache info in the given folder in
+                            incremental mode (defaults to '.mypy_cache')
+  --strict-optional         enable experimental strict Optional checks
+  --strict-optional-whitelist [GLOB [GLOB ...]]
+                            suppress strict Optional errors in all but the
+                            provided files (experimental -- read documentation
+                            before using!). Implies --strict-optional. Has the
+                            undesirable side-effect of suppressing other
+                            errors in non-whitelisted files.
+  --junit-xml JUNIT_XML     write junit.xml to the given file
+  --pdb                     invoke pdb on fatal error
+  --show-traceback, --tb    show traceback on fatal error
+  --stats                   dump stats
+  --inferstats              dump type inference stats
+  --custom-typing MODULE    use a custom typing module
+  --custom-typeshed-dir DIR
+                            use the custom typeshed in DIR
+  --scripts-are-modules     Script x becomes module x instead of __main__
+  --config-file CONFIG_FILE
+                            Configuration file, must have a [mypy] section
+                            (defaults to mypy.ini)
+  --show-column-numbers     Show column numbers in error messages
+  --find-occurrences CLASS.MEMBER
+                            print out all usages of a class member
+                            (experimental)
+
+report generation:
+  Generate a report in the specified format.
+
+  --cobertura-xml-report DIR
+  --html-report DIR
+  --linecount-report DIR
+  --linecoverage-report DIR
+  --memory-xml-report DIR
+  --old-html-report DIR
+  --txt-report DIR
+  --xml-report DIR
+  --xslt-html-report DIR
+  --xslt-txt-report DIR
+
+How to specify the code to type check:
+  -m MODULE, --module MODULE
+                            type-check module; can repeat for more modules
+  -c PROGRAM_TEXT, --command PROGRAM_TEXT
+                            type-check program passed in as string
+  -p PACKAGE, --package PACKAGE
+                            type-check all files in a directory
+  files                     type-check given files or directories
+
+environment variables:
+MYPYPATH     additional module search path
