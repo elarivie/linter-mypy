@@ -133,11 +133,24 @@ module.exports =
       for key, val of lines
         result = result + path.join(rootPath, val) + os.EOL
       return result
-    ), (err) ->
+    ), (err) =>
       if err.message.match /^spawn\s.+\sENOENT$/gi
-        atom.notifications.addWarning("The executable of <strong>mypy</strong> was not found.<br />Either install <a href='http://mypy.readthedocs.io/en/latest/getting_started.html#installation'>mypy</a> or adjust the executable path setting of linter.mypy.")
+        atom.notifications.addWarning("The executable of <strong>" + @executablePath + "</strong> was not found.<br />Either install <a href='http://mypy.readthedocs.io/en/latest/getting_started.html#installation'>mypy</a> or adjust the executable path setting of linter.mypy.")
       else if (0 <= err.message.indexOf("must install the typed_ast package before you can run mypy with"))
-        atom.notifications.addWarning(err.message)
+        notification = atom.notifications.addWarning(
+          err.message,
+          {
+            buttons: [
+              {
+                text: "Change the linter-mypy setting to not use 'Fast Parser'",
+                onDidClick: ->
+                  atom.config.set('linter-mypy.fastParser', false)
+                  notification.dismiss()
+              }
+            ],
+            dismissable: true,
+          }
+        )
       else
         atom.notifications.addError(err.message)
       return ""
