@@ -1,5 +1,7 @@
 # linter-mypy
 
+![Build status](https://travis-ci.org/elarivie/linter-mypy.svg?branch=master)
+
 An [Atom][atom] [Linter][linter] plugin which display warnings related to Python optional static type as defined in [PEP 484][spec].
 
 ![Screen shot demo](https://github.com/elarivie/linter-mypy/raw/master/doc/ScreenShotDemo.png)

@@ -26,7 +26,9 @@ srcdir=.
 THENAME :=`cat "${srcdir}/NAME"`
 THEVERSION :=`cat "${srcdir}/VERSION"`
 
-all: npmInstall
+all: lint
+
+lint: npmInstall
 	#${srcdir}/BUILDME
 	./node_modules/npm-check-updates/bin/npm-check-updates
 	./node_modules/coffeelint/bin/coffeelint lib/ spec/
@@ -57,9 +59,10 @@ atomPublishBuild: AUTHORS HEARTBEAT gitcommit
 
 npmInstall:
 	${NPM} install
+	${NPM} update
 
 develop:
 	${APM} develop ${THENAME}
 	${ATOM} -d ~/.atom/dev/packages/${THENAME}
 
-.PHONY: all HEARTBEAT AUTHORS develop gitcommit npmInstall atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild
+.PHONY: all HEARTBEAT AUTHORS develop gitcommit lint npmInstall atomPublishMajor atomPublishMinor atomPublishPatch atomPublishBuild

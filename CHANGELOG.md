@@ -3,8 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
 ### Added
 - A screen shot on the README.
+- TravisCi integration
 
 ### Changed
 - The settings order.

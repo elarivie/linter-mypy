@@ -175,7 +175,7 @@ module.exports =
       name: 'linter-mypy'
       grammarScopes: ['source.python']
       scope: 'file'
-      lintOnFly: false
+      lintOnFly: true
       lint: (textEditor) =>
         if (@ignoreFiles == '' || !textEditor.getPath().match(@ignoreFiles))
           return @lintPath textEditor.getPath()

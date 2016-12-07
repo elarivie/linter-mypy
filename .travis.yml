@@ -24,6 +24,7 @@ matrix:
 
 install:
   - python3 -m pip install mypy-lang
+  - python3 -m pip install typed-ast
 
 # Generic setup follows
 script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
