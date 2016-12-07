@@ -16,50 +16,50 @@ module.exports =
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
       order: 2
-    disallowUntypedCalls:
-      type: 'boolean'
-      default: true
-      description: 'disallow calling functions without type annotations from functions with type annotations'
-      order: 3
-    disallowUntypedDefs:
-      type: 'boolean'
-      default: true
-      description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 4
-    checkUntypedDefs:
-      type: 'boolean'
-      default: true
-      description: 'type check the interior of functions without type annotations'
-      order: 5
-    disallowSubclassingAny:
-      type: 'boolean'
-      default: true
-      description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 6
-    warnIncompleteStub:
-      type: 'boolean'
-      default: true
-      description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 7
-    warnRedundantCasts:
-      type: 'boolean'
-      default: true
-      description: 'warn about casting an expression to its inferred type'
-      order: 8
-    warnNoReturn:
-      type: 'boolean'
-      default: true
-      description: 'warn about functions that end without returning'
-      order: 9
-    warnUnusedIgnores:
-      type: 'boolean'
-      default: true
-      description: "warn about unneeded '# type: ignore' comments"
-      order: 10
     fastParser:
       type: 'boolean'
       default: true
       description: 'enable experimental fast parser, this options requires the presence of the typed_ast package.'
+      order: 3
+    disallowUntypedCalls:
+      type: 'boolean'
+      default: true
+      description: 'disallow calling functions without type annotations from functions with type annotations'
+      order: 4
+    disallowUntypedDefs:
+      type: 'boolean'
+      default: true
+      description: 'disallow defining functions without type annotations or with incomplete type annotations'
+      order: 5
+    checkUntypedDefs:
+      type: 'boolean'
+      default: true
+      description: 'type check the interior of functions without type annotations'
+      order: 6
+    disallowSubclassingAny:
+      type: 'boolean'
+      default: true
+      description: 'disallow subclassing values of type "Any" when defining classes'
+      order: 7
+    warnIncompleteStub:
+      type: 'boolean'
+      default: true
+      description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
+      order: 8
+    warnRedundantCasts:
+      type: 'boolean'
+      default: true
+      description: 'warn about casting an expression to its inferred type'
+      order: 9
+    warnNoReturn:
+      type: 'boolean'
+      default: true
+      description: 'warn about functions that end without returning'
+      order: 10
+    warnUnusedIgnores:
+      type: 'boolean'
+      default: true
+      description: "warn about unneeded '# type: ignore' comments"
       order: 11
 
   activate: ->

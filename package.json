@@ -3,7 +3,7 @@
   "main": "./lib/init",
   "version": "1.0.3",
   "license": "MIT",
-  "description": "Lint Python optional static type on the fly.",
+  "description": "Lint Python optional Type Hints (PEP-484) on the fly.",
   "keywords": [
     "python",
     "mypy",
