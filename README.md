@@ -2,7 +2,7 @@
 
 An [Atom][atom] [Linter][linter] plugin which display warnings related to Python optional static type as defined in [PEP 484][spec].
 
-![Screen shot demo](https://github.com/elarivie/linter-mypy/blob/master/doc/ScreenShotDemo.png)
+![Screen shot demo](https://github.com/elarivie/linter-mypy/raw/master/doc/ScreenShotDemo.png)
 
 ## Installation
 
