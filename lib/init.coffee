@@ -165,7 +165,7 @@ module.exports =
       msg.type = "Warning"
 
       #HACK: Work around false positive of "mypy --disallow-subclassing-any"
-      if !msg.filePath.endsWith("/usr/local/lib/mypy/typeshed/stdlib/3/types.pyi")
+      if !msg.filePath.endsWith("/lib/mypy/typeshed/stdlib/3/types.pyi")
         result.push(msg)
 
     return result

@@ -9,8 +9,8 @@ python:
     - "3.5"
 
 env:
-  - ATOM_CHANNEL=beta
   - ATOM_CHANNEL=stable
+  - ATOM_CHANNEL=beta
 
 os:
     - linux
