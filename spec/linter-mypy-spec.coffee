@@ -62,15 +62,15 @@ describe "The MyPy provider for Linter", ->
         msg1 = 'Argument 2 to "add" has incompatible type "str"; expected "int"'
         msg2 = 'Unsupported operand types for + ("int" and "str")'
         expect(messages[0].text).toBe(msg0)
-        expect(messages[0].range).toEqual([[6,11],[6,11]])
+        expect(messages[0].range).toEqual([[6,12],[6,13]])
         expect(messages[0].type).toBe('Warning')
         expect(messages[0].filePath).toMatch(badPathRegex)
         expect(messages[1].text).toBe(msg1)
-        expect(messages[1].range).toEqual([[6,11],[6,11]])
+        expect(messages[1].range).toEqual([[6,12],[6,13]])
         expect(messages[1].type).toBe('Warning')
         expect(messages[1].filePath).toMatch(badPathRegex)
         expect(messages[2].text).toBe(msg2)
-        expect(messages[2].range).toEqual([[6,30],[6,30]])
+        expect(messages[2].range).toEqual([[6,31],[6,32]])
         expect(messages[2].type).toBe('Warning')
         expect(messages[2].filePath).toMatch(badPathRegex)
 
