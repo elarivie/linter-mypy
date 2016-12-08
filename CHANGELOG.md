@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [Released] - 1.0.4 2016-12-08
+## [Released] - 1.0.5 2016-12-08
 
 ### Added
 - A screen shot on the README.
@@ -16,6 +16,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Improved documentation.
 - Fixed the work around for a false positive lint message of mypy when the flag --disallow-subclassing-any is provided
 - Adjusted the styles due to some Atom v1.13.0 deprecation
+
+## 1.0.4 2016-12-08 [YANKED]
+- Atom.io was unavailable and it failed the release.
 
 ## [Released] - 1.0.3 2016-12-05
 
