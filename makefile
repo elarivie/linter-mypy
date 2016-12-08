@@ -44,17 +44,17 @@ HEARTBEAT:
 	${DATE} --utc +%Y-%m > ${srcdir}/HEARTBEAT
 	${GIT} add HEARTBEAT
 
-gitcommit:
+gitcommit: AUTHORS HEARTBEAT
 	cd ${srcdir}
 	- ${GIT} commit
 
-atomPublishMajor: AUTHORS HEARTBEAT gitcommit
+atomPublishMajor: gitcommit
 	${APM} publish major
-atomPublishMinor: AUTHORS HEARTBEAT gitcommit
+atomPublishMinor: gitcommit
 	${APM} publish minor
-atomPublishPatch: AUTHORS HEARTBEAT gitcommit
+atomPublishPatch: gitcommit
 	${APM} publish patch
-atomPublishBuild: AUTHORS HEARTBEAT gitcommit
+atomPublishBuild: gitcommit
 	${APM} publish build
 
 npmInstall:

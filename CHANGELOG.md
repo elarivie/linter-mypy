@@ -4,9 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 1.0.4 2016-12-08
+
 ### Added
 - A screen shot on the README.
 - TravisCi integration
+- Added a first heuristic to underline the warnings
 
 ### Changed
 - The settings order.
