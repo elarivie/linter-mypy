@@ -2,7 +2,7 @@
 helpers = require 'atom-linter'
 os = require 'os'
 path = require 'path'
-#NamedRegexp = require('named-js-regexp')
+NamedRegexp = require('named-js-regexp')
 
 module.exports =
   config:
@@ -167,7 +167,7 @@ module.exports =
       if msg.filePath.endsWith("/lib/mypy/typeshed/stdlib/3/types.pyi")
         return
 
-      #HACK: Work around since mypy only provide the start column of the error, we have to use heuristic for the end column of the warning, without this workaround the warning would not be underline.
+      #HACK: Work around since mypy only provide the start column of the error, we have to use heuristics for the end column of the warning, without this workaround the warning would not be underline.
       warnOrigStartLine = msg.range[0][0]
       warnOrigStartCol = msg.range[0][1]
       warnOrigEndLine = msg.range[1][0]
@@ -179,18 +179,22 @@ module.exports =
       warnEndCol = warnOrigEndCol
 
       if 0 < warnOrigStartCol
-        #Rational: Since mypy points to something it must at least be one character long.
+        #Rational: The underline is off by one character
         warnStartCol += 1
-        warnEndCol += 2
+        warnEndCol += 1
+        if warnOrigStartCol == warnOrigEndCol
+          #Rational: Since mypy points to something it must at least be one character long.
+          warnEndCol += 1
+
+      #Rational: Since we know the method name we can underline its length
+      compiledRegexp = new NamedRegexp("^Argument . to .(?<name>.+). has incompatible type ..+.; expected ..+.$", "g")
+      rawMatch = compiledRegexp.exec(msg.text)
+      if rawMatch
+        warnEndCol += rawMatch[1].length
+        if 0 < warnOrigStartCol
+          warnEndCol -= 1
 
       #TODO: Put more heuristic
-
-      #TODO: Remove the following commented out block of code (this logic does not work in 100% of the case) (kept for now as a snippet exemple of regex with group name)
-      #compiledRegexp = new NamedRegexp("^Name '(?<name>.+)' is not defined", "g")
-      #rawMatch = compiledRegexp.exec(msg.text)
-      #if rawMatch
-      #  rawMatch = rawMatch.groups()
-      #  warnEndCol += rawMatch.name.length - 1
 
       msg.range = [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
       msg.type = "Warning"

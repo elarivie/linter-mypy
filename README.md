@@ -1,6 +1,8 @@
 # linter-mypy
 
-![Build status](https://travis-ci.org/elarivie/linter-mypy.svg?branch=master)
+[![Build Status](https://travis-ci.org/elarivie/linter-mypy.svg?branch=master)](https://travis-ci.org/elarivie/linter-mypy)
+[![linter-mypy_package](https://img.shields.io/apm/dm/linter-mypy.svg?style=flat-square)][linter-mypy_package]
+[![linter-mypy_BugTracker](https://img.shields.io/github/issues/elarivie/linter-mypy/shields.svg)][linter-mypy_BugTracker]
 
 An [Atom][atom] [Linter][linter] plugin which display warnings related to Python optional static type as defined in [PEP 484][spec].
 
@@ -62,3 +64,6 @@ pyenv which mypy
 [pyenv]: https://github.com/yyuu/pyenv
 [spec]: https://www.python.org/dev/peps/pep-0484/
 [atom]: https://atom.io/
+[linter-mypy_repo]: https://github.com/elarivie/linter-mypy
+[linter-mypy_package]: https://atom.io/packages/linter-mypy
+[linter-mypy_BugTracker]: https://github.com/elarivie/linter-mypy/issues
