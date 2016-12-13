@@ -131,6 +131,7 @@ module.exports =
     options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
     return helpers.exec(@executablePath, params, options).then ((file) ->
       lines = file.split(/\r\n|\r|\n/g)
+      result = ""
       for key, val of lines
         result = result + path.join(rootPath, val) + os.EOL
       return result
