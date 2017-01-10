@@ -3,9 +3,23 @@ TODO
 
 This file contains tasks which should be done.
 
-### Usage
+### Bug
 
-* Need to validate from a clean OS install the installation procedure written in the README file.
+* Need to find a way to prevent hundreds of false Issues in atom.
+ * They all points to mypy files with invalid paths like:
+   * &lt;workspace&gt;/usr/local/lib/mypy/&lt;path&gt;/&lt;filename&gt;.pyi
+ * The solution is probably going to require change to init.coffee:135-136:
+      ```
+      for key, val of lines
+          result = result + path.join(rootPath, val) + os.EOL
+      ```
+ * The solution is probably going to require change to init.coffee:167-169:
+      ```
+       #HACK: Work around false positive of "mypy --disallow-subclassing-any"
+       if msg.filePath.endsWith("/lib/mypy/typeshed/stdlib/3/types.pyi")
+         return
+      ```
+
 
 ### Source Code
 
