@@ -82,13 +82,17 @@ def build(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 		print(c_ProcRun.stdout.decode("utf-8"))
 		c_ProcRun.check_returncode()
 
+		ATOM_SCRIPT_NAME="atom" + ("" if currChannel == "stable" else ("-" + currChannel))
+
+		env_PATH = "/atom/usr/share/"+ ATOM_SCRIPT_NAME + "/resources/app/apm/bin" + os.pathsep + os.environ["PATH"] + os.pathsep + "/bin:/usr/bin:/usr/local/bin"
+
 		c_ProcRun = subprocess.run(
 			["./node_modules/npm-check-updates/bin/ncu"],
 			check=False,
 			stdout=subprocess.PIPE,
 			stderr=subprocess.STDOUT,
 			env={
-				"PATH": "/bin:/usr/bin:/usr/local/bin",
+				"PATH": env_PATH,
 				"TRAVIS_OS_NAME": env_TRAVIS_OS_NAME,
 				"ATOM_CHANNEL": env_ATOM_CHANNEL,
 				"HOME": env_HOME
