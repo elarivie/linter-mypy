@@ -4,9 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- BUILDME
+
 ### Changed
 - Fix typo
-- Build steps are now independent from TravisCI, a build can now be launch locally using the command "./BUILDME" or "make".
+- Build steps are now independent from TravisCI, a build can now be launch locally using the command *./BUILDME* or *make*.
 
 ## [Released] - 1.0.6 2016-12-12
 
