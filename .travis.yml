@@ -19,6 +19,9 @@ install:
   - python3 -m pip install mypy-lang
   - python3 -m pip install typed-ast
   - python3 -m pip install requests
+  - apt-get update
+  - apt-get install -y nodejs
+  - apt-get install -y nodejs-legacy
 
 script: './BUILDME'
 
