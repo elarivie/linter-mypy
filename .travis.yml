@@ -20,7 +20,7 @@ install:
   - python3 -m pip install typed-ast
   - python3 -m pip install requests
 
-script: 'which mypy'
+script: './BUILDME'
 
 notifications:
   email:

@@ -66,13 +66,14 @@ def build(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 			assert False, "Not supported system: " + platform.system()
 		env_HOME = p_Tmp
 		import subprocess
+		print(os.environ["PATH"])
 		c_ProcRun = subprocess.run(
 			[c_BuildpackagePath],
 			check=False,
 			stdout=subprocess.PIPE,
 			stderr=subprocess.STDOUT,
 			env={
-				"PATH": "/bin:/usr/bin:/usr/local/bin",
+				"PATH": os.environ["PATH"] + os.pathsep + "/bin:/usr/bin:/usr/local/bin",
 				"TRAVIS_OS_NAME": env_TRAVIS_OS_NAME,
 				"ATOM_CHANNEL": env_ATOM_CHANNEL,
 				"HOME": env_HOME
