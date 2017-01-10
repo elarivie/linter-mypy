@@ -40,7 +40,6 @@ addons:
         - libgnome-keyring-dev
         - fakeroot
         - nodejs
-        - nodejs-legacy
 
 branches:
   only:
