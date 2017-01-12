@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [Released] - 1.0.7 2017-01-11
+## [Released] - 1.0.8 2017-01-11
 
 ### Added
 - BUILDME
@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix typo
 - Fix a bug where hundreds of issues from file outside of the opened workspace were reported (mainly about mypy's .pyi files)
+
+## 1.0.7 2017-01-11 [YANKED]
+- APM publish failed, the process is so picky...
 
 ## [Released] - 1.0.6 2016-12-12
 
