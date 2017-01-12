@@ -1,20 +1,32 @@
 # Change Log
+
 All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [Released] - 1.0.7 2017-01-11
 
 ### Added
 - BUILDME
 
 ### Changed
+
+- Build steps are now independent from TravisCI
+ - A build can now be launch locally using the command *./BUILDME* or *make*.
+
+### Removed
+- A no more needed hack related to --disallow-subclassing-any
+
+### Fixed
 - Fix typo
-- Build steps are now independent from TravisCI, a build can now be launch locally using the command *./BUILDME* or *make*.
+- Fix a bug where hundreds of issues from file outside of the opened workspace were reported (mainly about mypy's .pyi files)
 
 ## [Released] - 1.0.6 2016-12-12
 
-### Changed
-- Fixed a bug which was creating an issue to a file path starting by undefined
+### Fixed
+- Fix a bug which was creating an issue to a file path starting by undefined
 
 ## [Released] - 1.0.5 2016-12-08
 
@@ -56,9 +68,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Released] - 0.1.0 2016-12-02
 
-### Changed
-- Made it works.
-
 ### Added
 - Project's info files (AUTHORS, HEARTBEAT, CHANGELOG, LICENSE)
 - A makefile to ease frequent task.
+
+### Changed
+- Made it works.
