@@ -66,14 +66,13 @@ def build(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 			assert False, "Not supported system: " + platform.system()
 		env_HOME = p_Tmp
 		import subprocess
-		print(os.environ["PATH"])
 		c_ProcRun = subprocess.run(
 			[c_BuildpackagePath],
 			check=False,
 			stdout=subprocess.PIPE,
 			stderr=subprocess.STDOUT,
 			env={
-				"PATH": os.environ["PATH"] + os.pathsep + "/bin:/usr/bin:/usr/local/bin",
+				"PATH": os.environ["PATH"],
 				"TRAVIS_OS_NAME": env_TRAVIS_OS_NAME,
 				"ATOM_CHANNEL": env_ATOM_CHANNEL,
 				"HOME": env_HOME
@@ -84,15 +83,13 @@ def build(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 
 		ATOM_SCRIPT_NAME="atom" + ("" if currChannel == "stable" else ("-" + currChannel))
 
-		env_PATH = "/atom/usr/share/"+ ATOM_SCRIPT_NAME + "/resources/app/apm/bin" + os.pathsep + os.environ["PATH"] + os.pathsep + "/bin:/usr/bin:/usr/local/bin"
-
 		c_ProcRun = subprocess.run(
 			["./node_modules/npm-check-updates/bin/ncu"],
 			check=False,
 			stdout=subprocess.PIPE,
 			stderr=subprocess.STDOUT,
 			env={
-				"PATH": env_PATH,
+				"PATH": "/atom/usr/share/"+ ATOM_SCRIPT_NAME + "/resources/app/apm/bin" + os.pathsep + os.environ["PATH"],
 				"TRAVIS_OS_NAME": env_TRAVIS_OS_NAME,
 				"ATOM_CHANNEL": env_ATOM_CHANNEL,
 				"HOME": env_HOME

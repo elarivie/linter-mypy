@@ -39,7 +39,6 @@ addons:
         - git
         - libgnome-keyring-dev
         - fakeroot
-        - nodejs
 
 branches:
   only:
