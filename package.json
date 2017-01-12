@@ -1,7 +1,7 @@
 {
   "name": "linter-mypy",
   "main": "./lib/init",
-  "version": "1.0.8",
+  "version": "1.0.6",
   "license": "MIT",
   "description": "Lint Python optional Type Hints (PEP-484) on the fly.",
   "keywords": [
