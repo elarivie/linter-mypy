@@ -6,13 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.0 2017-02-02
+
+### Changed
+- The setting "Path to the executable" now has to point to Python instead of mypy.
+ - This is a breaking change, a user friendly warning pop-up to help the transition.
+- Now uses the python package *mypy* instead of *mypy-lang* since the package was renamed starting with version mypy 4.7.0:
+ - http://mypy-lang.blogspot.ca/2017/01/mypy-0470-released.html
+- Updated the README.
+- Adjusted to the command line interface change of mypy 4.7.0
+
 ## [Released] - 1.0.9 2017-01-11
 
 ### Added
 - BUILDME
 
 ### Changed
-
 - Build steps are now independent from TravisCI
  - A build can now be launch locally using the command *./BUILDME* or *make*.
 
@@ -55,8 +64,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - More user friendly error notification
  - It is now possible to deactivate "--fast-parser" directly from the notification when the required tool are not present.
- - A spec to track mypy futur command line interface change.
- - A work around for a false positive lint message of mypy when the flag --disallow-subclassing-any is provided
+- A spec to track mypy futur command line interface change.
+- A work around for a false positive lint message of mypy when the flag --disallow-subclassing-any is provided
 
 ### Changed
 - The extra validation settings are now activated by default.

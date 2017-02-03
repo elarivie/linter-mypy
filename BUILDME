@@ -4,19 +4,19 @@
 """
 This is a script to build the project.
 
-It is using template_BUILDME_python3 v4.
+It is using template_BUILDME_python3 v5.
 
 This script:
 	- Should be named "BUILDME"
 	- Should be present in the project root folder
 	- Should be executable (chmod +x BUILDME)
-	- Should contains all the project build process steps implemented into the function build (see below)
+	- Should contains all the project build process steps implemented into the function BUILDME (see below)
 """
 
 from typing import Sequence
 from typing import Optional
 
-def build(p_Src: str, p_Tmp: str, p_Out: str) -> int:
+def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	"""
 	Build the project.
 
@@ -34,7 +34,7 @@ def build(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	# Validate the presence of Required external requirement.
 	assert os.path.isfile("/bin/sh"), "Requirement not found (/bin/sh)"
 	assert os.path.isfile("/usr/bin/Xvfb"), "Requirement not found (/usr/bin/Xvfb), run \"sudo apt-get install Xvfb\""
-	assert shutil.which("mypy") is not None, "Requirement not found (mypy), run \"python3 -m pip install mypy-lang\""
+	assert shutil.which("mypy") is not None, "Requirement not found (mypy), run \"python3 -m pip install mypy\""
 
 	#Fetch the latest common atom Continuous Integration Script.
 	url = "https://raw.githubusercontent.com/atom/ci/master/build-package.sh"
@@ -138,7 +138,7 @@ Exit code 0 if build is successfull
 	parser.add_argument('-t', '--temp', help='temporary folder (Default: new temporary directory in the system temporary directory or RAM temp folder if available)', action='store', default=None)
 	parser.add_argument('-o', '--output', help='output folder, shall not already exist (Default: new temporary directory in TEMPFOLDER)', action='store', default=None)
 	parser.add_argument('-O', '--Output', help='output folder, shall already exist (Default: --output)', action='store', default=None)
-	parser.add_argument('-V', '--version', action='version', version='build 1.1')
+	parser.add_argument('-V', '--version', action='version', version='BUILDME 1.1.0')
 	c_Args = parser.parse_args(p_Args)
 	def _actualpath(p_Path: Optional[str]) -> Optional[str]:
 		return None if p_Path is None else os.path.normcase(os.path.realpath(os.path.normpath(p_Path)))
@@ -220,7 +220,7 @@ Exit code 0 if build is successfull
 				c_SrcHash = _processDirectoryHash(c_ActualPathSrc) if v_DoSrcHashValidation else ""
 				c_BuildTmpFolder = _actualpath(tempfile.mkdtemp(suffix='', prefix='', dir=v_TmpPath))
 				os.chdir(c_BuildTmpFolder)#Make sure that the current working directory is the Temp folder before doing the build steps
-				v_BuildResult = build(c_ActualPathSrc, c_BuildTmpFolder, c_ActualPathOut)
+				v_BuildResult = BUILDME(c_ActualPathSrc, c_BuildTmpFolder, c_ActualPathOut)
 				#From this point, the only thing left to do is to delete the temp folder
 				v_BuildError = False
 			finally:

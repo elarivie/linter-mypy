@@ -9,8 +9,8 @@ module.exports =
     executablePath:
       title: 'Executable Path'
       type: 'string'
-      default: 'mypy'
-      description: "Path to executable mypy cmd."
+      default: 'python3'
+      description: "Path to the executable of python."
       order: 1
     ignoreFiles:
       type: 'string'
@@ -105,8 +105,9 @@ module.exports =
 
   lintPath: (filePath)->
     params = []
+    params.push("-m")
+    params.push("mypy")
     params.push("--show-column-numbers")
-    params.push("--hide-error-context")
 
     if (@disallowUntypedCalls)
       params.push("--disallow-untyped-calls")
@@ -145,7 +146,37 @@ module.exports =
       return result
     ), (err) =>
       if err.message.match /^spawn\s.+\sENOENT$/gi
-        atom.notifications.addWarning("The executable of <strong>" + @executablePath + "</strong> was not found.<br />Either install <a href='http://mypy.readthedocs.io/en/latest/getting_started.html#installation'>mypy</a> or adjust the executable path setting of linter.mypy.")
+        notification = atom.notifications.addWarning(
+          "The executable of <strong>" + @executablePath + "</strong> was not found.<br />Either install <a href='https://www.python.org/downloads/'>python</a> or adjust the executable path setting of linter-mypy.",
+          {
+            buttons: [
+              {
+                text: "Adjust the linter-mypy setting",
+                onDidClick: ->
+                  atom.workspace.open("atom://config/packages/linter-mypy")
+                  notification.dismiss()
+              }
+            ],
+            dismissable: true,
+          }
+        )
+      else if (0 <= err.message.indexOf("usage: mypy"))
+        notification = atom.notifications.addWarning(
+          "The executable of <strong>" + @executablePath + "</strong> seems to point to mypy instead of python, please adjust the executable path setting of linter-mypy.",
+          {
+            buttons: [
+              {
+                text: "Adjust the linter-mypy setting",
+                onDidClick: ->
+                  atom.workspace.open("atom://config/packages/linter-mypy")
+                  notification.dismiss()
+              }
+            ],
+            dismissable: true,
+          }
+        )
+      else if (0 <= err.message.indexOf("No module named mypy"))
+        atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with <br /><em>" + @executablePath + " -m pip install mypy</em>")
       else if (0 <= err.message.indexOf("must install the typed_ast package before you can run mypy with"))
         notification = atom.notifications.addWarning(
           err.message,

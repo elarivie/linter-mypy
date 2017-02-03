@@ -42,7 +42,7 @@ describe "The MyPy provider for Linter", ->
     beforeEach ->
       waitsForPromise ->
         mypyPath = atom.config.get('linter-mypy.executablePath')
-        helpers.exec(mypyPath, ["--help"], { stream: 'stdout', ignoreExitCode: true}).then (helpMsg) ->
+        helpers.exec(mypyPath, ["-m", "mypy", "--help"], { stream: 'stdout', ignoreExitCode: true}).then (helpMsg) ->
           mypyHelp = helpMsg.trim()
           expect(mypyHelp).not.toBe("")
 
