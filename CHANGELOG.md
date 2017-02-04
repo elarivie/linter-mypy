@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.1 2017-02-04
+
+### Added
+- A spec to validate that no warnings external to the file being linted are reported.
+
+### Changed
+- Greatly improved and simplified the ignore logic of errors which are outside of the file being linted.
+
 ## [Released] - 2.0.0 2017-02-02
 
 ### Changed

@@ -108,6 +108,8 @@ module.exports =
     params.push("-m")
     params.push("mypy")
     params.push("--show-column-numbers")
+    params.push("--follow-imports")
+    params.push("silent")
 
     if (@disallowUntypedCalls)
       params.push("--disallow-untyped-calls")
@@ -134,13 +136,8 @@ module.exports =
       lines = file.split(/\r\n|\r|\n/g)
       result = ""
       for key, val of lines
-        if 0 == val.indexOf("/")
-
-          #The following line works fine but is commented because it would create issues to file outside of the opened workspace.
-          #Being commented also prevent hundreds of issues related to incomplete *.pyi files part of mypy installation.
-
-          #result = result + val + os.EOL
-
+        if 0 != val.indexOf(path.basename(filePath) + ":")
+          #Ignore, we only want warnings within the file being linted.
         else
           result = result + path.join(rootPath, val) + os.EOL
       return result
