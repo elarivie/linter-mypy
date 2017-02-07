@@ -40,7 +40,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | ----------------------------------- | ---------------- |
 | Path to the executable of `python`  | Default: python3 |
 | Ignore File name Regex              | Default:         |
-| Fast Parser*                        | Default: True    |
+| Fast Parser                         | Default: True    |
 | Disallow Untyped Calls              | Default: True    |
 | Disallow Untyped Defs               | Default: True    |
 | Check Untyped Defs                  | Default: True    |
