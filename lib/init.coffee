@@ -303,7 +303,7 @@ module.exports =
         atom.notifications.addError(err.message)
 
       #Something went wrong there is therefore no mypy warnings to report.
-      return ""
+      return [fastParser, ""]
 
   parseMessages: (output) ->
     # Parse the pre-processed mypy warnings output and isolate:
