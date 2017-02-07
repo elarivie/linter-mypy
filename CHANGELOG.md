@@ -6,8 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.2 2017-02-06
+
 ### Added
 - Comments in the code.
+- Specs to validate the underlining position with and without fast-parser.
+- Support for Windows.
+
+### Changed
+- It was found that the mypy does not report the same start column of warnings with/without the option --fast-parser.
+ - Improved the heuristic logic for underlining to behave correctly with and without fast-parser.
 
 ## [Released] - 2.0.1 2017-02-04
 

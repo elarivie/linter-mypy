@@ -73,7 +73,7 @@ module.exports =
   activate: ->
     require('atom-package-deps').install('linter-mypy')
 
-    #Listen for any settings changes to prevent having to restart Atom.
+    #Listen and reload any settings changes to prevent having to restart Atom.
 
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
@@ -124,6 +124,7 @@ module.exports =
     params.push("mypy")
 
     ## We want column number so that we can know where to underline.
+    ## Note: It was found that the reported column numbers are affected by the setting --fast-parser.
     params.push("--show-column-numbers")
 
     ## We only want to report warnings about the requested file and not about its dependencies
@@ -161,10 +162,12 @@ module.exports =
     rootPath = path.dirname(filePath)
     options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
 
+    # Load the fast parser flag in a local variable so that the next scope can access it.
+    fastParser = @fastParser
+
     # We call the mypy process and parse its output.
     return helpers.exec(@executablePath, params, options).then ((file) ->
       # The "file" variable contains the raw mypy output.
-
       # The goal of this method is to return a string where each line is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = ""
 
@@ -183,7 +186,8 @@ module.exports =
           # We also make sure to provide the full path to the file by prepending the root path so that Atom can find the file.
           # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
           result = result + path.join(rootPath, val) + os.EOL
-      return result
+      # Return fast parser flag and the result.
+      return [fastParser, result]
     ), (err) =>
       # Well, Well, Well... something went wrong.
       # Instead of crashing or giving cryptic error message, let's try to be user friendly.
@@ -307,13 +311,14 @@ module.exports =
     # - line = The line number where the warning is.
     # - col = The column where the warning is within the line.
     # - message = The warning text.
-    messages = helpers.parse(output,
-                             "^(?<file>[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)",
+    messages = helpers.parse(output[1],
+                             "^(?<file>([A-Z]:)?[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)",
                              {flags: 'gm'})
 
     # Prepare an array of all the warnings to report.
     result = []
     messages.forEach (msg) ->
+      @fastParser = output[0]
       # At this point every messages will be reported, we won't filter them
       # But we will improve them a little to make them more helpful.
 
@@ -340,7 +345,10 @@ module.exports =
       compiledRegexp = new NamedRegexp("^Argument . to .(?<name>.+). has incompatible type ..+.; expected ..+.$", "g")
       rawMatch = compiledRegexp.exec(msg.text)
       if rawMatch
-        warnEndCol += rawMatch[1].length
+        if (@fastParser)
+          warnEndCol += rawMatch[1].length
+        else
+          warnStartCol -= rawMatch[1].length
         if 0 < warnOrigStartCol
           warnEndCol -= 1
 
@@ -362,7 +370,7 @@ module.exports =
       name: 'linter-mypy'
       grammarScopes: ['source.python']
       scope: 'file'
-      lintOnFly: true
+      lintOnFly: false
       lint: (textEditor) =>
         if (@ignoreFiles == '' || !textEditor.getPath().match(@ignoreFiles))
           # The file is not to be ignored, let's lint it and returns the mypy warnings...
