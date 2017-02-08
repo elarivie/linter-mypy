@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.3 2017-02-08
+
 ### Changed
 - Fix minor bug in error handling.
 

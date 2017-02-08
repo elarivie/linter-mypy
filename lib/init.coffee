@@ -114,7 +114,7 @@ module.exports =
     @subscriptions.dispose()
 
   lintPath: (filePath)->
-    # This is entry point for Lint requests.
+    # This is the entry point for Lint requests.
 
     # Prepare the command line parameteres.
     params = []
