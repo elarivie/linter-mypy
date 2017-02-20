@@ -157,8 +157,8 @@ module.exports =
 
     # Make sure to run the command relative to the file being linted folder.
     # This has the advantage that:
-    # * The warnings output format won't be poluted by long paths which would have to be filtered anyway.
     # * It allows mypy to find dependencies (import) of the file being linted.
+    # This should also make the warnings to be reported using relative path to the file but for an unknown reason this is not always the case.
     rootPath = path.dirname(filePath)
     options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
 
@@ -175,17 +175,20 @@ module.exports =
       # We split the text using the new line as a separator and handle any OS kind of new lines.
       lines = file.split(/\r\n|\r|\n/g)
 
-      # For each line (aka warnings) we filter out those which are not wanted.
+      # For each line (aka warnings) we filter out those which are not wanted else we append it to the final list of warnings to reports.
+      # Note: The final report must contain the full path to the file so that Atom can find the file.
       for key, val of lines
-        if 0 != val.indexOf(path.basename(filePath) + ":")
+        if 0 == val.indexOf(filePath + ":")
+          # Warning was reported using an absolute path to the file.
+          result = result + val + os.EOL
+        else if 0 == val.indexOf(path.basename(filePath) + ":")
+          # Warning was reported using a relative path to the file.
+          # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
+          result = result + path.join(rootPath, val) + os.EOL
+        else
           #Ignore, we only want warnings within the file being linted.
           ## This filters out warning about *.pyi files
           ## This would also filter out warnings of imported file but they were already filtered out since the mypy process was called with the parameter "--follow-imports silent"
-        else
-          # No filter rejected the warning so we append it to the final list of warnings to reports.
-          # We also make sure to provide the full path to the file by prepending the root path so that Atom can find the file.
-          # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
-          result = result + path.join(rootPath, val) + os.EOL
       # Return fast parser flag and the result.
       return [fastParser, result]
     ), (err) =>

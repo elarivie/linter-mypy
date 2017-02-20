@@ -1,14 +1,18 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Support mypy warnings to be reported with relative or absolute path.
+ - For an unkown reason on some system mypy reports warning using relative path and on other system with absolute path.
+
 ## [Released] - 2.0.3 2017-02-08
 
-### Changed
+### Fixed
 - Fix minor bug in error handling.
 
 ## [Released] - 2.0.2 2017-02-06
