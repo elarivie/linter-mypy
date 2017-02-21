@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.4 2017-02-20
+
 ### Fixed
 - Support mypy warnings to be reported with relative or absolute path.
  - For an unkown reason on some system mypy reports warning using relative path and on other system with absolute path.
