@@ -114,7 +114,10 @@ module.exports =
     @subscriptions.dispose()
 
   lintPath: (filePath)->
-    # This is the entry point for Lint requests.
+    # This is the entry point for Lint requests for a given file.
+
+    rootPath = path.dirname(filePath)
+    baseNamePath = path.basename(filePath)
 
     # Prepare the command line parameteres.
     params = []
@@ -152,20 +155,20 @@ module.exports =
     if (@fastParser)
       params.push("--fast-parser")
 
-    # Provide the file to lint.
-    params.push(filePath)
+    # Provide the filename to lint.
+    params.push(baseNamePath)
 
-    # Make sure to run the command relative to the file being linted folder.
+    # Run the command from the folder of the file being linted folder.
     # This has the advantage that:
     # * It allows mypy to find dependencies (import) of the file being linted.
     # This should also make the warnings to be reported using relative path to the file but for an unknown reason this is not always the case.
-    rootPath = path.dirname(filePath)
     options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
 
     # Load the fast parser flag in a local variable so that the next scope can access it.
     fastParser = @fastParser
 
     # We call the mypy process and parse its output.
+    ## For debug: ## alert(@executablePath + " " + params.join(" "))
     return helpers.exec(@executablePath, params, options).then ((file) ->
       # The "file" variable contains the raw mypy output.
       # The goal of this method is to return a string where each line is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
@@ -181,16 +184,18 @@ module.exports =
         if 0 == val.indexOf(filePath + ":")
           # Warning was reported using an absolute path to the file.
           result = result + val + os.EOL
-        else if 0 == val.indexOf(path.basename(filePath) + ":")
+        else if 0 == val.indexOf(baseNamePath + ":")
           # Warning was reported using a relative path to the file.
           # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
           result = result + path.join(rootPath, val) + os.EOL
         else
           #Ignore, we only want warnings within the file being linted.
-          ## This filters out warning about *.pyi files
+          ## This filters out warnings about *.pyi files
           ## This would also filter out warnings of imported file but they were already filtered out since the mypy process was called with the parameter "--follow-imports silent"
+
       # Return fast parser flag and the result.
       return [fastParser, result]
+
     ), (err) =>
       # Well, Well, Well... something went wrong.
       # Instead of crashing or giving cryptic error message, let's try to be user friendly.

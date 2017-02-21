@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.5 2017-02-21
+
+### Changed
+- Only the filename is provided to mypy instead of the fullpath.
+- Small Optimization
+
 ## [Released] - 2.0.4 2017-02-20
 
 ### Fixed
