@@ -11,7 +11,7 @@ path = require 'path'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-fdescribe "The MyPy provider for Linter", ->
+describe "The MyPy provider for Linter", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->
