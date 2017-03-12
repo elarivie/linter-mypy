@@ -64,16 +64,31 @@ module.exports =
       default: true
       description: 'warn about functions that end without returning'
       order: 10
+    warnReturnAny:
+      type: 'boolean'
+      default: true
+      description: 'warn about returning values of type Any from non-Any typed functions'
+      order: 11
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 11
+      order: 12
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 12
+      order: 13
+    strictBoolean:
+      type: 'boolean'
+      default: true
+      description: "enable strict boolean checks in conditions"
+      order: 14
+    strictOptional:
+      type: 'boolean'
+      default: true
+      description: "enable experimental strict Optional checks"
+      order: 15
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -108,6 +123,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.warnNoReturn',
       (warnNoReturn) =>
         @warnNoReturn = warnNoReturn
+    @subscriptions.add atom.config.observe 'linter-mypy.warnReturnAny',
+      (warnReturnAny) =>
+        @warnReturnAny = warnReturnAny
     @subscriptions.add atom.config.observe 'linter-mypy.warnUnusedIgnores',
       (warnUnusedIgnores) =>
         @warnUnusedIgnores = warnUnusedIgnores
@@ -117,6 +135,12 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.warnMissingImports',
       (warnMissingImports) =>
         @warnMissingImports = warnMissingImports
+    @subscriptions.add atom.config.observe 'linter-mypy.strictBoolean',
+      (strictBoolean) =>
+        @strictBoolean = strictBoolean
+    @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
+      (strictOptional) =>
+        @strictOptional = strictOptional
 
   deactivate: ->
     @subscriptions.dispose()
@@ -133,6 +157,7 @@ module.exports =
     ## Use the python module mypy
     params.push("-m")
     params.push("mypy")
+    params.push("--hide-error-context")
 
     ## We want column number so that we can know where to underline.
     ## Note: It was found that the reported column numbers are affected by the setting --fast-parser.
@@ -146,24 +171,66 @@ module.exports =
     # Add the parameters base on user selected settings.
     if (@disallowUntypedCalls)
       params.push("--disallow-untyped-calls")
+    else
+      params.push("--allow-untyped-calls")
+
     if (@disallowUntypedDefs)
       params.push("--disallow-untyped-defs")
+    else
+      params.push("--allow-untyped-defs")
+
     if (@checkUntypedDefs)
       params.push("--check-untyped-defs")
+    else
+      params.push("--no-check-untyped-defs")
+
     if (@disallowSubclassingAny)
       params.push("--disallow-subclassing-any")
+    else
+      params.push("--allow-subclassing-any")
+
     if (@warnIncompleteStub)
       params.push("--warn-incomplete-stub")
+    else
+      params.push("--no-warn-incomplete-stub")
+
     if (@warnRedundantCasts)
       params.push("--warn-redundant-casts")
+    else
+      params.push("--no-warn-redundant-casts")
+
     if (@warnNoReturn)
       params.push("--warn-no-return")
+    else
+      params.push("--no-warn-no-return")
+
+    if (@warnReturnAny)
+      params.push("--warn-return-any")
+    else
+      params.push("--no-warn-return-any")
+
     if (@warnUnusedIgnores)
       params.push("--warn-unused-ignores")
+    else
+      params.push("--no-warn-unused-ignores")
+
     if (!@warnMissingImports)#Note: the boolean flag value is inversed since the parameter meaning is inversed.
       params.push("--ignore-missing-imports")
+
     if (@fastParser)
       params.push("--fast-parser")
+    else
+      params.push("--no-fast-parser")
+
+    if (@strictBoolean)
+      params.push("--strict-boolean")
+    else
+      params.push("--no-strict-boolean")
+
+    if (@strictOptional)
+      params.push("--strict-optional")
+    else
+      params.push("--no-strict-optional")
 
     # Provide the filename to lint.
     params.push(baseNamePath)

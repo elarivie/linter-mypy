@@ -3,6 +3,8 @@ TODO
 
 This file contains tasks which should be done.
 
+* Notify the user to update mypy with a pop-up if its installed mypy version is not the one that linter-mypy was configured to use
+
 * By default try to Auto detect python executable
 * * See: https://github.com/autocomplete-python/autocomplete-python/blob/aa75abf71b1ca923888e3f53cc2876263769c368/lib/interpreters-lookup.coffee
 

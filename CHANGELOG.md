@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.7 2017-03-12
+
+### Changed
+- Synched the commanand line parameters with mypy 0.501
+- Updated the dependencies version
+
+### Added
+ - Add the setting "Warn Return Any"
+ - Add the setting "Strict Boolean"
+ - Add the setting "Strict Optional"
+
 ## [Released] - 2.0.6 2017-03-11
 
 ### Added
