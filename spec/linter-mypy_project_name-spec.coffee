@@ -8,10 +8,11 @@
 
 LinterMyPystyle = require '../lib/init'
 path = require 'path'
+fs = require 'fs'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-describe "The MyPy provider for Linter", ->
+fdescribe "The MyPy provider for Linter", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->
@@ -28,18 +29,22 @@ describe "The MyPy provider for Linter", ->
   describe "resolve the project name variable", ->
 
     beforeEach ->
-      directory = path.join(__dirname, '..')
+      directory = "/tmp/python_project"
+      fs.mkdirSync(directory)
       atom.project.setPaths([directory])
+
+    afterEach ->
+      fs.rmdirSync("/tmp/python_project")
 
     it "should return the project's name when given the variable", ->
       result = LinterMyPystyle.resolvePath("$PROJECT_NAME")
-      # Return this project's name (i.e. linter-mypy)
-      expect(result).toBe("linter-mypy")
+      # Return this project's name (i.e. python_project)
+      expect(result).toBe("python_project")
 
     it "should return the project's name when given a full path", ->
       targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
       result = LinterMyPystyle.resolvePath(targetPath)
-      expectedPath = '/home/user/.virtualenvs/linter-mypy/bin/python'
+      expectedPath = '/home/user/.virtualenvs/python_project/bin/python'
       expect(result).toBe(expectedPath)
 
     it "should return the same path if the variable is not set", ->
