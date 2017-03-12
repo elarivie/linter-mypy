@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.6 2017-03-11
+
+### Added
+- The setting "Warn Missing Imports" (related to --ignore-missing-imports).
+
 ## [Released] - 2.0.5 2017-02-21
 
 ### Changed

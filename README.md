@@ -49,6 +49,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Warn Redundant Casts                | Default: True    |
 | Warn No Return                      | Default: True    |
 | Warn Unused Ignores                 | Default: True    |
+| Warn Missing Imports                | Default: True    |
 
 [linter]: https://github.com/atom-community/linter
 [install linter]: https://github.com/atom-community/linter#installation

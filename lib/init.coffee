@@ -69,6 +69,11 @@ module.exports =
       default: true
       description: "warn about unneeded '# type: ignore' comments"
       order: 11
+    warnMissingImports:
+      type: 'boolean'
+      default: true
+      description: "warn about imports of missing modules"
+      order: 12
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -109,6 +114,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.fastParser',
       (fastParser) =>
         @fastParser = fastParser
+    @subscriptions.add atom.config.observe 'linter-mypy.warnMissingImports',
+      (warnMissingImports) =>
+        @warnMissingImports = warnMissingImports
 
   deactivate: ->
     @subscriptions.dispose()
@@ -152,6 +160,8 @@ module.exports =
       params.push("--warn-no-return")
     if (@warnUnusedIgnores)
       params.push("--warn-unused-ignores")
+    if (!@warnMissingImports)#Note: the boolean flag value is inversed since the parameter meaning is inversed.
+      params.push("--ignore-missing-imports")
     if (@fastParser)
       params.push("--fast-parser")
 
