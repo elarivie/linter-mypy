@@ -464,3 +464,12 @@ module.exports =
         else
           # The file is to be ignored, we therefore return an empty set of warning.
           return []
+
+  resolvePath: (targetPath) ->
+    projectPaths = atom.project.getPaths()
+    if projectPaths.length > 0
+      projectPath = projectPaths[0]
+      projectName = path.parse(projectPath).name
+      resolvedPath = targetPath.replace(/\$PROJECT_NAME/i, projectName)
+
+    return resolvedPath
