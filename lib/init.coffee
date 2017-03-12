@@ -17,7 +17,11 @@ module.exports =
       title: 'Executable Path'
       type: 'string'
       default: 'python3'
-      description: "Path to the executable of python."
+      description: '''Path to the executable of python.
+      An optional `$PROJECT_NAME` variable can be used to resolve the path
+      dynamically depending of the current project's name. For example:
+      `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
+      '''
       order: 1
     ignoreFiles:
       type: 'string'
