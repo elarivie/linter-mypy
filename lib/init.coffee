@@ -247,10 +247,10 @@ module.exports =
 
     # Load the fast parser flag in a local variable so that the next scope can access it.
     fastParser = @fastParser
-
+    executablePath = @resolvePath @executablePath
     # We call the mypy process and parse its output.
-    ## For debug: ## alert(@executablePath + " " + params.join(" "))
-    return helpers.exec(@executablePath, params, options).then ((file) ->
+    ## For debug: ## alert(executablePath + " " + params.join(" "))
+    return helpers.exec(executablePath, params, options).then ((file) ->
       # The "file" variable contains the raw mypy output.
       # The goal of this method is to return a string where each line is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = ""
@@ -294,7 +294,7 @@ module.exports =
           2- Offer him a link to change the setting.
         ###
         notification = atom.notifications.addWarning(
-          "The executable of <strong>" + @executablePath + "</strong> was not found.<br />Either install <a href='https://www.python.org/downloads/'>python</a> or adjust the executable path setting of linter-mypy.",
+          "The executable of <strong>" + executablePath + "</strong> was not found.<br />Either install <a href='https://www.python.org/downloads/'>python</a> or adjust the executable path setting of linter-mypy.",
           {
             buttons: [
               {
@@ -325,7 +325,7 @@ module.exports =
           *- Another solution would have been to relaunch the command adapted to a direct call to mypy, but on the long run this would create a support nightmare, this would also mean that for those users two process spawn would be required at every lint, therefore this solution was not implemented.
         ###
         notification = atom.notifications.addWarning(
-          "The executable of <strong>" + @executablePath + "</strong> seems to point to mypy instead of python, please adjust the executable path setting of linter-mypy.",
+          "The executable of <strong>" + executablePath + "</strong> seems to point to mypy instead of python, please adjust the executable path setting of linter-mypy.",
           {
             buttons: [
               {
@@ -351,7 +351,7 @@ module.exports =
           2- Show him an example of command line to install mypy
             * Using to executablePath provided in the settings to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
-        atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with <br /><em>" + @executablePath + " -m pip install mypy</em>")
+        atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with <br /><em>" + executablePath + " -m pip install mypy</em>")
       else if (0 <= err.message.indexOf("must install the typed_ast package before you can run mypy with"))
         ###
         The Problem: The error is about the absence of the typed_ast module in the python installation.
