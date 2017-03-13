@@ -470,10 +470,13 @@ module.exports =
           return []
 
   resolvePath: (targetPath) ->
-    projectPaths = atom.project.getPaths()
-    if projectPaths.length > 0
-      projectPath = projectPaths[0]
-      projectName = path.parse(projectPath).name
-      resolvedPath = targetPath.replace(/\$PROJECT_NAME/i, projectName)
+    editor = atom.workspace.getActivePaneItem()
+    filepath = editor?.buffer?.file?.path
 
+    if not filepath
+      return targetPath
+
+    [projectPath, ...] = atom.project.relativizePath(filepath)
+    projectName = path.parse(projectPath).name
+    resolvedPath = targetPath.replace(/\$PROJECT_NAME/i, projectName)
     return resolvedPath
