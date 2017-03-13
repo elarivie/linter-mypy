@@ -321,7 +321,7 @@ module.exports =
           *- Another solution would have been to relaunch the command adapted to a direct call to mypy, but on the long run this would create a support nightmare, this would also mean that for those users two process spawn would be required at every lint, therefore this solution was not implemented.
         ###
         notification = atom.notifications.addWarning(
-          "The executable of <strong>" + @executablePath + "</strong> seems to point to mypy instead of python, please adjust the executable path setting of linter-mypy.",
+          "The executable of <strong>" + @executablePath + "</strong> seems to not have a compatible mypy installed, please try to update mypy or adjust the executable path setting of linter-mypy.<br/><em>" + @executablePath + " -m pip install -U mypy</em>",
           {
             buttons: [
               {

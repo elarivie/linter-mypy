@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.8 2017-03-13
+
+### Changed
+- The error message when mypy is not the latest version (Quick fix).
+
 ## [Released] - 2.0.7 2017-03-12
 
 ### Changed
