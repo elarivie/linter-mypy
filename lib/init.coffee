@@ -102,7 +102,7 @@ module.exports =
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
       (executablePath) =>
-        @executablePath = @resolvePath executablePath
+        @executablePath = executablePath
     @subscriptions.add atom.config.observe 'linter-mypy.ignoreFiles',
       (ignoreFiles) =>
         @ignoreFiles = ignoreFiles
