@@ -311,21 +311,21 @@ module.exports =
         ###
         The Problem: The error is about an incorrect usage of mypy parameters.
 
-        The Context: At this point a call to mypy was effectively done, there are two options
+        The Context: At this point a call to mypy was effectively done, there are three options
           1- The mypy command line interface has change and the project should be updated accordingly
             - But We have a spec to detect mypy command line interface change, so this option is probably not what is the real cause of the problem, anyway the user would not have much possibility to recover anyway.
           2- The executablePath provided in the settings is not pointing to python but directly to the mypy executable as it was required prior to mypy-linter v2.0.0
+          3- The version of mypy is older than the one linter-mypy expect.
 
-        The Conclusion: It is most likely the executablePath which is pointing to mypy instead of Python.
+        The Conclusion: It may be the executablePath which is pointing to mypy instead of Python but it is most likely an outdated mypy installation.
 
         The Solution: Let's:
-          1- Inform the user about the situation with a pop-up
-          2- Offer him a link to change the setting.
-
-          *- Another solution would have been to relaunch the command adapted to a direct call to mypy, but on the long run this would create a support nightmare, this would also mean that for those users two process spawn would be required at every lint, therefore this solution was not implemented.
+          1- Inform the user about the situation with a pop-up.
+          2- Display the command line to update mypy.
+          3- Offer him a link to change the setting.
         ###
         notification = atom.notifications.addWarning(
-          "The executable of <strong>" + executablePath + "</strong> seems to point to mypy instead of python, please adjust the executable path setting of linter-mypy.",
+          "MyPy does not understand the provided parameters.  Make sure the latest mypy version is installed using the following command line<br/><em>" + executablePath + " -m pip install -U mypy</em><br/>.",
           {
             buttons: [
               {
@@ -349,7 +349,7 @@ module.exports =
         The Solution: Let's:
           1- Inform the user about the situation with a pop-up
           2- Show him an example of command line to install mypy
-            * Using to executablePath provided in the settings to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
+            * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
         atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with <br /><em>" + executablePath + " -m pip install mypy</em>")
       else if (0 <= err.message.indexOf("must install the typed_ast package before you can run mypy with"))

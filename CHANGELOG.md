@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.9 2017-03-14
+
+### Added
+- The possibility to define in the settings a variable path to Python using the project name as a variable in the path.
+
+### Changed
+- Better error message when mypy does not seem to be at the latest version.
+
+## [Released] - 2.0.8 2017-03-13
+
+### Changed
+- The error message when mypy does not seem to be at the latest version (Quick fix).
+
 ## [Released] - 2.0.7 2017-03-12
 
 ### Changed

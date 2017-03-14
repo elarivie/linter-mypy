@@ -3,12 +3,10 @@ TODO
 
 This file contains tasks which should be done.
 
-* Notify the user to update mypy with a pop-up if its installed mypy version is not the one that linter-mypy was configured to use
+* Notify the user to update mypy with a pop-up if its installed mypy version is not the one that linter-mypy was configured to use (use mypy --version to get the information)
 
 * By default try to Auto detect python executable
 * * See: https://github.com/autocomplete-python/autocomplete-python/blob/aa75abf71b1ca923888e3f53cc2876263769c368/lib/interpreters-lookup.coffee
 
 * Investigate the idea of adding a parameter to define a mypy.ini file
 * * If a ini file is found, should ignore all mypy parameters related settings?
-
-* Investigate the idea of using $PROJECT_NAME as a variable when defining some settings (Executable Path, mypy.ini path)
