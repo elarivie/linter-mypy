@@ -247,7 +247,7 @@ module.exports =
 
     # Load the fast parser flag in a local variable so that the next scope can access it.
     fastParser = @fastParser
-    executablePath = @resolvePath @executablePath
+    executablePath = @resolvePath @executablePath, filePath
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
     return helpers.exec(executablePath, params, options).then ((file) ->
@@ -324,7 +324,7 @@ module.exports =
           3- Offer him a link to change the setting.
         ###
         notification = atom.notifications.addWarning(
-          "MyPy does not understand the provided parameters.  Make sure the latest mypy version is installed using the following command line<br/><em>" + executablePath + " -m pip install -U mypy</em><br/>.",
+          "MyPy does not understand the provided parameters.  Make sure the latest mypy version is installed using the following command line:<br/><br/><em>" + executablePath + " -m pip install -U mypy</em>",
           {
             buttons: [
               {
@@ -350,7 +350,7 @@ module.exports =
           2- Show him an example of command line to install mypy
             * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
-        atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with <br /><em>" + executablePath + " -m pip install mypy</em>")
+        atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
       else if (0 <= err.message.indexOf("must install the typed_ast package before you can run mypy with"))
         ###
         The Problem: The error is about the absence of the typed_ast module in the python installation.
@@ -468,10 +468,7 @@ module.exports =
           # The file is to be ignored, we therefore return an empty set of warning.
           return []
 
-  resolvePath: (targetPath) ->
-    editor = atom.workspace.getActivePaneItem()
-    filepath = editor?.buffer?.file?.path
-
+  resolvePath: (targetPath, filepath) ->
     if not filepath
       return targetPath
 

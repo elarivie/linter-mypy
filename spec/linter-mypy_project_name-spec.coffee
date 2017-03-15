@@ -9,6 +9,7 @@
 LinterMyPystyle = require '../lib/init'
 path = require 'path'
 fs = require 'fs'
+os = require 'os'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
@@ -29,81 +30,93 @@ describe "The MyPy provider for Linter", ->
   describe "resolve the project name variable", ->
 
     beforeEach ->
+      # Prepare fake projects for testing
+
+      # Create a project root (aka isolated temp folder)
+      @ProjectRoot = path.join(os.tmpdir(), "linter-mypy" + Math.floor(Math.random() * 9007199254740991))
+
+      #Simulate a pseudo project #1 containing one file
       @firstProjectName = 'first_python_project'
-      @firstProjectPath = '/tmp/' + @firstProjectName
-      fs.mkdirSync(@firstProjectPath)
-      fs.mkdirSync(@firstProjectPath + '/src')
-      @firstFilePath = @firstProjectPath + '/src/first_file.py'
-      fs.closeSync(fs.openSync(@firstFilePath, 'w'))
+      @firstProjectPath = path.join(@ProjectRoot, @firstProjectName)
+      @firstFilePath = path.join(@firstProjectPath, 'src', 'first_file.py')
 
+      #Simulate a pseudo project #2 containing one file
       @secondProjectName = 'second_python_project'
-      @secondProjectPath = '/tmp/' + @secondProjectName
-      fs.mkdirSync(@secondProjectPath)
-      fs.mkdirSync(@secondProjectPath + '/src')
-      @secondFilePath = @secondProjectPath + '/src/second_file.py'
-      fs.closeSync(fs.openSync(@secondFilePath, 'w'))
+      @secondProjectPath = path.join(@ProjectRoot, @secondProjectName)
+      @secondFilePath = path.join(@secondProjectPath, 'src', 'second_file.py')
 
+      # Open the two projects
       atom.project.setPaths([@firstProjectPath, @secondProjectPath])
 
+      # Note: The method atom.project.relativizePath(filepath) which is internally use by the tested method requires the folders to exist on HD)
+      fs.mkdirSync(@ProjectRoot)
+      fs.mkdirSync(@firstProjectPath)
+      fs.mkdirSync(path.join(@firstProjectPath, 'src'))
+      fs.mkdirSync(@secondProjectPath)
+      fs.mkdirSync(path.join(@secondProjectPath, 'src'))
+
+      # Note: The files do not need to be created on HD.
+      #fs.closeSync(fs.openSync(@secondFilePath, 'w'))
+      #fs.closeSync(fs.openSync(@firstFilePath, 'w'))
+
     afterEach ->
-      fs.unlinkSync(@firstFilePath)
-      fs.rmdirSync(@firstProjectPath + '/src')
+      # Remove the file/folders created on the hard drive.
+
+      #fs.unlinkSync(@firstFilePath)
+      #fs.unlinkSync(@secondFilePath)
+
+      fs.rmdirSync(path.join(@firstProjectPath, 'src'))
       fs.rmdirSync(@firstProjectPath)
 
-      fs.unlinkSync(@secondFilePath)
-      fs.rmdirSync(@secondProjectPath + '/src')
+      fs.rmdirSync(path.join(@secondProjectPath, 'src'))
       fs.rmdirSync(@secondProjectPath)
+
+      fs.rmdirSync(@ProjectRoot)
 
     it "should return the first project's name when given the variable", ->
       firstProjectName = @firstProjectName
-      firstFilePath = @firstFilePath
-      waitsForPromise ->
-        atom.workspace.open(firstFilePath).then (e) ->
-          result = LinterMyPystyle.resolvePath("$PROJECT_NAME")
-          # Return this project's name (i.e. first_python_project)
-          expect(result).toBe(firstProjectName)
+      loadedFile = @firstFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
+      # Return this project's name (i.e. first_python_project)
+      expect(result).toBe(firstProjectName)
 
     it "should return the second project's name when given the variable", ->
       secondProjectName = @secondProjectName
-      secondFilePath = @secondFilePath
-      waitsForPromise ->
-        atom.workspace.open(secondFilePath).then (e) ->
-          result = LinterMyPystyle.resolvePath("$PROJECT_NAME")
-          # Return this project's name (i.e. second_python_project)
-          expect(result).toBe(secondProjectName)
+      loadedFile = @secondFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
+      # Return this project's name (i.e. second_python_project)
+      expect(result).toBe(secondProjectName)
 
     it "should return the first project's name when given a full path", ->
-      firstFilePath = @firstFilePath
+      loadedFile = @firstFilePath
       targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
       expectedPath = '/home/user/.virtualenvs/first_python_project/bin/python'
-      waitsForPromise ->
-        atom.workspace.open(firstFilePath).then (e) ->
-          result = LinterMyPystyle.resolvePath(targetPath)
-          expect(result).toBe(expectedPath)
+      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
+      expect(result).toBe(expectedPath)
 
     it "should return the second project's name when given a full path", ->
-      secondFilePath = @secondFilePath
+      loadedFile = @secondFilePath
       targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
       expectedPath = '/home/user/.virtualenvs/second_python_project/bin/python'
-      waitsForPromise ->
-        atom.workspace.open(secondFilePath).then (e) ->
-          result = LinterMyPystyle.resolvePath(targetPath)
-          expect(result).toBe(expectedPath)
+      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
+      expect(result).toBe(expectedPath)
 
-    it "should return the same path if the variable is not set (first)", ->
-      firstFilePath = @firstFilePath
+    it "should return the same path if the file is not a child of any projects", ->
+      loadedFile = path.join(os.tmpdir(), "/abc/def/ghi.py")
+      targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
+      expectedPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
+      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
+      expect(result).toBe(expectedPath)
+
+    it "should return the same path if the variable is not set", ->
+      loadedFile = @secondFilePath
       targetPath = '/home/user/.virtualenvs/somevenv/bin/python'
       expectedPath = '/home/user/.virtualenvs/somevenv/bin/python'
-      waitsForPromise ->
-        atom.workspace.open(firstFilePath).then (e) ->
-          result = LinterMyPystyle.resolvePath(targetPath)
-          expect(result).toBe(expectedPath)
+      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
+      expect(result).toBe(expectedPath)
 
-    it "should return the same path if the variable is not set (second)", ->
-      secondFilePath = @secondFilePath
+    it "should return the same path if the file is not provided", ->
       targetPath = '/home/user/.virtualenvs/somevenv/bin/python'
       expectedPath = '/home/user/.virtualenvs/somevenv/bin/python'
-      waitsForPromise ->
-        atom.workspace.open(secondFilePath).then (e) ->
-          result = LinterMyPystyle.resolvePath(targetPath)
-          expect(result).toBe(expectedPath)
+      result = LinterMyPystyle.resolvePath(targetPath)
+      expect(result).toBe(expectedPath)
