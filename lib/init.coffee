@@ -277,7 +277,7 @@ module.exports =
       # Return fast parser flag and the result.
       return [fastParser, result]
 
-    ), (err) =>
+    ), (err) ->
       # Well, Well, Well... something went wrong.
       # Instead of crashing or giving cryptic error message, let's try to be user friendly.
       if err.message.match /^Failed\sto\sspawn\scommand\s.+\.\sMake\ssure\s.+\sis\sinstalled\sand\son\syour\sPATH$/gi
