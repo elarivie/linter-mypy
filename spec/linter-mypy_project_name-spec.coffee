@@ -34,21 +34,21 @@ describe "The MyPy provider for Linter", ->
 
       # Create a project root (aka isolated temp folder)
       @ProjectRoot = path.join(os.tmpdir(), "linter-mypy" + Math.floor(Math.random() * 9007199254740991))
-      console.log("Project root: " + @ProjectRoot)
 
       #Simulate a pseudo project #1 containing one file
       @firstProjectName = 'first_python_project'
       @firstProjectPath = path.join(@ProjectRoot, @firstProjectName)
       @firstFilePath = path.join(@firstProjectPath, 'src', 'first_file.py')
-      console.log("FirstFilePath: " + @firstFilePath)
 
       #Simulate a pseudo project #2 containing one file
       @secondProjectName = 'second_python_project'
       @secondProjectPath = path.join(@ProjectRoot, @secondProjectName)
       @secondFilePath = path.join(@secondProjectPath, 'src', 'second_file.py')
-      console.log("SecondFilePath: " + @secondFilePath)
 
-      # Note: The method atom.project.relativizePath(filepath) which is internally use by the tested method requires the folders to exist on HD)
+      # Note: The methods:
+      # * atom.project.relativizePath(filepath)
+      # * atom.project.setPaths
+      # Requires the folders to exist on HD)
       fs.mkdirSync(@ProjectRoot)
       fs.mkdirSync(@firstProjectPath)
       fs.mkdirSync(path.join(@firstProjectPath, 'src'))
@@ -79,7 +79,6 @@ describe "The MyPy provider for Linter", ->
     it "should return the first project's name when given the variable", ->
       firstProjectName = @firstProjectName
       loadedFile = @firstFilePath
-      console.log("loadedFile: " + loadedFile)
       result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
       # Return this project's name (i.e. first_python_project)
       expect(result).toBe(firstProjectName)
@@ -87,7 +86,6 @@ describe "The MyPy provider for Linter", ->
     it "should return the second project's name when given the variable", ->
       secondProjectName = @secondProjectName
       loadedFile = @secondFilePath
-      console.log("loadedFile: " + loadedFile)
       result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
       # Return this project's name (i.e. second_python_project)
       expect(result).toBe(secondProjectName)
@@ -96,7 +94,6 @@ describe "The MyPy provider for Linter", ->
       loadedFile = @firstFilePath
       targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
       expectedPath = '/home/user/.virtualenvs/first_python_project/bin/python'
-      console.log("loadedFile: " + loadedFile)
       result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
       expect(result).toBe(expectedPath)
 
@@ -104,7 +101,6 @@ describe "The MyPy provider for Linter", ->
       loadedFile = @secondFilePath
       targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
       expectedPath = '/home/user/.virtualenvs/second_python_project/bin/python'
-      console.log("loadedFile: " + loadedFile)
       result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
       expect(result).toBe(expectedPath)
 
