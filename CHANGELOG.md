@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.10 2017-03-18
+
 ### Added
 - The possibility to define in the settings a variable path to Python using the project path as a variable in the path.
 - The possibility to use [mypy configuration file](http://mypy.readthedocs.io/en/latest/config_file.html) (related to the command line parameter --config-file).
