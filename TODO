@@ -7,6 +7,3 @@ This file contains tasks which should be done.
 
 * By default try to Auto detect python executable
 * * See: https://github.com/autocomplete-python/autocomplete-python/blob/aa75abf71b1ca923888e3f53cc2876263769c368/lib/interpreters-lookup.coffee
-
-* Investigate the idea of adding a parameter to define a mypy.ini file
-* * If a ini file is found, should ignore all mypy parameters related settings?
