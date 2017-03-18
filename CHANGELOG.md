@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- The possibility to define in the settings a variable path to Python using the project path as a variable in the path.
+
 ## [Released] - 2.0.9 2017-03-14
 
 ### Added

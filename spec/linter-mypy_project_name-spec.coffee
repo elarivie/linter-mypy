@@ -76,32 +76,10 @@ describe "The MyPy provider for Linter", ->
 
       fs.rmdirSync(@ProjectRoot)
 
-    it "should return the first project's name when given the variable", ->
-      firstProjectName = @firstProjectName
-      loadedFile = @firstFilePath
-      result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
-      # Return this project's name (i.e. first_python_project)
-      expect(result).toBe(firstProjectName)
-
-    it "should return the second project's name when given the variable", ->
-      secondProjectName = @secondProjectName
-      loadedFile = @secondFilePath
-      result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
-      # Return this project's name (i.e. second_python_project)
-      expect(result).toBe(secondProjectName)
-
-    it "should return the first project's name when given a full path", ->
-      loadedFile = @firstFilePath
-      targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
-      expectedPath = '/home/user/.virtualenvs/first_python_project/bin/python'
-      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
-      expect(result).toBe(expectedPath)
-
-    it "should return the second project's name when given a full path", ->
-      loadedFile = @secondFilePath
-      targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
-      expectedPath = '/home/user/.virtualenvs/second_python_project/bin/python'
-      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
+    it "should return the same path if the file is not provided", ->
+      targetPath = '/home/user/.virtualenvs/somevenv/bin/python'
+      expectedPath = '/home/user/.virtualenvs/somevenv/bin/python'
+      result = LinterMyPystyle.resolvePath(targetPath)
       expect(result).toBe(expectedPath)
 
     it "should return the same path if the file is not a child of any projects", ->
@@ -111,15 +89,54 @@ describe "The MyPy provider for Linter", ->
       result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
       expect(result).toBe(expectedPath)
 
-    it "should return the same path if the variable is not set", ->
+    it "should return the same path if no variable are set", ->
       loadedFile = @secondFilePath
       targetPath = '/home/user/.virtualenvs/somevenv/bin/python'
       expectedPath = '/home/user/.virtualenvs/somevenv/bin/python'
       result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
       expect(result).toBe(expectedPath)
 
-    it "should return the same path if the file is not provided", ->
-      targetPath = '/home/user/.virtualenvs/somevenv/bin/python'
-      expectedPath = '/home/user/.virtualenvs/somevenv/bin/python'
-      result = LinterMyPystyle.resolvePath(targetPath)
+    it "should return the first project's name when given the $PROJECT_NAME variable and a first project file", ->
+      firstProjectName = @firstProjectName
+      loadedFile = @firstFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
+      expect(result).toBe(firstProjectName)
+
+    it "should return the second project's name when given the $PROJECT_NAME variable and a second project file", ->
+      secondProjectName = @secondProjectName
+      loadedFile = @secondFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_NAME", loadedFile)
+      expect(result).toBe(secondProjectName)
+
+    it "should fulfill the first project's name when given a full path and a first project file", ->
+      loadedFile = @firstFilePath
+      targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
+      expectedPath = '/home/user/.virtualenvs/first_python_project/bin/python'
+      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
       expect(result).toBe(expectedPath)
+
+    it "should fulfill the second project's name when given a full path and a second project file", ->
+      loadedFile = @secondFilePath
+      targetPath = '/home/user/.virtualenvs/$PROJECT_NAME/bin/python'
+      expectedPath = '/home/user/.virtualenvs/second_python_project/bin/python'
+      result = LinterMyPystyle.resolvePath(targetPath, loadedFile)
+      expect(result).toBe(expectedPath)
+
+    it "should return the first project's path when given the $PROJECT_PATH variable and a first project file", ->
+      firstProjectPath = @firstProjectPath
+      loadedFile = @firstFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_PATH", loadedFile)
+      expect(result).toBe(firstProjectPath)
+
+    it "should return the second project's path when given the $PROJECT_PATH variable and a second project file", ->
+      secondProjectPath = @secondProjectPath
+      loadedFile = @secondFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_PATH", loadedFile)
+      expect(result).toBe(secondProjectPath)
+
+    it "should replace as much $PROJECT_PATH and $PROJECT_NAME as requested", ->
+      secondProjectPath = @secondProjectPath
+      secondProjectName = @secondProjectName
+      loadedFile = @secondFilePath
+      result = LinterMyPystyle.resolvePath("$PROJECT_PATH$PROJECT_NAME$PROJECT_NAME$PROJECT_PATH$PROJECT_NAME", loadedFile)
+      expect(result).toBe(secondProjectPath + secondProjectName + secondProjectName + secondProjectPath + secondProjectName)

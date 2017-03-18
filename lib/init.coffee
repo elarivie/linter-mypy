@@ -18,8 +18,8 @@ module.exports =
       type: 'string'
       default: 'python3'
       description: '''Path to the executable of python.
-      An optional `$PROJECT_NAME` variable can be used to resolve the path
-      dynamically depending of the current project's name. For example:
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project. For example:
       `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
       '''
       order: 1
@@ -469,13 +469,15 @@ module.exports =
           return []
 
   resolvePath: (targetPath, filepath) ->
+    resolvedPath = targetPath
+
     if not filepath
-      return targetPath
+      return resolvedPath
 
     [projectPath, ...] = atom.project.relativizePath(filepath)
     if not projectPath
-      return targetPath
-
+      return resolvedPath
     projectName = path.parse(projectPath).name
-    resolvedPath = targetPath.replace(/\$PROJECT_NAME/i, projectName)
+    resolvedPath = resolvedPath.replace(/\$PROJECT_NAME/g, projectName)
+    resolvedPath = resolvedPath.replace(/\$PROJECT_PATH/g, projectPath)
     return resolvedPath
