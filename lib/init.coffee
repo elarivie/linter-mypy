@@ -4,6 +4,7 @@
 
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
+fs = require 'fs'
 os = require 'os'
 path = require 'path'
 NamedRegexp = require('named-js-regexp')
@@ -28,77 +29,85 @@ module.exports =
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
       order: 2
+    mypyIniFile:
+      type: 'string'
+      default: ''
+      description: '''Path to a <a href="http://mypy.readthedocs.io/en/latest/config_file.html">mypy.ini</a> file.
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project. For example:
+      `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
+      '''
+      order: 3
     fastParser:
       type: 'boolean'
       default: true
       description: 'enable experimental fast parser, this options requires the presence of the typed_ast package.'
-      order: 3
+      order: 4
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'disallow calling functions without type annotations from functions with type annotations'
-      order: 4
+      order: 5
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 5
+      order: 6
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'type check the interior of functions without type annotations'
-      order: 6
+      order: 7
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 7
+      order: 8
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 8
+      order: 9
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'warn about casting an expression to its inferred type'
-      order: 9
+      order: 10
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'warn about functions that end without returning'
-      order: 10
+      order: 11
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 11
+      order: 12
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 12
+      order: 13
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 13
+      order: 14
     strictBoolean:
       type: 'boolean'
       default: true
       description: "enable strict boolean checks in conditions"
-      order: 14
+      order: 15
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 15
+      order: 16
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
 
     #Listen and reload any settings changes to prevent having to restart Atom.
-
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
       (executablePath) =>
@@ -106,6 +115,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.ignoreFiles',
       (ignoreFiles) =>
         @ignoreFiles = ignoreFiles
+    @subscriptions.add atom.config.observe 'linter-mypy.mypyIniFile',
+      (mypyIniFile) =>
+        @mypyIniFile = mypyIniFile
     @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedCalls',
       (disallowUntypedCalls) =>
         @disallowUntypedCalls = disallowUntypedCalls
@@ -172,69 +184,76 @@ module.exports =
     params.push("--follow-imports")
     params.push("silent")
 
-    # Add the parameters base on user selected settings.
-    if (@disallowUntypedCalls)
-      params.push("--disallow-untyped-calls")
-    else
-      params.push("--allow-untyped-calls")
+    iniPath = @resolvePath(@mypyIniFile, filePath)
 
-    if (@disallowUntypedDefs)
-      params.push("--disallow-untyped-defs")
+    if (fs.existsSync iniPath)
+      # Use the provided mypy configuration file.
+      params.push("--config-file")
+      params.push(iniPath)
     else
-      params.push("--allow-untyped-defs")
+      # Add the parameters base on user selected settings.
+      if (@disallowUntypedCalls)
+        params.push("--disallow-untyped-calls")
+      else
+        params.push("--allow-untyped-calls")
 
-    if (@checkUntypedDefs)
-      params.push("--check-untyped-defs")
-    else
-      params.push("--no-check-untyped-defs")
+      if (@disallowUntypedDefs)
+        params.push("--disallow-untyped-defs")
+      else
+        params.push("--allow-untyped-defs")
 
-    if (@disallowSubclassingAny)
-      params.push("--disallow-subclassing-any")
-    else
-      params.push("--allow-subclassing-any")
+      if (@checkUntypedDefs)
+        params.push("--check-untyped-defs")
+      else
+        params.push("--no-check-untyped-defs")
 
-    if (@warnIncompleteStub)
-      params.push("--warn-incomplete-stub")
-    else
-      params.push("--no-warn-incomplete-stub")
+      if (@disallowSubclassingAny)
+        params.push("--disallow-subclassing-any")
+      else
+        params.push("--allow-subclassing-any")
 
-    if (@warnRedundantCasts)
-      params.push("--warn-redundant-casts")
-    else
-      params.push("--no-warn-redundant-casts")
+      if (@warnIncompleteStub)
+        params.push("--warn-incomplete-stub")
+      else
+        params.push("--no-warn-incomplete-stub")
 
-    if (@warnNoReturn)
-      params.push("--warn-no-return")
-    else
-      params.push("--no-warn-no-return")
+      if (@warnRedundantCasts)
+        params.push("--warn-redundant-casts")
+      else
+        params.push("--no-warn-redundant-casts")
 
-    if (@warnReturnAny)
-      params.push("--warn-return-any")
-    else
-      params.push("--no-warn-return-any")
+      if (@warnNoReturn)
+        params.push("--warn-no-return")
+      else
+        params.push("--no-warn-no-return")
 
-    if (@warnUnusedIgnores)
-      params.push("--warn-unused-ignores")
-    else
-      params.push("--no-warn-unused-ignores")
+      if (@warnReturnAny)
+        params.push("--warn-return-any")
+      else
+        params.push("--no-warn-return-any")
 
-    if (!@warnMissingImports)#Note: the boolean flag value is inversed since the parameter meaning is inversed.
-      params.push("--ignore-missing-imports")
+      if (@warnUnusedIgnores)
+        params.push("--warn-unused-ignores")
+      else
+        params.push("--no-warn-unused-ignores")
 
-    if (@fastParser)
-      params.push("--fast-parser")
-    else
-      params.push("--no-fast-parser")
+      if (!@warnMissingImports)#Note: the boolean flag value is inversed since the parameter meaning is inversed.
+        params.push("--ignore-missing-imports")
 
-    if (@strictBoolean)
-      params.push("--strict-boolean")
-    else
-      params.push("--no-strict-boolean")
+      if (@fastParser)
+        params.push("--fast-parser")
+      else
+        params.push("--no-fast-parser")
 
-    if (@strictOptional)
-      params.push("--strict-optional")
-    else
-      params.push("--no-strict-optional")
+      if (@strictBoolean)
+        params.push("--strict-boolean")
+      else
+        params.push("--no-strict-boolean")
+
+      if (@strictOptional)
+        params.push("--strict-optional")
+      else
+        params.push("--no-strict-optional")
 
     # Provide the filename to lint.
     params.push(baseNamePath)
@@ -294,6 +313,32 @@ module.exports =
         ###
         notification = atom.notifications.addWarning(
           "The executable of <strong>" + executablePath + "</strong> was not found.<br />Either install <a href='https://www.python.org/downloads/'>python</a> or adjust the executable path setting of linter-mypy.",
+          {
+            buttons: [
+              {
+                text: "Adjust the linter-mypy setting",
+                onDidClick: ->
+                  atom.workspace.open("atom://config/packages/linter-mypy")
+                  notification.dismiss()
+              }
+            ],
+            dismissable: true,
+          }
+        )
+      else if err.message.match /^.+\:\sNo\s\[mypy\]\ssection\sin\sconfig\sfile$/gi
+        ###
+        The Problem: The error is about a mypy.ini file not in the good format.
+
+        The Context: At this point everything is fine a valid mypy launch was done using a found mypy.ini file.
+
+        The Conclusion: the user must only make sure to either not use mypy configuration file or have it in the good format.
+
+        The Solution: Let's:
+          1- Inform the user about the situation with a pop-up.
+          2- Offer him a link to change the setting.
+        ###
+        notification = atom.notifications.addWarning(
+          "The mypy configuration file <strong>" + iniPath + "</strong> does not contains a [mypy] section as it should.<br />Either correct the configuration file or adjust the mypy ini configuration path setting of linter-mypy.",
           {
             buttons: [
               {
