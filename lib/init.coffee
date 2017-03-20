@@ -271,8 +271,8 @@ module.exports =
     ## For debug: ## alert(executablePath + " " + params.join(" "))
     return helpers.exec(executablePath, params, options).then ((file) ->
       # The "file" variable contains the raw mypy output.
-      # The goal of this method is to return a string where each line is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
-      result = ""
+      # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
+      result = []
 
       # Each line of the mypy output may be a potential warning so we create an array of string containing each line of the output.
       # We split the text using the new line as a separator and handle any OS kind of new lines.
@@ -283,11 +283,11 @@ module.exports =
       for key, val of lines
         if 0 == val.indexOf(filePath + ":")
           # Warning was reported using an absolute path to the file.
-          result = result + val + os.EOL
+          result.push(val)
         else if 0 == val.indexOf(baseNamePath + ":")
           # Warning was reported using a relative path to the file.
           # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
-          result = result + path.join(rootPath, val) + os.EOL
+          result.push(path.join(rootPath, val))
         else
           #Ignore, we only want warnings within the file being linted.
           ## This filters out warnings about *.pyi files
@@ -444,22 +444,28 @@ module.exports =
     # - line = The line number where the warning is.
     # - col = The column where the warning is within the line.
     # - message = The warning text.
-    messages = helpers.parse(output[1],
-                             "^(?<file>([A-Z]:)?[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)",
-                             {flags: 'gm'})
+    regexLine = new NamedRegexp("^(?<file>([A-Z]:)?[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)")
+    regexHeuristic01 = new NamedRegexp("^Argument . to .(?<name>.+). has incompatible type ..+.; expected ..+.$")
 
     # Prepare an array of all the warnings to report.
     result = []
-    messages.forEach (msg) ->
-      @fastParser = output[0]
+    for msg, idx in output[1]
+      v_CurrMessageRaw = regexLine.execGroups(msg)
+      if v_CurrMessageRaw
+      else
+        continue
+
       # At this point every messages will be reported, we won't filter them
       # But we will improve them a little to make them more helpful.
 
       #HACK: Work around since mypy only provide the start column of the error, we have to use heuristics for the end column of the warning, without this workaround the warning would not be underline.
-      warnOrigStartLine = msg.range[0][0]
-      warnOrigStartCol = msg.range[0][1]
-      warnOrigEndLine = msg.range[1][0]
-      warnOrigEndCol = msg.range[1][1]
+      warnOrigStartLine = parseInt(v_CurrMessageRaw.line, 10) - 1
+      warnOrigStartCol = parseInt(v_CurrMessageRaw.col, 10) - 1
+      if warnOrigStartCol < 0
+        warnOrigStartCol = 0
+
+      warnOrigEndLine = warnOrigStartLine
+      warnOrigEndCol = warnOrigStartCol
 
       warnStartLine = warnOrigStartLine
       warnStartCol = warnOrigStartCol
@@ -475,26 +481,41 @@ module.exports =
           warnEndCol += 1
 
       #Rational: Since we know the method name we can underline its length
-      compiledRegexp = new NamedRegexp("^Argument . to .(?<name>.+). has incompatible type ..+.; expected ..+.$", "g")
-      rawMatch = compiledRegexp.exec(msg.text)
+      rawMatch = regexHeuristic01.execGroups(v_CurrMessageRaw.message)
       if rawMatch
-        if (@fastParser)
-          warnEndCol += rawMatch[1].length
+        if (output[0])
+          warnEndCol += rawMatch.name.length
         else
-          warnStartCol -= rawMatch[1].length
+          warnStartCol -= rawMatch.name.length
         if 0 < warnOrigStartCol
           warnEndCol -= 1
 
       #TODO: Put more heuristic
 
-      msg.range = [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
-
-      # The messages will be displayed as "Warning" to the user.
-      msg.type = "Warning"
-
       #Append the current warning to the final result.
-      result.push(msg)
-
+      if true
+        #Linter version 1.0.0
+        result.push(
+          {
+            type: 'Warning',
+            filePath: v_CurrMessageRaw.file,
+            range: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]],
+            text: v_CurrMessageRaw.message,
+          }
+        )
+      else
+        #Linter version 2.0.0
+        result.push(
+          {
+            severity: 'Warning',
+            location: {
+              file: v_CurrMessageRaw.file,
+              position: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
+            },
+            excerpt: v_CurrMessageRaw.message,
+            description: ""
+          }
+        )
     #The job is over, let's return the result so it can be displayed to the user.
     return result
 
