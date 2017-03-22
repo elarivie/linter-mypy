@@ -299,7 +299,7 @@ module.exports =
     ), (err) ->
       # Well, Well, Well... something went wrong.
       # Instead of crashing or giving cryptic error message, let's try to be user friendly.
-      if err.message.match /^Failed\sto\sspawn\scommand\s.+\.\sMake\ssure\s.+\sis\sinstalled\sand\son\syour\sPATH$/gi
+      if err.message.match /^Failed\sto\sspawn\scommand\s.+\.\sMake\ssure\s.+\sis\sinstalled\sand\son\syour\sPATH$/gi || err.message.match /^The\ssystem\scannot\sfind\sthe\spath\sspecified\.$/gi
         ###
         The Problem: The error is about a process spawn which failed
 
