@@ -493,21 +493,21 @@ module.exports =
       #TODO: Put more heuristic
 
       #Append the current warning to the final result.
-      if true
+      if false
         #Linter version 1.0.0
         result.push(
           {
             type: 'Warning',
             filePath: v_CurrMessageRaw.file,
             range: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]],
-            text: v_CurrMessageRaw.message,
+            text: v_CurrMessageRaw.message
           }
         )
       else
         #Linter version 2.0.0
         result.push(
           {
-            severity: 'Warning',
+            severity: 'warning',
             location: {
               file: v_CurrMessageRaw.file,
               position: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
@@ -524,7 +524,7 @@ module.exports =
       name: 'linter-mypy'
       grammarScopes: ['source.python']
       scope: 'file'
-      lintOnFly: false
+      lintsOnChange: false
       lint: (textEditor) =>
         if (@ignoreFiles == '' || !textEditor.getPath().match(@ignoreFiles))
           # The file is not to be ignored, let's lint it and returns the mypy warnings...
