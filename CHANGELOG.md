@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.11 2017-03-28
+
+### Changed
+- Updated the dependency [Linter](https://libraries.io/atom/linter) to v2.X.X
+
 ## [Released] - 2.0.10 2017-03-18
 
 ### Added

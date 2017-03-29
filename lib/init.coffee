@@ -493,29 +493,17 @@ module.exports =
       #TODO: Put more heuristic
 
       #Append the current warning to the final result.
-      if false
-        #Linter version 1.0.0
-        result.push(
-          {
-            type: 'Warning',
-            filePath: v_CurrMessageRaw.file,
-            range: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]],
-            text: v_CurrMessageRaw.message
-          }
-        )
-      else
-        #Linter version 2.0.0
-        result.push(
-          {
-            severity: 'warning',
-            location: {
-              file: v_CurrMessageRaw.file,
-              position: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
-            },
-            excerpt: v_CurrMessageRaw.message,
-            description: ""
-          }
-        )
+      result.push(
+        {
+          severity: 'warning',
+          location: {
+            file: v_CurrMessageRaw.file,
+            position: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
+          },
+          excerpt: v_CurrMessageRaw.message,
+          description: ""
+        }
+      )
     #The job is over, let's return the result so it can be displayed to the user.
     return result
 
