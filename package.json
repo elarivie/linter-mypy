@@ -26,7 +26,7 @@
     "atom-package-deps": "^4.0.1"
   },
   "devDependencies": {
-    "npm-check-updates": "^2.8.8",
+    "npm-check-updates": "^2.10.4",
     "coffeelint": "^1.16.0"
   },
   "package-deps": [
