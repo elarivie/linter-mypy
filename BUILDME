@@ -49,7 +49,7 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	for c_CurrTarget in [p_Tmp]:
 		for c_CurrFile in ["package.json"]:
 			shutil.copyfile(os.path.join(p_Src, c_CurrFile), os.path.join(c_CurrTarget, c_CurrFile))
-		for c_CurrFolder in ["lib", "spec", "styles"]:
+		for c_CurrFolder in ["lib", "spec"]:
 			shutil.copytree(os.path.join(p_Src, c_CurrFolder), os.path.join(c_CurrTarget, c_CurrFolder))
 
 	#Prepare required environment variable giving priority to provided values
