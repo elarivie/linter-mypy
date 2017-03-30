@@ -461,8 +461,21 @@ module.exports =
       #HACK: Work around since mypy only provide the start column of the error, we have to use heuristics for the end column of the warning, without this workaround the warning would not be underline.
       warnOrigStartLine = parseInt(v_CurrMessageRaw.line, 10) - 1
       warnOrigStartCol = parseInt(v_CurrMessageRaw.col, 10) - 1
-      if warnOrigStartCol < 0
+
+      if warnOrigStartLine
+        if warnOrigStartLine < 0
+          warnOrigStartLine = 0
+      else
+        # Can this occur?
+        warnOrigStartLine = 0
+
+      if warnOrigStartCol
+        if warnOrigStartCol < 0
+          warnOrigStartCol = 0
+      else
+        # May occur if the start column is not provided by Mypy, for example: "X.py:5: error: The return type of "__init__" must be None"
         warnOrigStartCol = 0
+
 
       warnOrigEndLine = warnOrigStartLine
       warnOrigEndCol = warnOrigStartCol

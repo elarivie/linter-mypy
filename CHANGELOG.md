@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.0.12 2017-03-29
+
+### Fixed
+- Correctly handle warnings for which Mypy does not provide a start column.
+
 ## [Released] - 2.0.11 2017-03-28
 
 ### Changed
