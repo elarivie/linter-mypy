@@ -96,7 +96,7 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 			}
 		)
 		print(c_ProcRun.stdout.decode("utf-8"))
-		c_ProcRun.check_returncode()
+		#c_ProcRun.check_returncode()
 	return 0
 
 ###Settings

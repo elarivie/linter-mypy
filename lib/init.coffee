@@ -358,7 +358,7 @@ module.exports =
         The Context: At this point a call to mypy was effectively done, there are three options
           1- The mypy command line interface has change and the project should be updated accordingly
             - But We have a spec to detect mypy command line interface change, so this option is probably not what is the real cause of the problem, anyway the user would not have much possibility to recover anyway.
-          2- The executablePath provided in the settings is not pointing to python but directly to the mypy executable as it was required prior to mypy-linter v2.0.0
+          2- The executablePath provided in the settings is not pointing to python but directly to the mypy executable as it was required prior to linter-mypy v2.0.0
           3- The version of mypy is older than the one linter-mypy expect.
 
         The Conclusion: It may be the executablePath which is pointing to mypy instead of Python but it is most likely an outdated mypy installation.

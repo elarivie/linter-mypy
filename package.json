@@ -3,7 +3,7 @@
   "main": "./lib/init",
   "version": "2.0.12",
   "license": "MIT",
-  "description": "Lint Python optional Type Hints (PEP-484).",
+  "description": "Lint Python optional Type Hints (PEP-484) using mypy.",
   "keywords": [
     "python",
     "mypy",
@@ -22,7 +22,7 @@
     }
   },
   "dependencies": {
-    "atom-linter": "^9.0.1",
+    "atom-linter": "^10.0.0",
     "atom-package-deps": "^4.0.1"
   },
   "devDependencies": {

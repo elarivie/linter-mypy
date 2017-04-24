@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Updated the screen shot using Linter v2.X.X.
+- The build success status is no more depend on the optional external tool "ncu".
+
 ## [Released] - 2.0.12 2017-03-29
 
 ### Fixed
@@ -14,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Released] - 2.0.11 2017-03-28
 
 ### Changed
-- Updated the dependency [Linter](https://libraries.io/atom/linter) to v2.X.X
+- Updated the dependency [Linter](https://libraries.io/atom/linter) to v2.X.X.
 
 ## [Released] - 2.0.10 2017-03-18
 
@@ -122,7 +126,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Released] - 1.0.6 2016-12-12
 
 ### Fixed
-- Fix a bug which was creating an issue to a file path starting by undefined
+- Fix a bug which was creating an issue to a file path starting by undefined.
 
 ## [Released] - 1.0.5 2016-12-08
 

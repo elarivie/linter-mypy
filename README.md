@@ -4,7 +4,7 @@
 [![linter-mypy_package](https://img.shields.io/apm/dm/linter-mypy.svg?style=flat-square)][linter-mypy_package]
 [![linter-mypy_BugTracker](https://img.shields.io/github/issues/elarivie/linter-mypy.svg)][linter-mypy_BugTracker]
 
-An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Python][python] optional static type as defined in [PEP 484][spec].
+An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Python][python] optional static type as defined in [PEP 484][spec] using [mypy][mypy].
 
 ![Screen shot demo](https://github.com/elarivie/linter-mypy/raw/master/doc/ScreenShotDemo.png)
 
