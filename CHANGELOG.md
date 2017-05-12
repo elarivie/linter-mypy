@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.1.0 2017-05-12
+
 ### Changed
 - Updated the screen shot using Linter v2.X.X.
 - The build success status is no more depend on the optional external tool "ncu".
