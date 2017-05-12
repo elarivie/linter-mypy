@@ -16,19 +16,13 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
     python3 -m pip install mypy
     ```
 
-2. *(Optional)* Install python package typed-ast (required for the setting "Fast Parser"), run:
-
-	```ShellSession
-	python3 -m pip install typed-ast
-	```
-
-3.  [Install Linter][install linter].
+2.  [Install Linter][install linter].
 
 	```ShellSession
 	apm install linter
 	```
 
-4.  Install package, run:
+3.  Install package, run:
 
     ```ShellSession
     apm install linter-mypy
@@ -41,7 +35,6 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Path to the executable of `python`  | Default: python3 |
 | Ignore File name Regex              | Default:         |
 | Mypy ini File                       | Default:         |
-| Fast Parser                         | Default: True    |
 | Disallow Untyped Calls              | Default: True    |
 | Disallow Untyped Defs               | Default: True    |
 | Check Untyped Defs                  | Default: True    |
@@ -52,7 +45,6 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Warn Return Any                     | Default: True    |
 | Warn Unused Ignores                 | Default: True    |
 | Warn Missing Imports                | Default: True    |
-| Strict Boolean                      | Default: True    |
 | Strict Optional                     | Default: True    |
 
 [linter]: https://github.com/atom-community/linter

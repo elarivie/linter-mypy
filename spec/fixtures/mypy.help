@@ -5,14 +5,14 @@ usage: mypy [-h] [-v] [-V] [--python-version x.y] [--platform PLATFORM] [-2]
             [--check-untyped-defs] [--disallow-subclassing-any]
             [--warn-incomplete-stub] [--warn-redundant-casts]
             [--no-warn-no-return] [--warn-return-any] [--warn-unused-ignores]
-            [--show-error-context] [--no-fast-parser] [-i] [--cache-dir DIR]
+            [--show-error-context] [-i] [--quick-and-dirty] [--cache-dir DIR]
             [--strict-optional]
             [--strict-optional-whitelist [GLOB [GLOB ...]]]
             [--junit-xml JUNIT_XML] [--pdb] [--show-traceback] [--stats]
             [--inferstats] [--custom-typing MODULE]
             [--custom-typeshed-dir DIR] [--scripts-are-modules]
             [--config-file CONFIG_FILE] [--show-column-numbers]
-            [--find-occurrences CLASS.MEMBER] [--strict-boolean] [--strict]
+            [--find-occurrences CLASS.MEMBER] [--strict] [--strict-boolean]
             [--cobertura-xml-report DIR] [--html-report DIR]
             [--linecount-report DIR] [--linecoverage-report DIR]
             [--memory-xml-report DIR] [--old-html-report DIR]
@@ -57,9 +57,9 @@ optional arguments:
                             (inverse: --no-warn-unused-ignores)
   --show-error-context      Precede errors with "note:" messages explaining
                             context (inverse: --hide-error-context)
-  --no-fast-parser          disable the fast parser (not recommended)
-                            (inverse: --fast-parser)
-  -i, --incremental         enable experimental module cache
+  -i, --incremental         enable module cache
+  --quick-and-dirty         use cache even if dependencies out of date
+                            (implies --incremental)
   --cache-dir DIR           store module cache info in the given folder in
                             incremental mode (defaults to '.mypy_cache')
   --strict-optional         enable experimental strict Optional checks
@@ -87,14 +87,12 @@ optional arguments:
   --find-occurrences CLASS.MEMBER
                             print out all usages of a class member
                             (experimental)
-  --strict-boolean          enable strict boolean checks in conditions
-                            (inverse: --no-strict-boolean)
   --strict                  Strict mode. Enables the following flags:
                             --disallow-untyped-calls, --disallow-untyped-defs,
                             --check-untyped-defs, --disallow-subclassing-any,
                             --warn-redundant-casts, --warn-return-any, --warn-
-                            unused-ignores, --strict-optional, --strict-
-                            boolean
+                            unused-ignores, --strict-optional
+  --strict-boolean          ==SUPPRESS== (inverse: --no-strict-boolean)
 
 report generation:
   Generate a report in the specified format.

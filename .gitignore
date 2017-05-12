@@ -3,6 +3,7 @@
 .github_changelog_generator
 __pycache__/
 *.py[cod]
+.mypy_cache/
 node_modules/
 npm-debug.log
 

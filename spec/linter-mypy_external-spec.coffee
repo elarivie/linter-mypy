@@ -32,7 +32,6 @@ describe "The MyPy provider for Linter", ->
     beforeEach ->
       waitsForPromise ->
         atom.workspace.open(goodExternalPath).then (e) ->
-          atom.config.set('linter-mypy.fastParser', false)
           editor = e
 
     it 'finds nothing to complain about', ->

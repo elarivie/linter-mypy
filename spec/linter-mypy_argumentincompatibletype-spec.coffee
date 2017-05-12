@@ -35,7 +35,6 @@ describe "The MyPy provider for Linter", ->
     beforeEach ->
       waitsForPromise ->
         atom.workspace.open(badPath0).then (e) ->
-          atom.config.set('linter-mypy.fastParser', true)
           editor = e
 
     describe "validates reported warnings", ->

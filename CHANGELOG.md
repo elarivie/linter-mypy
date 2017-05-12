@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated the screen shot using Linter v2.X.X.
 - The build success status is no more depend on the optional external tool "ncu".
+- Removed the deprecated setting "--strict-boolean"
+- Removed the deprecated setting "--fast-parser", "--no-fast-parser"
+- Adjusted to the command line interface change of mypy 0.511
+- http://mypy-lang.blogspot.ca/2017/05/mypy-0510-released.html
+- Updated the README.
 
 ## [Released] - 2.0.12 2017-03-29
 

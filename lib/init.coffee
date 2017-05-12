@@ -38,71 +38,61 @@ module.exports =
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
       order: 3
-    fastParser:
-      type: 'boolean'
-      default: true
-      description: 'enable experimental fast parser, this options requires the presence of the typed_ast package.'
-      order: 4
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'disallow calling functions without type annotations from functions with type annotations'
-      order: 5
+      order: 4
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 6
+      order: 5
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'type check the interior of functions without type annotations'
-      order: 7
+      order: 6
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 8
+      order: 7
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 9
+      order: 8
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'warn about casting an expression to its inferred type'
-      order: 10
+      order: 9
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'warn about functions that end without returning'
-      order: 11
+      order: 10
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 12
+      order: 11
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 13
+      order: 12
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 14
-    strictBoolean:
-      type: 'boolean'
-      default: true
-      description: "enable strict boolean checks in conditions"
-      order: 15
+      order: 13
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 16
+      order: 14
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -145,15 +135,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.warnUnusedIgnores',
       (warnUnusedIgnores) =>
         @warnUnusedIgnores = warnUnusedIgnores
-    @subscriptions.add atom.config.observe 'linter-mypy.fastParser',
-      (fastParser) =>
-        @fastParser = fastParser
     @subscriptions.add atom.config.observe 'linter-mypy.warnMissingImports',
       (warnMissingImports) =>
         @warnMissingImports = warnMissingImports
-    @subscriptions.add atom.config.observe 'linter-mypy.strictBoolean',
-      (strictBoolean) =>
-        @strictBoolean = strictBoolean
     @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
       (strictOptional) =>
         @strictOptional = strictOptional
@@ -176,7 +160,6 @@ module.exports =
     params.push("--hide-error-context")
 
     ## We want column number so that we can know where to underline.
-    ## Note: It was found that the reported column numbers are affected by the setting --fast-parser.
     params.push("--show-column-numbers")
 
     ## We only want to report warnings about the requested file and not about its dependencies
@@ -240,16 +223,6 @@ module.exports =
       if (!@warnMissingImports)#Note: the boolean flag value is inversed since the parameter meaning is inversed.
         params.push("--ignore-missing-imports")
 
-      if (@fastParser)
-        params.push("--fast-parser")
-      else
-        params.push("--no-fast-parser")
-
-      if (@strictBoolean)
-        params.push("--strict-boolean")
-      else
-        params.push("--no-strict-boolean")
-
       if (@strictOptional)
         params.push("--strict-optional")
       else
@@ -264,8 +237,6 @@ module.exports =
     # This should also make the warnings to be reported using relative path to the file but for an unknown reason this is not always the case.
     options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
 
-    # Load the fast parser flag in a local variable so that the next scope can access it.
-    fastParser = @fastParser
     executablePath = @resolvePath @executablePath, filePath
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
@@ -293,8 +264,8 @@ module.exports =
           ## This filters out warnings about *.pyi files
           ## This would also filter out warnings of imported file but they were already filtered out since the mypy process was called with the parameter "--follow-imports silent"
 
-      # Return fast parser flag and the result.
-      return [fastParser, result]
+      # Return the result.
+      return [result]
 
     ), (err) ->
       # Well, Well, Well... something went wrong.
@@ -396,32 +367,6 @@ module.exports =
             * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
         atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
-      else if (0 <= err.message.indexOf("must install the typed_ast package before you can run mypy with"))
-        ###
-        The Problem: The error is about the absence of the typed_ast module in the python installation.
-
-        The Context: typed_ast is an optional module which need to be manually installed and is only needed for the settings fast-parser.
-
-        The Conclusion: It is most likely the user which haven't installed the module, but it is also possible that the user has more than one python installation on his system and didn't provide the good one in the settings.
-
-        The Solution: Since it is an optional requirement let's not bother too much the user.
-          1- Inform the user about the situation with a pop-up
-          2- Offer him to disable the setting which needs this dependencies.
-        ###
-        notification = atom.notifications.addWarning(
-          err.message,
-          {
-            buttons: [
-              {
-                text: "Change the linter-mypy setting to not use 'Fast Parser'",
-                onDidClick: ->
-                  atom.config.set('linter-mypy.fastParser', false)
-                  notification.dismiss()
-              }
-            ],
-            dismissable: true,
-          }
-        )
       else
         ###
         The Problem: Something unknown went wrong.
@@ -436,7 +381,7 @@ module.exports =
         atom.notifications.addError(err.message)
 
       #Something went wrong there is therefore no mypy warnings to report.
-      return [fastParser, ""]
+      return [""]
 
   parseMessages: (output) ->
     # Parse the pre-processed mypy warnings output and isolate:
@@ -449,7 +394,7 @@ module.exports =
 
     # Prepare an array of all the warnings to report.
     result = []
-    for msg, idx in output[1]
+    for msg, idx in output[0]
       v_CurrMessageRaw = regexLine.execGroups(msg)
       if v_CurrMessageRaw
       else
@@ -496,10 +441,7 @@ module.exports =
       #Rational: Since we know the method name we can underline its length
       rawMatch = regexHeuristic01.execGroups(v_CurrMessageRaw.message)
       if rawMatch
-        if (output[0])
-          warnEndCol += rawMatch.name.length
-        else
-          warnStartCol -= rawMatch.name.length
+        warnEndCol += rawMatch.name.length
         if 0 < warnOrigStartCol
           warnEndCol -= 1
 
