@@ -367,6 +367,18 @@ module.exports =
             * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
         atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
+      else if (err.message.indexOf("AssertionError: Neither id, path nor source given"))
+        ###
+        The Problem: When Mypy encouters a relative import from a toplevel, it crashes with an assert Stacktrace.
+
+        The Context: Mypy has a recorded bug #2974.
+
+        The Conclusion: We can't do much, other than not crashing ourself with annoying pop-ups.
+
+        The Solution: Let's:
+          1- Inform the user about the situation with a lint error
+        ###
+        return [[filePath + ":0:0: error: MypyBug2974"]]
       else
         ###
         The Problem: Something unknown went wrong.
@@ -445,18 +457,31 @@ module.exports =
         if 0 < warnOrigStartCol
           warnEndCol -= 1
 
+      theSeverity = 'warning'
+      theDescription = ""
+      theMessage = v_CurrMessageRaw.message
+      theUrl = ""
+
+      #Rational: Mypy Bug #2974
+      if "MypyBug2974" == theMessage
+        theSeverity = 'error'
+        theMessage = "Top-level module cannot use a relative import"
+        theDescription = "Mypy does not support relative import in top-level module, mypy process aborted for this file"
+        theUrl = "https://github.com/python/mypy/issues/2974"
+
       #TODO: Put more heuristic
 
       #Append the current warning to the final result.
       result.push(
         {
-          severity: 'warning',
+          severity: theSeverity,
           location: {
             file: v_CurrMessageRaw.file,
             position: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
           },
-          excerpt: v_CurrMessageRaw.message,
-          description: ""
+          excerpt: theMessage,
+          description: theDescription,
+          url: theUrl
         }
       )
     #The job is over, let's return the result so it can be displayed to the user.
