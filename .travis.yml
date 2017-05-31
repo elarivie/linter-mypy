@@ -2,33 +2,10 @@
 
 #http://lint.travis-ci.org/
 
-language:
-    - python
-
-python:
-    - "3.5"
-
-env:
-  - ATOM_CHANNEL=stable
-  - ATOM_CHANNEL=beta
-
 os:
     - linux
 
-install:
-  - python3 -m pip install mypy
-  - python3 -m pip install typed-ast
-  - python3 -m pip install requests
-
-script: './BUILDME'
-
-notifications:
-  email:
-    on_success: never
-    on_failure: change
-
-git:
-  depth: 10
+dist: trusty
 
 sudo: false
 
@@ -40,6 +17,32 @@ addons:
         - libgnome-keyring-dev
         - fakeroot
 
+language:
+    - python
+
+python:
+    - "3.5"
+
+install:
+  - python3 -m pip install mypy
+  - python3 -m pip install typed-ast
+  - python3 -m pip install requests
+
 branches:
   only:
     - master
+
+git:
+  depth: 10
+
+env:
+  - ATOM_CHANNEL=stable
+  - ATOM_CHANNEL=beta
+
+script: './BUILDME'
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
