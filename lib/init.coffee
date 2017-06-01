@@ -229,13 +229,16 @@ module.exports =
         params.push("--no-strict-optional")
 
     # Provide the filename to lint.
-    params.push(baseNamePath)
+    params.push(filePath)
 
-    # Run the command from the folder of the file being linted folder.
+    # Extract the file system root.
+    c_RootRoot = path.parse(filePath).root
+
+    # Run the command giving the full file path and running from the file system root folder where the file being linted is located.
     # This has the advantage that:
     # * It allows mypy to find dependencies (import) of the file being linted.
-    # This should also make the warnings to be reported using relative path to the file but for an unknown reason this is not always the case.
-    options = { stream: 'stdout', ignoreExitCode: true, cwd: rootPath }
+    # * It always works fine, it is not affected by the mypy bug #2974 (should therefore never run with cwd set to the directory of the file being linted)
+    options = { stream: 'stdout', ignoreExitCode: true, cwd: c_RootRoot }
 
     executablePath = @resolvePath @executablePath, filePath
     # We call the mypy process and parse its output.
@@ -255,6 +258,10 @@ module.exports =
         if 0 == val.indexOf(filePath + ":")
           # Warning was reported using an absolute path to the file.
           result.push(val)
+        else if 0 == (c_RootRoot + val).indexOf(filePath + ":")
+          # Warning was reported using an absolute path to the file.
+          # But Mypy strangely does not prepend the cwd in the path (even if it is the root slash on linux or c:\ on Windows)
+          result.push(c_RootRoot + val)
         else if 0 == val.indexOf(baseNamePath + ":")
           # Warning was reported using a relative path to the file.
           # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless

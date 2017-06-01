@@ -6,10 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.1.2 2017-06-01
+
+### Changed
+- Simplified installation instruction.
+
+### Fixed
+- Fix issue related to [Mypy Bug2974](https://github.com/python/mypy/issues/2974).
+
 ## [Released] - 2.1.1 2017-05-30
 
 ### Added
-- Clean handling of [Mypy Bug2974](https://github.com/python/mypy/issues/2974).
+- Workaround for [Mypy Bug2974](https://github.com/python/mypy/issues/2974).
 
 ### Fixed
 - Fix build by Upgrading TravisCi settings.
