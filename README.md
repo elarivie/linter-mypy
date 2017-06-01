@@ -16,13 +16,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
     python3 -m pip install mypy
     ```
 
-2.  [Install Linter][install linter].
-
-	```ShellSession
-	apm install linter
-	```
-
-3.  Install package, run:
+2.  Install package, run:
 
     ```ShellSession
     apm install linter-mypy
