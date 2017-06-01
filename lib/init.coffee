@@ -374,7 +374,7 @@ module.exports =
             * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
         atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
-      else if (err.message.indexOf("AssertionError: Neither id, path nor source given"))
+      else if (0 <= err.message.indexOf("AssertionError: Neither id, path nor source given"))
         ###
         The Problem: When Mypy encouters a relative import from a toplevel, it crashes with an assert Stacktrace.
 
