@@ -93,6 +93,11 @@ module.exports =
       default: true
       description: "enable experimental strict Optional checks"
       order: 14
+    followImports:
+      type: 'string'
+      default: 'silent'
+      description: "how to treat imports (normal,silent,skip,error)"
+      order: 15
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -141,6 +146,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
       (strictOptional) =>
         @strictOptional = strictOptional
+    @subscriptions.add atom.config.observe 'linter-mypy.followImports',
+      (followImports) =>
+        @followImports = followImports
 
   deactivate: ->
     @subscriptions.dispose()
@@ -162,10 +170,14 @@ module.exports =
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
 
-    ## We only want to report warnings about the requested file and not about its dependencies
-    ## Note: This silencing of the warnings external to the current file is not perfect, it will still report warnings about *.pyi files which will need to be filtered later.
-    params.push("--follow-imports")
-    params.push("silent")
+    if (@followImports)
+      params.push("--follow-imports")
+      params.push(@followImports)
+    else
+      ## We only want to report warnings about the requested file and not about its dependencies
+      ## Note: This silencing of the warnings external to the current file is not perfect, it will still report warnings about *.pyi files which will need to be filtered later.
+      params.push("--follow-imports")
+      params.push("silent")
 
     iniPath = @resolvePath(@mypyIniFile, filePath)
 
