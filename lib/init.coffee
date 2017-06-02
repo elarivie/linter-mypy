@@ -96,7 +96,13 @@ module.exports =
     followImports:
       type: 'string'
       default: 'silent'
-      description: "how to treat imports (normal,silent,skip,error)"
+      enum: [
+        {value: 'normal', description: 'Normal. Follow imports normally and type check all top level code'}
+        {value: 'silent', description: 'Silent. Follow imports normally, but suppress any error messages.'}
+        {value: 'skip', description: 'Skip. Don’t follow imports.'}
+        {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
+      ]
+      description: "how to treat imports"
       order: 15
 
   activate: ->
@@ -170,14 +176,8 @@ module.exports =
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
 
-    if (@followImports)
-      params.push("--follow-imports")
-      params.push(@followImports)
-    else
-      ## We only want to report warnings about the requested file and not about its dependencies
-      ## Note: This silencing of the warnings external to the current file is not perfect, it will still report warnings about *.pyi files which will need to be filtered later.
-      params.push("--follow-imports")
-      params.push("silent")
+    params.push("--follow-imports")
+    params.push(@followImports)
 
     iniPath = @resolvePath(@mypyIniFile, filePath)
 
