@@ -165,7 +165,7 @@ module.exports =
     rootPath = path.dirname(filePath)
     baseNamePath = path.basename(filePath)
 
-    # Prepare the command line parameteres.
+    # Prepare the command line parameters.
     params = []
 
     ## Use the python module mypy
