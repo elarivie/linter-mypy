@@ -176,9 +176,6 @@ module.exports =
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
 
-    params.push("--follow-imports")
-    params.push(@followImports)
-
     iniPath = @resolvePath(@mypyIniFile, filePath)
 
     if (fs.existsSync iniPath)
@@ -187,6 +184,9 @@ module.exports =
       params.push(iniPath)
     else
       # Add the parameters base on user selected settings.
+      params.push("--follow-imports")
+      params.push(@followImports)
+
       if (@disallowUntypedCalls)
         params.push("--disallow-untyped-calls")
       else
