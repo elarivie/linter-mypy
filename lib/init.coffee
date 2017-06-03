@@ -93,6 +93,17 @@ module.exports =
       default: true
       description: "enable experimental strict Optional checks"
       order: 14
+    followImports:
+      type: 'string'
+      default: 'silent'
+      enum: [
+        {value: 'normal', description: 'Normal. Follow imports normally and type check all top level code'}
+        {value: 'silent', description: 'Silent. Follow imports normally, but suppress any error messages.'}
+        {value: 'skip', description: 'Skip. Don’t follow imports.'}
+        {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
+      ]
+      description: "how to treat imports"
+      order: 15
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -141,6 +152,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
       (strictOptional) =>
         @strictOptional = strictOptional
+    @subscriptions.add atom.config.observe 'linter-mypy.followImports',
+      (followImports) =>
+        @followImports = followImports
 
   deactivate: ->
     @subscriptions.dispose()
@@ -162,10 +176,8 @@ module.exports =
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
 
-    ## We only want to report warnings about the requested file and not about its dependencies
-    ## Note: This silencing of the warnings external to the current file is not perfect, it will still report warnings about *.pyi files which will need to be filtered later.
     params.push("--follow-imports")
-    params.push("silent")
+    params.push(@followImports)
 
     iniPath = @resolvePath(@mypyIniFile, filePath)
 
@@ -374,7 +386,7 @@ module.exports =
             * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
         ###
         atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
-      else if (err.message.indexOf("AssertionError: Neither id, path nor source given"))
+      else if (0 <= err.message.indexOf("AssertionError: Neither id, path nor source given"))
         ###
         The Problem: When Mypy encouters a relative import from a toplevel, it crashes with an assert Stacktrace.
 
