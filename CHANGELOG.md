@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.1.3 2017-06-02
+
+### Added
+- The setting "Follow Imports"
+
 ## [Released] - 2.1.2 2017-06-01
 
 ### Changed
