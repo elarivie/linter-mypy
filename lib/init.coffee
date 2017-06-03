@@ -162,6 +162,7 @@ module.exports =
   lintPath: (filePath)->
     # This is the entry point for Lint requests for a given file.
 
+    #TODO: Validate, I hink "rootPath" and "baseNamePath" are no more needed.
     rootPath = path.dirname(filePath)
     baseNamePath = path.basename(filePath)
 
@@ -267,21 +268,25 @@ module.exports =
       # For each line (aka warnings) we filter out those which are not wanted else we append it to the final list of warnings to reports.
       # Note: The final report must contain the full path to the file so that Atom can find the file.
       for key, val of lines
+        #TODO: Validate if the following if/else block can be replace by "result.push(c_RootRoot + val)"?
         if 0 == val.indexOf(filePath + ":")
+          #TODO: Validate but I hink this path is not used anymore.
           # Warning was reported using an absolute path to the file.
           result.push(val)
         else if 0 == (c_RootRoot + val).indexOf(filePath + ":")
           # Warning was reported using an absolute path to the file.
-          # But Mypy strangely does not prepend the cwd in the path (even if it is the root slash on linux or c:\ on Windows)
+          # But Mypy strangely does not prepend the cwd in the path (even if it is the root slash on linux or c:\ on Windows) so we need to prepend it ourself
           result.push(c_RootRoot + val)
         else if 0 == val.indexOf(baseNamePath + ":")
+          #TODO: Validate but I hink this path is not used anymore.
           # Warning was reported using a relative path to the file.
           # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
           result.push(path.join(rootPath, val))
         else
-          #Ignore, we only want warnings within the file being linted.
-          ## This filters out warnings about *.pyi files
-          ## This would also filter out warnings of imported file but they were already filtered out since the mypy process was called with the parameter "--follow-imports silent"
+          #The warning is about another file (thanks to "--follow-imports").
+          # But Mypy strangely does not prepend the cwd in the path (even if it is the root slash on linux or c:\ on Windows) so we need to prepend it ourself
+          #TODO: Validate, is it safe to assume that "val" points to an existing file?, should we check here if the file exists (but it will add latency)?
+          result.push(c_RootRoot + val)
 
       # Return the result.
       return [result]
