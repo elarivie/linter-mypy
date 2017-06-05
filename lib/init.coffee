@@ -162,10 +162,6 @@ module.exports =
   lintPath: (filePath)->
     # This is the entry point for Lint requests for a given file.
 
-    #TODO: Validate, I hink "rootPath" and "baseNamePath" are no more needed.
-    rootPath = path.dirname(filePath)
-    baseNamePath = path.basename(filePath)
-
     # Prepare the command line parameters.
     params = []
 
@@ -256,37 +252,18 @@ module.exports =
     executablePath = @resolvePath @executablePath, filePath
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
-    return helpers.exec(executablePath, params, options).then ((file) ->
-      # The "file" variable contains the raw mypy output.
+    return helpers.exec(executablePath, params, options).then ((mypyOutput) ->
       # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = []
 
       # Each line of the mypy output may be a potential warning so we create an array of string containing each line of the output.
       # We split the text using the new line as a separator and handle any OS kind of new lines.
-      lines = file.split(/\r\n|\r|\n/g)
+      lines = mypyOutput.split(/\r\n|\r|\n/g)
 
       # For each line (aka warnings) we filter out those which are not wanted else we append it to the final list of warnings to reports.
       # Note: The final report must contain the full path to the file so that Atom can find the file.
       for key, val of lines
-        #TODO: Validate if the following if/else block can be replace by "result.push(c_RootRoot + val)"?
-        if 0 == val.indexOf(filePath + ":")
-          #TODO: Validate but I hink this path is not used anymore.
-          # Warning was reported using an absolute path to the file.
-          result.push(val)
-        else if 0 == (c_RootRoot + val).indexOf(filePath + ":")
-          # Warning was reported using an absolute path to the file.
-          # But Mypy strangely does not prepend the cwd in the path (even if it is the root slash on linux or c:\ on Windows) so we need to prepend it ourself
-          result.push(c_RootRoot + val)
-        else if 0 == val.indexOf(baseNamePath + ":")
-          #TODO: Validate but I hink this path is not used anymore.
-          # Warning was reported using a relative path to the file.
-          # Note: We use "path.join" even though "val" does not contain only the file name, but it creates the correct output nevertheless
-          result.push(path.join(rootPath, val))
-        else
-          #The warning is about another file (thanks to "--follow-imports").
-          # But Mypy strangely does not prepend the cwd in the path (even if it is the root slash on linux or c:\ on Windows) so we need to prepend it ourself
-          #TODO: Validate, is it safe to assume that "val" points to an existing file?, should we check here if the file exists (but it will add latency)?
-          result.push(c_RootRoot + val)
+        result.push(c_RootRoot + val)
 
       # Return the result.
       return [result]
@@ -434,6 +411,12 @@ module.exports =
       v_CurrMessageRaw = regexLine.execGroups(msg)
       if v_CurrMessageRaw
       else
+        #Ignore this output line, it is not in the expected warning format.
+        continue
+
+      [projectPath, ...] = atom.project.relativizePath(v_CurrMessageRaw.file)
+      if not projectPath
+        #Ignore this warning since it is about a file which is not part of any currently opened projects.
         continue
 
       # At this point every messages will be reported, we won't filter them

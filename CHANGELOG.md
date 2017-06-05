@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- No more filter warnings which are in another file than the one being explicitly linted (related to the setting "Follow Imports")
+
 ## [Released] - 2.1.3 2017-06-02
 
 ### Added
