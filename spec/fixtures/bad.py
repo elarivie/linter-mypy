@@ -5,3 +5,5 @@ def add(x: int, y: int) -> int:
 	return x + y
 
 result = add("Hello", "World") + "!"
+
+reveal_type(result)

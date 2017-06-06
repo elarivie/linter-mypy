@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- User friendly support for mypy [reveal_type](http://mypy.readthedocs.io/en/latest/cheat_sheet_py3.html#when-you-re-puzzled-or-when-things-are-complicated).
+
 ### Changed
 - No more filter warnings which are in another file than the one being explicitly linted (related to the setting "Follow Imports")
+- Updated the screen shot to show the behavior of [reveal_type](http://mypy.readthedocs.io/en/latest/cheat_sheet_py3.html#when-you-re-puzzled-or-when-things-are-complicated).
 
 ## [Released] - 2.1.3 2017-06-02
 

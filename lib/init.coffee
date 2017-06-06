@@ -450,14 +450,14 @@ module.exports =
       warnEndCol = warnOrigEndCol
 
       if 0 < warnOrigStartCol
-        #Rational: The underline is off by one character
+        #Rational: The underline is off by one character.
         warnStartCol += 1
         warnEndCol += 1
         if warnOrigStartCol == warnOrigEndCol
           #Rational: Since mypy points to something it must at least be one character long.
           warnEndCol += 1
 
-      #Rational: Since we know the method name we can underline its length
+      #Rational: Since we know the method name we can underline its length.
       rawMatch = regexHeuristic01.execGroups(v_CurrMessageRaw.message)
       if rawMatch
         warnEndCol += rawMatch.name.length
@@ -468,6 +468,11 @@ module.exports =
       theDescription = ""
       theMessage = v_CurrMessageRaw.message
       theUrl = ""
+
+      #Rational: Since we know the method name is "reveal_type", we can underline its length.
+      if ("Revealed type is '" == theMessage.substr(0, 18))
+        warnEndCol += 10
+        theSeverity = 'info'
 
       #Rational: Mypy Bug #2974
       if "MypyBug2974" == theMessage
