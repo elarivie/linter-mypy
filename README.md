@@ -4,7 +4,7 @@
 [![linter-mypy_package](https://img.shields.io/apm/dm/linter-mypy.svg?style=flat-square)][linter-mypy_package]
 [![linter-mypy_BugTracker](https://img.shields.io/github/issues/elarivie/linter-mypy.svg)][linter-mypy_BugTracker]
 
-An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Python][python] optional static type as defined in [PEP 484][spec] using [mypy][mypy].
+An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Python][python] optional static type as defined in [PEP 484][spec] using [mypy][mypy homepage].
 
 ![Screen shot demo](https://github.com/elarivie/linter-mypy/raw/master/doc/ScreenShotDemo.png)
 
@@ -16,7 +16,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
     python3 -m pip install mypy
     ```
 
-2.  Install package, run:
+2.  Install atom package, run:
 
     ```ShellSession
     apm install linter-mypy
@@ -24,23 +24,23 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 
 ## Configuration
 
-| Setting                             | Values           |
-| ----------------------------------- | ---------------- |
-| Path to the executable of `python`  | Default: python3 |
-| Ignore File name Regex              | Default:         |
-| Mypy ini File                       | Default:         |
-| Disallow Untyped Calls              | Default: True    |
-| Disallow Untyped Defs               | Default: True    |
-| Check Untyped Defs                  | Default: True    |
-| Disallow Subclassing Any            | Default: True    |
-| Warn Incomplete Stub                | Default: True    |
-| Warn Redundant Casts                | Default: True    |
-| Warn No Return                      | Default: True    |
-| Warn Return Any                     | Default: True    |
-| Warn Unused Ignores                 | Default: True    |
-| Warn Missing Imports                | Default: True    |
-| Strict Optional                     | Default: True    |
-| Follow Imports                      | Default: silent  |
+| Setting                                     | Default Values |
+| ------------------------------------------- | -------------- |
+| Path to the executable of [Python][python]  |     `python3`  |
+| Ignore File name Regex                      |                |
+| [Mypy ini File][OptMypyIni]                 |                |
+| Disallow Untyped Calls                      |     `True`     |
+| Disallow Untyped Defs                       |     `True`     |
+| Check Untyped Defs                          |     `True`     |
+| Disallow Subclassing Any                    |     `True`     |
+| Warn Incomplete Stub                        |     `True`     |
+| Warn Redundant Casts                        |     `True`     |
+| Warn No Return                              |     `True`     |
+| Warn Return Any                             |     `True`     |
+| Warn Unused Ignores                         |     `True`     |
+| Warn Missing Imports                        |     `True`     |
+| Strict Optional                             |     `True`     |
+| [Follow Imports][OptFollowImports]          |     `silent`   |
 
 [linter]: https://github.com/atom-community/linter
 [install linter]: https://github.com/atom-community/linter#installation
@@ -52,3 +52,5 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 [linter-mypy_package]: https://atom.io/packages/linter-mypy
 [linter-mypy_BugTracker]: https://github.com/elarivie/linter-mypy/issues
 [python]: https://www.python.org
+[OptMypyIni]: http://mypy.readthedocs.io/en/stable/config_file.html
+[OptFollowImports]: http://mypy.readthedocs.io/en/stable/command_line.html#following-imports-or-not
