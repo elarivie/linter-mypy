@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Improved underlining heuristics.
+
 ## [Released] - 2.1.4 2017-06-05
 
 ### Added

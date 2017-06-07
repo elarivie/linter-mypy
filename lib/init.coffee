@@ -422,56 +422,49 @@ module.exports =
       # At this point every messages will be reported, we won't filter them
       # But we will improve them a little to make them more helpful.
 
-      #HACK: Work around since mypy only provide the start column of the error, we have to use heuristics for the end column of the warning, without this workaround the warning would not be underline.
-      warnOrigStartLine = parseInt(v_CurrMessageRaw.line, 10) - 1
-      warnOrigStartCol = parseInt(v_CurrMessageRaw.col, 10) - 1
-
-      if warnOrigStartLine
-        if warnOrigStartLine < 0
-          warnOrigStartLine = 0
-      else
-        # Can this occur?
-        warnOrigStartLine = 0
-
-      if warnOrigStartCol
-        if warnOrigStartCol < 0
-          warnOrigStartCol = 0
-      else
-        # May occur if the start column is not provided by Mypy, for example: "X.py:5: error: The return type of "__init__" must be None"
-        warnOrigStartCol = 0
-
-
-      warnOrigEndLine = warnOrigStartLine
-      warnOrigEndCol = warnOrigStartCol
-
-      warnStartLine = warnOrigStartLine
-      warnStartCol = warnOrigStartCol
-      warnEndLine = warnOrigEndLine
-      warnEndCol = warnOrigEndCol
-
-      if 0 < warnOrigStartCol
-        #Rational: The underline is off by one character.
-        warnStartCol += 1
-        warnEndCol += 1
-        if warnOrigStartCol == warnOrigEndCol
-          #Rational: Since mypy points to something it must at least be one character long.
-          warnEndCol += 1
-
-      #Rational: Since we know the method name we can underline its length.
-      rawMatch = regexHeuristic01.execGroups(v_CurrMessageRaw.message)
-      if rawMatch
-        warnEndCol += rawMatch.name.length
-        if 0 < warnOrigStartCol
-          warnEndCol -= 1
-
+      #Prepare the warn characteristics.
       theSeverity = 'warning'
       theDescription = ""
       theMessage = v_CurrMessageRaw.message
       theUrl = ""
+      theStartLine = parseInt(v_CurrMessageRaw.line, 10) - 1
+      theStartCol = parseInt(v_CurrMessageRaw.col, 10)
+
+      if theStartLine
+        if theStartLine < 0
+          theStartLine = 0
+      else
+        # Can this occur?
+        theStartLine = 0
+
+      if 0 == theStartCol
+        theStartCol += 1
+      else if theStartCol
+        theStartCol += 1
+      else
+        # May occur if the start column is not provided by Mypy
+        theStartCol = 0
+
+      #HACK: Work around since mypy only provide the start column of the error, we have to use heuristics for the end column of the warning, without this workaround the warning would not be underline.
+      theEndLine = theStartLine
+      theEndCol = theStartCol
+
+      if 0 < theStartCol
+        #Rational: The underline is off by one character.
+        theStartCol -= 1
+        theEndCol -= 1
+
+        #Rational: Since mypy points to something it must at least be one character long.
+        theEndCol += 1
+
+      #Rational: Since we know the method name we can underline its length.
+      rawMatch = regexHeuristic01.execGroups(v_CurrMessageRaw.message)
+      if rawMatch
+        theEndCol += rawMatch.name.length - 1
 
       #Rational: Since we know the method name is "reveal_type", we can underline its length.
       if ("Revealed type is '" == theMessage.substr(0, 18))
-        warnEndCol += 10
+        theEndCol += 10
         theSeverity = 'info'
 
       #Rational: Mypy Bug #2974
@@ -489,7 +482,7 @@ module.exports =
           severity: theSeverity,
           location: {
             file: v_CurrMessageRaw.file,
-            position: [[warnStartLine, warnStartCol], [warnEndLine, warnEndCol]]
+            position: [[theStartLine, theStartCol], [theEndLine, theEndCol]]
           },
           excerpt: theMessage,
           description: theDescription,
