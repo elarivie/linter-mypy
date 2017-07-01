@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 
 import time
-import bad
+from . import bad
