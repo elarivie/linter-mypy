@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Add the setting "No Implicit Optional"
  - Add the setting "Disallow Any"
 
+### Changed
+ - Adjusted to the command line interface change of mypy 0.520
+
 ## [Released] - 2.1.5 2017-07-01
 
 ### Changed

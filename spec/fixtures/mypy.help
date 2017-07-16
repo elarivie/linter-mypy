@@ -1,18 +1,21 @@
 usage: mypy [-h] [-v] [-V] [--python-version x.y] [--platform PLATFORM] [-2]
             [--ignore-missing-imports]
             [--follow-imports {normal,silent,skip,error}]
+            [--disallow-any {unimported, expr, unannotated, decorated, explicit, generics}]
             [--disallow-untyped-calls] [--disallow-untyped-defs]
             [--check-untyped-defs] [--disallow-subclassing-any]
             [--warn-incomplete-stub] [--warn-redundant-casts]
             [--no-warn-no-return] [--warn-return-any] [--warn-unused-ignores]
-            [--show-error-context] [-i] [--quick-and-dirty] [--cache-dir DIR]
+            [--show-error-context] [--no-implicit-optional] [-i]
+            [--quick-and-dirty] [--cache-dir DIR] [--skip-version-check]
             [--strict-optional]
             [--strict-optional-whitelist [GLOB [GLOB ...]]]
             [--junit-xml JUNIT_XML] [--pdb] [--show-traceback] [--stats]
             [--inferstats] [--custom-typing MODULE]
             [--custom-typeshed-dir DIR] [--scripts-are-modules]
             [--config-file CONFIG_FILE] [--show-column-numbers]
-            [--find-occurrences CLASS.MEMBER] [--strict] [--strict-boolean]
+            [--find-occurrences CLASS.MEMBER] [--strict]
+            [--shadow-file SOURCE_FILE SHADOW_FILE] [--any-exprs-report DIR]
             [--cobertura-xml-report DIR] [--html-report DIR]
             [--linecount-report DIR] [--linecoverage-report DIR]
             [--memory-xml-report DIR] [--old-html-report DIR]
@@ -31,6 +34,10 @@ optional arguments:
   --ignore-missing-imports  silently ignore imports of missing modules
   --follow-imports {normal,silent,skip,error}
                             how to treat imports (default normal)
+  --disallow-any {unimported, expr, unannotated, decorated, explicit, generics}
+                            disallow various types of Any in a module. Takes a
+                            comma-separated list of options (defaults to all
+                            options disabled)
   --disallow-untyped-calls  disallow calling functions without type
                             annotations from functions with type annotations
                             (inverse: --allow-untyped-calls)
@@ -57,11 +64,14 @@ optional arguments:
                             (inverse: --no-warn-unused-ignores)
   --show-error-context      Precede errors with "note:" messages explaining
                             context (inverse: --hide-error-context)
-  -i, --incremental         enable module cache
+  --no-implicit-optional    don't assume arguments with default values of None
+                            are Optional (inverse: --implicit-optional)
+  -i, --incremental         enable module cache, (inverse: --no-incremental)
   --quick-and-dirty         use cache even if dependencies out of date
                             (implies --incremental)
   --cache-dir DIR           store module cache info in the given folder in
                             incremental mode (defaults to '.mypy_cache')
+  --skip-version-check      allow using cache written by older mypy version
   --strict-optional         enable experimental strict Optional checks
                             (inverse: --no-strict-optional)
   --strict-optional-whitelist [GLOB [GLOB ...]]
@@ -91,12 +101,15 @@ optional arguments:
                             --disallow-untyped-calls, --disallow-untyped-defs,
                             --check-untyped-defs, --disallow-subclassing-any,
                             --warn-redundant-casts, --warn-return-any, --warn-
-                            unused-ignores, --strict-optional
-  --strict-boolean          ==SUPPRESS== (inverse: --no-strict-boolean)
+                            unused-ignores, --no-implicit-optional, --strict-
+                            optional
+  --shadow-file SOURCE_FILE SHADOW_FILE
+                            Typecheck SHADOW_FILE in place of SOURCE_FILE.
 
 report generation:
   Generate a report in the specified format.
 
+  --any-exprs-report DIR
   --cobertura-xml-report DIR
   --html-report DIR
   --linecount-report DIR
