@@ -138,7 +138,7 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: "how to treat imports"
-      order: 16
+      order: 22
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
