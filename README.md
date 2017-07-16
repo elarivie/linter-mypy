@@ -40,6 +40,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Warn Unused Ignores                         |     `True`     |
 | Warn Missing Imports                        |     `True`     |
 | Strict Optional                             |     `True`     |
+| No Implicit Optional                        |     `True`     |
 | [Follow Imports][OptFollowImports]          |     `silent`   |
 
 [linter]: https://github.com/atom-community/linter

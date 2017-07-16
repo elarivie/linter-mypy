@@ -93,6 +93,11 @@ module.exports =
       default: true
       description: "enable experimental strict Optional checks"
       order: 14
+    noImplicitOptional:
+      type: 'boolean'
+      default: true
+      description: "don't assume arguments with default values of None are Optional"
+      order: 15
     followImports:
       type: 'string'
       default: 'silent'
@@ -103,7 +108,7 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: "how to treat imports"
-      order: 15
+      order: 16
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -152,6 +157,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
       (strictOptional) =>
         @strictOptional = strictOptional
+    @subscriptions.add atom.config.observe 'linter-mypy.noImplicitOptional',
+      (noImplicitOptional) =>
+        @noImplicitOptional = noImplicitOptional
     @subscriptions.add atom.config.observe 'linter-mypy.followImports',
       (followImports) =>
         @followImports = followImports
@@ -236,6 +244,11 @@ module.exports =
         params.push("--strict-optional")
       else
         params.push("--no-strict-optional")
+
+      if (@noImplicitOptional)
+        params.push("--no-implicit-optional")
+      else
+        params.push("--implicit-optional")
 
     # Provide the filename to lint.
     params.push(filePath)
