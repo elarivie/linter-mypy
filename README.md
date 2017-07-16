@@ -32,11 +32,17 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Disallow Untyped Calls                      |     `True`     |
 | Disallow Untyped Defs                       |     `True`     |
 | Check Untyped Defs                          |     `True`     |
-| Disallow Subclassing Any                    |     `True`     |
 | Warn Incomplete Stub                        |     `True`     |
 | Warn Redundant Casts                        |     `True`     |
 | Warn No Return                              |     `True`     |
 | Warn Return Any                             |     `True`     |
+| Disallow Subclassing Any                    |     `True`     |
+| Disallow Any Unimported                     |     `True`     |
+| Disallow Any Expr                           |     `True`     |
+| Disallow Any Unannotated                    |     `True`     |
+| Disallow Any Decorated                      |     `True`     |
+| Disallow Any Explicit                       |     `True`     |
+| Disallow Any Generics                       |     `True`     |
 | Warn Unused Ignores                         |     `True`     |
 | Warn Missing Imports                        |     `True`     |
 | Strict Optional                             |     `True`     |

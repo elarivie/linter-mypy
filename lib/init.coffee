@@ -53,51 +53,81 @@ module.exports =
       default: true
       description: 'type check the interior of functions without type annotations'
       order: 6
-    disallowSubclassingAny:
-      type: 'boolean'
-      default: true
-      description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 7
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 8
+      order: 7
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'warn about casting an expression to its inferred type'
-      order: 9
+      order: 8
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'warn about functions that end without returning'
-      order: 10
+      order: 9
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'warn about returning values of type Any from non-Any typed functions'
+      order: 10
+    disallowSubclassingAny:
+      type: 'boolean'
+      default: true
+      description: 'disallow subclassing values of type "Any" when defining classes'
       order: 11
+    disallowAnyUnimported:
+      type: 'boolean'
+      default: true
+      description: 'disallows usage of types that come from unfollowed imports'
+      order: 12
+    disallowAnyExpr:
+      type: 'boolean'
+      default: true
+      description: 'disallows all expressions in the module that have type Any'
+      order: 13
+    disallowAnyUnannotated:
+      type: 'boolean'
+      default: true
+      description: 'disallows function definitions that are not fully typed'
+      order: 14
+    disallowAnyDecorated:
+      type: 'boolean'
+      default: true
+      description: 'disallows functions that have Any in their signature after decorator transformation'
+      order: 15
+    disallowAnyExplicit:
+      type: 'boolean'
+      default: true
+      description: 'disallows explicit Any in type positions'
+      order: 16
+    disallowAnyGenerics:
+      type: 'boolean'
+      default: true
+      description: 'disallows usage of generic types that do not specify explicit type parameters'
+      order: 17
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 12
+      order: 18
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 13
+      order: 19
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 14
+      order: 20
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "don't assume arguments with default values of None are Optional"
-      order: 15
+      order: 21
     followImports:
       type: 'string'
       default: 'silent'
@@ -133,9 +163,6 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.checkUntypedDefs',
       (checkUntypedDefs) =>
         @checkUntypedDefs = checkUntypedDefs
-    @subscriptions.add atom.config.observe 'linter-mypy.disallowSubclassingAny',
-      (disallowSubclassingAny) =>
-        @disallowSubclassingAny = disallowSubclassingAny
     @subscriptions.add atom.config.observe 'linter-mypy.warnIncompleteStub',
       (warnIncompleteStub) =>
         @warnIncompleteStub = warnIncompleteStub
@@ -148,6 +175,27 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.warnReturnAny',
       (warnReturnAny) =>
         @warnReturnAny = warnReturnAny
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowSubclassingAny',
+      (disallowSubclassingAny) =>
+        @disallowSubclassingAny = disallowSubclassingAny
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyUnimported',
+      (disallowAnyUnimported) =>
+        @disallowAnyUnimported = disallowAnyUnimported
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyExpr',
+      (disallowAnyExpr) =>
+        @disallowAnyExpr = disallowAnyExpr
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyUnannotated',
+      (disallowAnyUnannotated) =>
+        @disallowAnyUnannotated = disallowAnyUnannotated
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyDecorated',
+      (disallowAnyDecorated) =>
+        @disallowAnyDecorated = disallowAnyDecorated
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyExplicit',
+      (disallowAnyExplicit) =>
+        @disallowAnyExplicit = disallowAnyExplicit
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyGenerics',
+      (disallowAnyGenerics) =>
+        @disallowAnyGenerics = disallowAnyGenerics
     @subscriptions.add atom.config.observe 'linter-mypy.warnUnusedIgnores',
       (warnUnusedIgnores) =>
         @warnUnusedIgnores = warnUnusedIgnores
@@ -207,11 +255,6 @@ module.exports =
       else
         params.push("--no-check-untyped-defs")
 
-      if (@disallowSubclassingAny)
-        params.push("--disallow-subclassing-any")
-      else
-        params.push("--allow-subclassing-any")
-
       if (@warnIncompleteStub)
         params.push("--warn-incomplete-stub")
       else
@@ -231,6 +274,28 @@ module.exports =
         params.push("--warn-return-any")
       else
         params.push("--no-warn-return-any")
+
+      if (@disallowSubclassingAny)
+        params.push("--disallow-subclassing-any")
+      else
+        params.push("--allow-subclassing-any")
+
+      c_disallowAnyArgs = []
+      if (@disallowAnyUnimported)
+        c_disallowAnyArgs.push("unimported")
+      if (@disallowAnyExpr)
+        c_disallowAnyArgs.push("expr")
+      if (@disallowAnyUnannotated)
+        c_disallowAnyArgs.push("unannotated")
+      if (@disallowAnyDecorated)
+        c_disallowAnyArgs.push("decorated")
+      if (@disallowAnyExplicit)
+        c_disallowAnyArgs.push("explicit")
+      if (@disallowAnyGenerics)
+        c_disallowAnyArgs.push("generics")
+      if 0 < (c_disallowAnyArgs.length)
+        params.push("--disallow-any")
+        params.push(c_disallowAnyArgs.join())
 
       if (@warnUnusedIgnores)
         params.push("--warn-unused-ignores")
