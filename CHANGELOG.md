@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.2.0 2017-07-15
+
 ### Added
  - Add the setting "No Implicit Optional"
  - Add the setting "Disallow Any"
