@@ -48,6 +48,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Strict Optional                             |     `True`     |
 | No Implicit Optional                        |     `True`     |
 | [Follow Imports][OptFollowImports]          |     `silent`   |
+| [Mypy Path][MypyPath]                       |                |
 
 [linter]: https://github.com/atom-community/linter
 [install linter]: https://github.com/atom-community/linter#installation
@@ -61,3 +62,4 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 [python]: https://www.python.org
 [OptMypyIni]: http://mypy.readthedocs.io/en/stable/config_file.html
 [OptFollowImports]: http://mypy.readthedocs.io/en/stable/command_line.html#following-imports-or-not
+[MypyPath]: http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found

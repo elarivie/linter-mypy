@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.3.0 2017-09-12
+
+### Added
+ - Add the setting "Mypy Path"
+
 ## [Released] - 2.2.0 2017-07-15
 
 ### Added

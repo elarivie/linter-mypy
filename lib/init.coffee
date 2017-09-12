@@ -139,6 +139,13 @@ module.exports =
       ]
       description: "how to treat imports"
       order: 22
+    mypyPath:
+      type: 'string'
+      default: ''
+      description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> to use, is a colon-separated list of directories
+      <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted
+      '''
+      order: 23
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -211,11 +218,15 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.followImports',
       (followImports) =>
         @followImports = followImports
+    @subscriptions.add atom.config.observe 'linter-mypy.mypyPath',
+      (mypyPath) =>
+        @mypyPath = mypyPath
 
   deactivate: ->
     @subscriptions.dispose()
 
   lintPath: (filePath)->
+    rootPath = path.dirname(filePath)
     # This is the entry point for Lint requests for a given file.
 
     # Prepare the command line parameters.
@@ -325,7 +336,21 @@ module.exports =
     # This has the advantage that:
     # * It allows mypy to find dependencies (import) of the file being linted.
     # * It always works fine, it is not affected by the mypy bug #2974 (should therefore never run with cwd set to the directory of the file being linted)
-    options = { stream: 'stdout', ignoreExitCode: true, cwd: c_RootRoot }
+    options = { stream: 'stdout', ignoreExitCode: true, cwd: c_RootRoot, env: Object.create(process.env), timeout: Infinity }
+
+    # Set the MYPYPATH as requested
+    ##Initialize the environment variable MYPYPATH
+    if !(options.env["MYPYPATH"])?
+      options.env["MYPYPATH"] = ''
+    ##Prepend user setting defined MYPYPATH to current system env MYPYPATH
+    if @mypyPath?
+      options.env["MYPYPATH"] = ':' + @mypyPath + ':' + options.env["MYPYPATH"] + ':'
+    ##Add current folder of the file being linted to MYPYPATH
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:\.:/g, ':' + rootPath + ':')
+    ##Clean all repeated path separator
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:+/g, ':')
+    ##Strip not necessary separator
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/^:+|:+$/g, '')
 
     executablePath = @resolvePath @executablePath, filePath
     # We call the mypy process and parse its output.
