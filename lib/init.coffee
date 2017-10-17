@@ -48,86 +48,101 @@ module.exports =
       default: true
       description: 'disallow defining functions without type annotations or with incomplete type annotations'
       order: 5
+    disallowIncompleteDefs:
+      type: 'boolean'
+      default: true
+      description: 'disallow defining functions with incomplete type annotations'
+      order: 6
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'type check the interior of functions without type annotations'
-      order: 6
+      order: 7
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 7
+      order: 8
+    disallowUntypedDecorators:
+      type: 'boolean'
+      default: true
+      description: 'disallow decorating typed functions with untyped decorators'
+      order: 9
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'warn about casting an expression to its inferred type'
-      order: 8
+      order: 10
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'warn about functions that end without returning'
-      order: 9
+      order: 11
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 10
+      order: 12
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 11
+      order: 13
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'disallows usage of types that come from unfollowed imports'
-      order: 12
+      order: 14
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'disallows all expressions in the module that have type Any'
-      order: 13
+      order: 15
     disallowAnyUnannotated:
       type: 'boolean'
       default: true
       description: 'disallows function definitions that are not fully typed'
-      order: 14
+      order: 16
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'disallows functions that have Any in their signature after decorator transformation'
-      order: 15
+      order: 17
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'disallows explicit Any in type positions'
-      order: 16
+      order: 18
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'disallows usage of generic types that do not specify explicit type parameters'
-      order: 17
+      order: 19
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 18
+      order: 20
+    warnUnusedConfigs:
+      type: 'boolean'
+      default: true
+      description: "warn about unnused '[mypy-<pattern>]' config sections"
+      order: 21
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 19
+      order: 22
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 20
+      order: 23
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "don't assume arguments with default values of None are Optional"
-      order: 21
+      order: 24
     followImports:
       type: 'string'
       default: 'silent'
@@ -138,14 +153,14 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: "how to treat imports"
-      order: 22
+      order: 25
     mypyPath:
       type: 'string'
       default: ''
       description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> to use, is a colon-separated list of directories
       <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted
       '''
-      order: 23
+      order: 26
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -212,9 +227,15 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
       (strictOptional) =>
         @strictOptional = strictOptional
-    @subscriptions.add atom.config.observe 'linter-mypy.noImplicitOptional',
-      (noImplicitOptional) =>
-        @noImplicitOptional = noImplicitOptional
+    @subscriptions.add atom.config.observe 'linter-mypy.warnUnusedConfigs',
+      (warnUnusedConfigs) =>
+        @warnUnusedConfigs = warnUnusedConfigs
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowIncompleteDefs',
+      (disallowIncompleteDefs) =>
+        @disallowIncompleteDefs = disallowIncompleteDefs
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedDecorators',
+      (disallowUntypedDecorators) =>
+        @disallowUntypedDecorators = disallowUntypedDecorators
     @subscriptions.add atom.config.observe 'linter-mypy.followImports',
       (followImports) =>
         @followImports = followImports
@@ -325,6 +346,21 @@ module.exports =
         params.push("--no-implicit-optional")
       else
         params.push("--implicit-optional")
+
+      if (@warnUnusedConfigs)
+        params.push("--warn-unused-configs")
+      else
+        params.push("--no-warn-unused-configs")
+
+      if (@disallowIncompleteDefs)
+        params.push("--disallow-incomplete-defs")
+      else
+        params.push("--allow-incomplete-defs")
+
+      if (@disallowUntypedDecorators)
+        params.push("--disallow-untyped-decorators")
+      else
+        params.push("--allow-untyped-decorators")
 
     # Provide the filename to lint.
     params.push(filePath)

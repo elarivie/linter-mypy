@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.4.0 2017-10-17
+
+### Changed
+ - Adjusted to the command line interface change of MyPy 0.530
+
+### Added
+  - Add the setting "--warn-unused-configs"
+  - Add the setting "--disallow-incomplete-defs"
+  - Add the setting "--disallow-untyped-decorators"
+
 ## [Released] - 2.3.0 2017-09-12
 
 ### Added

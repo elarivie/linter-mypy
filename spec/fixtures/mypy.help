@@ -3,12 +3,13 @@ usage: mypy [-h] [-v] [-V] [--python-version x.y] [--platform PLATFORM] [-2]
             [--follow-imports {normal,silent,skip,error}]
             [--disallow-any {unimported, expr, unannotated, decorated, explicit, generics}]
             [--disallow-untyped-calls] [--disallow-untyped-defs]
-            [--check-untyped-defs] [--disallow-subclassing-any]
-            [--warn-incomplete-stub] [--warn-redundant-casts]
+            [--disallow-incomplete-defs] [--check-untyped-defs]
+            [--disallow-subclassing-any] [--warn-incomplete-stub]
+            [--disallow-untyped-decorators] [--warn-redundant-casts]
             [--no-warn-no-return] [--warn-return-any] [--warn-unused-ignores]
-            [--show-error-context] [--no-implicit-optional] [-i]
-            [--quick-and-dirty] [--cache-dir DIR] [--skip-version-check]
-            [--strict-optional]
+            [--warn-unused-configs] [--show-error-context]
+            [--no-implicit-optional] [-i] [--quick-and-dirty]
+            [--cache-dir DIR] [--skip-version-check] [--strict-optional]
             [--strict-optional-whitelist [GLOB [GLOB ...]]]
             [--junit-xml JUNIT_XML] [--pdb] [--show-traceback] [--stats]
             [--inferstats] [--custom-typing MODULE]
@@ -44,6 +45,9 @@ optional arguments:
   --disallow-untyped-defs   disallow defining functions without type
                             annotations or with incomplete type annotations
                             (inverse: --allow-untyped-defs)
+  --disallow-incomplete-defs
+                            disallow defining functions with incomplete type
+                            annotations (inverse: --allow-incomplete-defs)
   --check-untyped-defs      type check the interior of functions without type
                             annotations (inverse: --no-check-untyped-defs)
   --disallow-subclassing-any
@@ -53,6 +57,9 @@ optional arguments:
   --warn-incomplete-stub    warn if missing type annotation in typeshed, only
                             relevant with --check-untyped-defs enabled
                             (inverse: --no-warn-incomplete-stub)
+  --disallow-untyped-decorators
+                            disallow decorating typed functions with untyped
+                            decorators (inverse: --allow-untyped-decorators)
   --warn-redundant-casts    warn about casting an expression to its inferred
                             type (inverse: --no-warn-redundant-casts)
   --no-warn-no-return       do not warn about functions that end without
@@ -62,6 +69,8 @@ optional arguments:
                             any)
   --warn-unused-ignores     warn about unneeded '# type: ignore' comments
                             (inverse: --no-warn-unused-ignores)
+  --warn-unused-configs     warn about unnused '[mypy-<pattern>]' config
+                            sections (inverse: --no-warn-unused-configs)
   --show-error-context      Precede errors with "note:" messages explaining
                             context (inverse: --hide-error-context)
   --no-implicit-optional    don't assume arguments with default values of None
@@ -99,10 +108,11 @@ optional arguments:
                             (experimental)
   --strict                  Strict mode. Enables the following flags:
                             --disallow-untyped-calls, --disallow-untyped-defs,
-                            --check-untyped-defs, --disallow-subclassing-any,
-                            --warn-redundant-casts, --warn-return-any, --warn-
-                            unused-ignores, --no-implicit-optional, --strict-
-                            optional
+                            --disallow-incomplete-defs, --check-untyped-defs,
+                            --disallow-subclassing-any, --disallow-untyped-
+                            decorators, --warn-redundant-casts, --warn-return-
+                            any, --warn-unused-ignores, --warn-unused-configs,
+                            --no-implicit-optional, --strict-optional
   --shadow-file SOURCE_FILE SHADOW_FILE
                             Typecheck SHADOW_FILE in place of SOURCE_FILE.
 

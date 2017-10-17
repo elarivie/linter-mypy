@@ -31,8 +31,10 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | [Mypy ini File][OptMypyIni]                 |                |
 | Disallow Untyped Calls                      |     `True`     |
 | Disallow Untyped Defs                       |     `True`     |
+| Disallow Incomplete Defs                    |     `True`     |
 | Check Untyped Defs                          |     `True`     |
 | Warn Incomplete Stub                        |     `True`     |
+| Disallow Untyped Decorators                 |     `True`     |
 | Warn Redundant Casts                        |     `True`     |
 | Warn No Return                              |     `True`     |
 | Warn Return Any                             |     `True`     |
@@ -44,6 +46,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Disallow Any Explicit                       |     `True`     |
 | Disallow Any Generics                       |     `True`     |
 | Warn Unused Ignores                         |     `True`     |
+| Warn Unused Configs                         |     `True`     |
 | Warn Missing Imports                        |     `True`     |
 | Strict Optional                             |     `True`     |
 | No Implicit Optional                        |     `True`     |

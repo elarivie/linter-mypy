@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "npm-check-updates": "^2.10.4",
-    "coffeelint": "^1.16.0"
+    "coffeelint": "^2.0.6"
   },
   "package-deps": [
     "linter"
