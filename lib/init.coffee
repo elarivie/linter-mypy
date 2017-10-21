@@ -655,7 +655,7 @@ module.exports =
     [projectPath, ...] = atom.project.relativizePath(filepath)
     if not projectPath
       return resolvedPath
-    projectName = path.parse(projectPath).name
+    projectName = path.parse(projectPath).base
     resolvedPath = resolvedPath.replace(/\$PROJECT_NAME/g, projectName)
     resolvedPath = resolvedPath.replace(/\$PROJECT_PATH/g, projectPath)
     return resolvedPath
