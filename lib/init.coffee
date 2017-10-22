@@ -158,7 +158,10 @@ module.exports =
       type: 'string'
       default: ''
       description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> to use, is a colon-separated list of directories
-      <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted
+      <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted. 
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project. For example:
+      `$PROJECT_PATH/stubs`.
       '''
       order: 26
 
@@ -380,7 +383,12 @@ module.exports =
       options.env["MYPYPATH"] = ''
     ##Prepend user setting defined MYPYPATH to current system env MYPYPATH
     if @mypyPath?
-      options.env["MYPYPATH"] = ':' + @mypyPath + ':' + options.env["MYPYPATH"] + ':'
+      mypyPathResolved = @mypyPath
+      [projectPath, ...] = atom.project.relativizePath(filePath)
+      if projectPath
+        projectName = path.parse(projectPath).base
+        mypyPathResolved = mypyPathResolved.replace(/\$PROJECT_PATH/g, projectPath).replace(/\$PROJECT_NAME/g, projectName) 
+      options.env["MYPYPATH"] = ':' + mypyPathResolved + ':' + options.env["MYPYPATH"] + ':'
     ##Add current folder of the file being linted to MYPYPATH
     options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:\.:/g, ':' + rootPath + ':')
     ##Clean all repeated path separator
