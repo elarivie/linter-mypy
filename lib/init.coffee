@@ -29,15 +29,6 @@ module.exports =
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
       order: 2
-    mypyIniFile:
-      type: 'string'
-      default: ''
-      description: '''Path to a <a href="http://mypy.readthedocs.io/en/latest/config_file.html">mypy.ini</a> file.
-      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
-      dynamically depending of the current project. For example:
-      `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
-      '''
-      order: 3
     mypyPath:
       type: 'string'
       default: ''
@@ -46,6 +37,15 @@ module.exports =
       The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/stubs`.
+      '''
+      order: 3
+    mypyIniFile:
+      type: 'string'
+      default: ''
+      description: '''Path to a <a href="http://mypy.readthedocs.io/en/latest/config_file.html">mypy.ini</a> file.
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project. For example:
+      `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
       order: 4
     followImports:

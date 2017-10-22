@@ -28,8 +28,8 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | ------------------------------------------- | -------------- |
 | Path to the executable of [Python][python]  |     `python3`  |
 | Ignore File name Regex                      |                |
-| [Mypy ini File][OptMypyIni]                 |                |
 | [Mypy Path][MypyPath]                       |                |
+| [Mypy ini File][OptMypyIni]                 |                |
 | [Follow Imports][OptFollowImports]          |     `silent`   |
 | Disallow Untyped Calls                      |     `True`     |
 | Disallow Untyped Defs                       |     `True`     |

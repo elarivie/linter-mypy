@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.4.1 2017-10-22
+
 ### Added
 - The possibility to use the variables $PROJECT_PATH and $PROJECT_NAME in the settings when defining the MYPYPATH.
 
