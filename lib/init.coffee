@@ -264,7 +264,7 @@ module.exports =
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
 
-    iniPath = @resolvePath(@mypyIniFile, filePath)
+    iniPath = @resolvePath @mypyIniFile, filePath
 
     if (fs.existsSync iniPath)
       # Use the provided mypy configuration file.
@@ -383,11 +383,7 @@ module.exports =
       options.env["MYPYPATH"] = ''
     ##Prepend user setting defined MYPYPATH to current system env MYPYPATH
     if @mypyPath?
-      mypyPathResolved = @mypyPath
-      [projectPath, ...] = atom.project.relativizePath(filePath)
-      if projectPath
-        projectName = path.parse(projectPath).base
-        mypyPathResolved = mypyPathResolved.replace(/\$PROJECT_PATH/g, projectPath).replace(/\$PROJECT_NAME/g, projectName)
+      mypyPathResolved = @resolvePath @mypyPath, filePath
       options.env["MYPYPATH"] = ':' + mypyPathResolved + ':' + options.env["MYPYPATH"] + ':'
     ##Add current folder of the file being linted to MYPYPATH
     options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:\.:/g, ':' + rootPath + ':')
@@ -655,15 +651,12 @@ module.exports =
           return []
 
   resolvePath: (targetPath, filepath) ->
+    # Replace variables ($PROJECT_PATH, $PROJECT_NAME) from the targetPath string base on the filepath location.
     resolvedPath = targetPath
-
-    if not filepath
-      return resolvedPath
-
-    [projectPath, ...] = atom.project.relativizePath(filepath)
-    if not projectPath
-      return resolvedPath
-    projectName = path.parse(projectPath).base
-    resolvedPath = resolvedPath.replace(/\$PROJECT_NAME/g, projectName)
-    resolvedPath = resolvedPath.replace(/\$PROJECT_PATH/g, projectPath)
+    if filepath
+      [projectPath, ...] = atom.project.relativizePath(filepath)
+      if projectPath
+        projectName = path.parse(projectPath).base
+        resolvedPath = resolvedPath.replace(/\$PROJECT_NAME/g, projectName)
+        resolvedPath = resolvedPath.replace(/\$PROJECT_PATH/g, projectPath)
     return resolvedPath
