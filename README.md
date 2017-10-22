@@ -29,6 +29,8 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Path to the executable of [Python][python]  |     `python3`  |
 | Ignore File name Regex                      |                |
 | [Mypy ini File][OptMypyIni]                 |                |
+| [Mypy Path][MypyPath]                       |                |
+| [Follow Imports][OptFollowImports]          |     `silent`   |
 | Disallow Untyped Calls                      |     `True`     |
 | Disallow Untyped Defs                       |     `True`     |
 | Disallow Incomplete Defs                    |     `True`     |
@@ -50,8 +52,6 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Warn Missing Imports                        |     `True`     |
 | Strict Optional                             |     `True`     |
 | No Implicit Optional                        |     `True`     |
-| [Follow Imports][OptFollowImports]          |     `silent`   |
-| [Mypy Path][MypyPath]                       |                |
 
 [linter]: https://github.com/atom-community/linter
 [install linter]: https://github.com/atom-community/linter#installation

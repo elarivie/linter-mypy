@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - The possibility to use the variables $PROJECT_PATH and $PROJECT_NAME in the settings when defining the MYPYPATH.
 
+### Changed
+ - Reordered the settings.
+
 ### Fixed
 - Fix a bug where $PROJECT_NAME was truncated if it was containing a dot.
 

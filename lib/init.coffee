@@ -38,111 +38,16 @@ module.exports =
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
       order: 3
-    disallowUntypedCalls:
-      type: 'boolean'
-      default: true
-      description: 'disallow calling functions without type annotations from functions with type annotations'
+    mypyPath:
+      type: 'string'
+      default: ''
+      description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> to use, is a colon-separated list of directories
+      <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted.
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project. For example:
+      `$PROJECT_PATH/stubs`.
+      '''
       order: 4
-    disallowUntypedDefs:
-      type: 'boolean'
-      default: true
-      description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 5
-    disallowIncompleteDefs:
-      type: 'boolean'
-      default: true
-      description: 'disallow defining functions with incomplete type annotations'
-      order: 6
-    checkUntypedDefs:
-      type: 'boolean'
-      default: true
-      description: 'type check the interior of functions without type annotations'
-      order: 7
-    warnIncompleteStub:
-      type: 'boolean'
-      default: true
-      description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 8
-    disallowUntypedDecorators:
-      type: 'boolean'
-      default: true
-      description: 'disallow decorating typed functions with untyped decorators'
-      order: 9
-    warnRedundantCasts:
-      type: 'boolean'
-      default: true
-      description: 'warn about casting an expression to its inferred type'
-      order: 10
-    warnNoReturn:
-      type: 'boolean'
-      default: true
-      description: 'warn about functions that end without returning'
-      order: 11
-    warnReturnAny:
-      type: 'boolean'
-      default: true
-      description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 12
-    disallowSubclassingAny:
-      type: 'boolean'
-      default: true
-      description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 13
-    disallowAnyUnimported:
-      type: 'boolean'
-      default: true
-      description: 'disallows usage of types that come from unfollowed imports'
-      order: 14
-    disallowAnyExpr:
-      type: 'boolean'
-      default: true
-      description: 'disallows all expressions in the module that have type Any'
-      order: 15
-    disallowAnyUnannotated:
-      type: 'boolean'
-      default: true
-      description: 'disallows function definitions that are not fully typed'
-      order: 16
-    disallowAnyDecorated:
-      type: 'boolean'
-      default: true
-      description: 'disallows functions that have Any in their signature after decorator transformation'
-      order: 17
-    disallowAnyExplicit:
-      type: 'boolean'
-      default: true
-      description: 'disallows explicit Any in type positions'
-      order: 18
-    disallowAnyGenerics:
-      type: 'boolean'
-      default: true
-      description: 'disallows usage of generic types that do not specify explicit type parameters'
-      order: 19
-    warnUnusedIgnores:
-      type: 'boolean'
-      default: true
-      description: "warn about unneeded '# type: ignore' comments"
-      order: 20
-    warnUnusedConfigs:
-      type: 'boolean'
-      default: true
-      description: "warn about unnused '[mypy-<pattern>]' config sections"
-      order: 21
-    warnMissingImports:
-      type: 'boolean'
-      default: true
-      description: "warn about imports of missing modules"
-      order: 22
-    strictOptional:
-      type: 'boolean'
-      default: true
-      description: "enable experimental strict Optional checks"
-      order: 23
-    noImplicitOptional:
-      type: 'boolean'
-      default: true
-      description: "don't assume arguments with default values of None are Optional"
-      order: 24
     followImports:
       type: 'string'
       default: 'silent'
@@ -153,16 +58,111 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: "how to treat imports"
+      order: 5
+    disallowUntypedCalls:
+      type: 'boolean'
+      default: true
+      description: 'disallow calling functions without type annotations from functions with type annotations'
+      order: 6
+    disallowUntypedDefs:
+      type: 'boolean'
+      default: true
+      description: 'disallow defining functions without type annotations or with incomplete type annotations'
+      order: 7
+    disallowIncompleteDefs:
+      type: 'boolean'
+      default: true
+      description: 'disallow defining functions with incomplete type annotations'
+      order: 8
+    checkUntypedDefs:
+      type: 'boolean'
+      default: true
+      description: 'type check the interior of functions without type annotations'
+      order: 9
+    warnIncompleteStub:
+      type: 'boolean'
+      default: true
+      description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
+      order: 10
+    disallowUntypedDecorators:
+      type: 'boolean'
+      default: true
+      description: 'disallow decorating typed functions with untyped decorators'
+      order: 11
+    warnRedundantCasts:
+      type: 'boolean'
+      default: true
+      description: 'warn about casting an expression to its inferred type'
+      order: 12
+    warnNoReturn:
+      type: 'boolean'
+      default: true
+      description: 'warn about functions that end without returning'
+      order: 13
+    warnReturnAny:
+      type: 'boolean'
+      default: true
+      description: 'warn about returning values of type Any from non-Any typed functions'
+      order: 14
+    disallowSubclassingAny:
+      type: 'boolean'
+      default: true
+      description: 'disallow subclassing values of type "Any" when defining classes'
+      order: 15
+    disallowAnyUnimported:
+      type: 'boolean'
+      default: true
+      description: 'disallows usage of types that come from unfollowed imports'
+      order: 16
+    disallowAnyExpr:
+      type: 'boolean'
+      default: true
+      description: 'disallows all expressions in the module that have type Any'
+      order: 17
+    disallowAnyUnannotated:
+      type: 'boolean'
+      default: true
+      description: 'disallows function definitions that are not fully typed'
+      order: 18
+    disallowAnyDecorated:
+      type: 'boolean'
+      default: true
+      description: 'disallows functions that have Any in their signature after decorator transformation'
+      order: 19
+    disallowAnyExplicit:
+      type: 'boolean'
+      default: true
+      description: 'disallows explicit Any in type positions'
+      order: 20
+    disallowAnyGenerics:
+      type: 'boolean'
+      default: true
+      description: 'disallows usage of generic types that do not specify explicit type parameters'
+      order: 21
+    warnUnusedIgnores:
+      type: 'boolean'
+      default: true
+      description: "warn about unneeded '# type: ignore' comments"
+      order: 22
+    warnUnusedConfigs:
+      type: 'boolean'
+      default: true
+      description: "warn about unnused '[mypy-<pattern>]' config sections"
+      order: 23
+    warnMissingImports:
+      type: 'boolean'
+      default: true
+      description: "warn about imports of missing modules"
+      order: 24
+    strictOptional:
+      type: 'boolean'
+      default: true
+      description: "enable experimental strict Optional checks"
       order: 25
-    mypyPath:
-      type: 'string'
-      default: ''
-      description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> to use, is a colon-separated list of directories
-      <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted.
-      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
-      dynamically depending of the current project. For example:
-      `$PROJECT_PATH/stubs`.
-      '''
+    noImplicitOptional:
+      type: 'boolean'
+      default: true
+      description: "don't assume arguments with default values of None are Optional"
       order: 26
 
   activate: ->
