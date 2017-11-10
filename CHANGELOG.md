@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.4.2 2017-11-09
+
+### Added
+- User friendly support of Mypy Internal Error.
+
 ## [Released] - 2.4.1 2017-10-22
 
 ### Added

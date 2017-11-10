@@ -27,6 +27,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Setting                                     | Default Values |
 | ------------------------------------------- | -------------- |
 | Path to the executable of [Python][python]  |     `python3`  |
+| Mypy Notify Internal Error                  |     `True`     |
 | Ignore File name Regex                      |                |
 | [Mypy Path][MypyPath]                       |                |
 | [Mypy ini File][OptMypyIni]                 |                |

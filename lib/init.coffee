@@ -24,11 +24,16 @@ module.exports =
       `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
       '''
       order: 1
+    mypyNotifyInternalError:
+      type: 'boolean'
+      default: true
+      description: 'Pop-up a detailed error if a Mypy Internal error occurs'
+      order: 2
     ignoreFiles:
       type: 'string'
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
-      order: 2
+      order: 3
     mypyPath:
       type: 'string'
       default: ''
@@ -38,7 +43,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/stubs`.
       '''
-      order: 3
+      order: 4
     mypyIniFile:
       type: 'string'
       default: ''
@@ -47,7 +52,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
-      order: 4
+      order: 5
     followImports:
       type: 'string'
       default: 'silent'
@@ -58,112 +63,112 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: "how to treat imports"
-      order: 5
+      order: 6
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'disallow calling functions without type annotations from functions with type annotations'
-      order: 6
+      order: 7
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 7
+      order: 8
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'disallow defining functions with incomplete type annotations'
-      order: 8
+      order: 9
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'type check the interior of functions without type annotations'
-      order: 9
+      order: 10
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 10
+      order: 11
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'disallow decorating typed functions with untyped decorators'
-      order: 11
+      order: 12
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'warn about casting an expression to its inferred type'
-      order: 12
+      order: 13
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'warn about functions that end without returning'
-      order: 13
+      order: 14
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 14
+      order: 15
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 15
+      order: 16
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'disallows usage of types that come from unfollowed imports'
-      order: 16
+      order: 17
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'disallows all expressions in the module that have type Any'
-      order: 17
+      order: 18
     disallowAnyUnannotated:
       type: 'boolean'
       default: true
       description: 'disallows function definitions that are not fully typed'
-      order: 18
+      order: 19
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'disallows functions that have Any in their signature after decorator transformation'
-      order: 19
+      order: 20
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'disallows explicit Any in type positions'
-      order: 20
+      order: 21
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'disallows usage of generic types that do not specify explicit type parameters'
-      order: 21
+      order: 22
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 22
+      order: 23
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "warn about unnused '[mypy-<pattern>]' config sections"
-      order: 23
+      order: 24
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 24
+      order: 25
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 25
+      order: 26
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "don't assume arguments with default values of None are Optional"
-      order: 26
+      order: 27
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -173,6 +178,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
       (executablePath) =>
         @executablePath = executablePath
+    @subscriptions.add atom.config.observe 'linter-mypy.mypyNotifyInternalError',
+      (mypyNotifyInternalError) =>
+        @mypyNotifyInternalError = mypyNotifyInternalError
     @subscriptions.add atom.config.observe 'linter-mypy.ignoreFiles',
       (ignoreFiles) =>
         @ignoreFiles = ignoreFiles
@@ -263,6 +271,9 @@ module.exports =
 
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
+
+    ## In case a Mypy INTERNAL ERROR is encountered, print the stacktrace to ease bug reporting.
+    params.push("--show-traceback")
 
     iniPath = @resolvePath @mypyIniFile, filePath
 
@@ -375,7 +386,7 @@ module.exports =
     # This has the advantage that:
     # * It allows mypy to find dependencies (import) of the file being linted.
     # * It always works fine, it is not affected by the mypy bug #2974 (should therefore never run with cwd set to the directory of the file being linted)
-    options = { stream: 'stdout', ignoreExitCode: true, cwd: c_RootRoot, env: Object.create(process.env), timeout: Infinity }
+    options = { stream: 'both', ignoreExitCode: true, cwd: c_RootRoot, env: Object.create(process.env), timeout: Infinity }
 
     # Set the MYPYPATH as requested
     ##Initialize the environment variable MYPYPATH
@@ -393,28 +404,161 @@ module.exports =
     options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/^:+|:+$/g, '')
 
     executablePath = @resolvePath @executablePath, filePath
+    mypyNotifyInternalError = @mypyNotifyInternalError
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
-    return helpers.exec(executablePath, params, options).then ((mypyOutput) ->
+    # https://github.com/steelbrain/exec
+    return helpers.exec(executablePath, params, options).then (({stdout, stderr, exitCode}) ->
       # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = []
 
       # Each line of the mypy output may be a potential warning so we create an array of string containing each line of the output.
       # We split the text using the new line as a separator and handle any OS kind of new lines.
-      lines = mypyOutput.split(/\r\n|\r|\n/g)
+      lines = stdout.split(/\r\n|\r|\n/g)
 
       # For each line (aka warnings) we filter out those which are not wanted else we append it to the final list of warnings to reports.
       # Note: The final report must contain the full path to the file so that Atom can find the file.
       for key, val of lines
         result.push(c_RootRoot + val)
 
+      if "" != stderr
+        # Well, Well, Well... something went wrong.
+        # Instead of crashing or giving cryptic error message, let's try to be user friendly.
+        if stderr.match /^.+\:\sNo\s\[mypy\]\ssection\sin\sconfig\sfile$/gi
+          ###
+          The Problem: The error is about a mypy.ini file not in the good format.
+
+          The Context: At this point everything is fine a valid mypy launch was done using a found mypy.ini file.
+
+          The Conclusion: the user must only make sure to either not use mypy configuration file or have it in the good format.
+
+          The Solution: Let's:
+            1- Inform the user about the situation with a pop-up.
+            2- Offer him a link to change the setting.
+          ###
+          notification = atom.notifications.addWarning(
+            "The mypy configuration file <strong>" + iniPath + "</strong> does not contains a [mypy] section as it should.<br />Either correct the configuration file or adjust the mypy ini configuration path setting of linter-mypy.",
+            {
+              buttons: [
+                {
+                  text: "Adjust the linter-mypy setting",
+                  onDidClick: ->
+                    atom.workspace.open("atom://config/packages/linter-mypy")
+                    notification.dismiss()
+                }
+              ],
+              dismissable: true,
+            }
+          )
+        else if (0 <= stderr.indexOf("usage: mypy"))
+          ###
+          The Problem: The error is about an incorrect usage of mypy parameters.
+
+          The Context: At this point a call to mypy was effectively done, there are three options
+            1- The mypy command line interface has change and the project should be updated accordingly
+              - But We have a spec to detect mypy command line interface change, so this option is probably not what is the real cause of the problem, anyway the user would not have much possibility to recover anyway.
+            2- The executablePath provided in the settings is not pointing to python but directly to the mypy executable as it was required prior to linter-mypy v2.0.0
+            3- The version of mypy is older than the one linter-mypy expect.
+
+          The Conclusion: It may be the executablePath which is pointing to mypy instead of Python but it is most likely an outdated mypy installation.
+
+          The Solution: Let's:
+            1- Inform the user about the situation with a pop-up.
+            2- Display the command line to update mypy.
+            3- Offer him a link to change the setting.
+          ###
+          notification = atom.notifications.addWarning(
+            "MyPy does not understand the provided parameters.  Make sure the latest mypy version is installed using the following command line:<br/><br/><em>" + executablePath + " -m pip install -U mypy</em>",
+            {
+              buttons: [
+                {
+                  text: "Adjust the linter-mypy setting",
+                  onDidClick: ->
+                    atom.workspace.open("atom://config/packages/linter-mypy")
+                    notification.dismiss()
+                }
+              ],
+              dismissable: true,
+            }
+          )
+        else if (0 <= stderr.indexOf("No module named mypy"))
+          ###
+          The Problem: The error is about the absence of the mypy module in the python installation.
+
+          The Context: Mypy has to be installed manually and it is base on the error message not installed in the python installation provided in the executable path setting.
+
+          The Conclusion: It is most likely the user which haven't installed the module, but it is also possible that the user has more than one python installation on his system and didn't provide the good one in the settings.
+
+          The Solution: Let's:
+            1- Inform the user about the situation with a pop-up
+            2- Show him an example of command line to install mypy
+              * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
+          ###
+          atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
+        else if (0 <= stderr.indexOf("AssertionError: Neither id, path nor source given"))
+          ###
+          The Problem: When Mypy encouters a relative import from a toplevel, it crashes with an assert Stacktrace.
+
+          The Context: Mypy has a recorded bug #2974.
+
+          The Conclusion: We can't do much, other than not crashing ourself with annoying pop-ups.
+
+          The Solution: Let's:
+            1- Inform the user about the situation with a lint error
+          ###
+          return [[filePath + ":0:0: error: MypyBug2974"]]
+        else if (0 <= stderr.indexOf(": error: INTERNAL ERROR -- please report a bug at https://github.com/python/mypy/issues"))
+          ###
+          The Problem: Mypy has an internal bug.
+
+          The Context: linter-mypy did a good job but Mypy has a bug.
+
+          The Conclusion: We can't do much, other than not crashing ourself with annoying pop-ups.
+
+          The Solution: Let's:
+            1- Inform the user about the situation with a lint error
+            2- Display the stacktrace in the pop-up to help bug reporting
+            3- Offer to deactivate internal error related pop-up to at least allow the user to keep linter-mypy activated so other files which are not affected by the bug can still be linted.
+          ###
+          if (mypyNotifyInternalError)
+            notification = atom.notifications.addError("Mypy version " + /.*version: (.*)/.exec(stderr)[1] + " INTERNAL ERROR",
+            {
+              detail: stdout,
+              description: "Please report a bug at https://github.com/python/mypy/issues",
+              dismissable: true,
+              buttons: [
+                {
+                  text: "Deactivate Mypy INTERNAL ERROR pop-ups",
+                  onDidClick: ->
+                    atom.config.set('linter-mypy.mypyNotifyInternalError', false)
+                    notification.dismiss()
+                },
+                {
+                  text: "Close",
+                  onDidClick: ->
+                    notification.dismiss()
+                }
+              ],
+            })
+          return [[filePath + ":0:0: error: INTERNAL MYPY ERROR"]]
+
+        else
+          ###
+          The Problem: Something unknown went wrong.
+
+          The Context: Many known possible error were managed in a user friendly manner, but this error is not.
+
+          The Conclusion: Not much can be done.
+
+          The Solution: Since it is an unknown error let't keep the error message intact
+            1- Inform the user about the situation with an error pop-up containing the full error message, hopefully he will provide a bug report with this information so that it can be better handle.
+          ###
+          atom.notifications.addError(stderr)
+
       # Return the result.
       return [result]
-
     ), (err) ->
-      # Well, Well, Well... something went wrong.
-      # Instead of crashing or giving cryptic error message, let's try to be user friendly.
-      if err.message.match /^Failed\sto\sspawn\scommand\s.+\.\sMake\ssure\s.+\sis\sinstalled\sand\son\syour\sPATH$/gi || err.message.match /^The\ssystem\scannot\sfind\sthe\spath\sspecified\.$/gi
+      if err.message.match /^Failed\sto\sspawn\scommand\s.+\.\sMake\ssure\s.+\sis\sinstalled\sand\son\syour\sPATH$/gi || stderr.match /^The\ssystem\scannot\sfind\sthe\spath\sspecified\.$/gi
         ###
         The Problem: The error is about a process spawn which failed
 
@@ -440,102 +584,9 @@ module.exports =
             dismissable: true,
           }
         )
-      else if err.message.match /^.+\:\sNo\s\[mypy\]\ssection\sin\sconfig\sfile$/gi
-        ###
-        The Problem: The error is about a mypy.ini file not in the good format.
-
-        The Context: At this point everything is fine a valid mypy launch was done using a found mypy.ini file.
-
-        The Conclusion: the user must only make sure to either not use mypy configuration file or have it in the good format.
-
-        The Solution: Let's:
-          1- Inform the user about the situation with a pop-up.
-          2- Offer him a link to change the setting.
-        ###
-        notification = atom.notifications.addWarning(
-          "The mypy configuration file <strong>" + iniPath + "</strong> does not contains a [mypy] section as it should.<br />Either correct the configuration file or adjust the mypy ini configuration path setting of linter-mypy.",
-          {
-            buttons: [
-              {
-                text: "Adjust the linter-mypy setting",
-                onDidClick: ->
-                  atom.workspace.open("atom://config/packages/linter-mypy")
-                  notification.dismiss()
-              }
-            ],
-            dismissable: true,
-          }
-        )
-      else if (0 <= err.message.indexOf("usage: mypy"))
-        ###
-        The Problem: The error is about an incorrect usage of mypy parameters.
-
-        The Context: At this point a call to mypy was effectively done, there are three options
-          1- The mypy command line interface has change and the project should be updated accordingly
-            - But We have a spec to detect mypy command line interface change, so this option is probably not what is the real cause of the problem, anyway the user would not have much possibility to recover anyway.
-          2- The executablePath provided in the settings is not pointing to python but directly to the mypy executable as it was required prior to linter-mypy v2.0.0
-          3- The version of mypy is older than the one linter-mypy expect.
-
-        The Conclusion: It may be the executablePath which is pointing to mypy instead of Python but it is most likely an outdated mypy installation.
-
-        The Solution: Let's:
-          1- Inform the user about the situation with a pop-up.
-          2- Display the command line to update mypy.
-          3- Offer him a link to change the setting.
-        ###
-        notification = atom.notifications.addWarning(
-          "MyPy does not understand the provided parameters.  Make sure the latest mypy version is installed using the following command line:<br/><br/><em>" + executablePath + " -m pip install -U mypy</em>",
-          {
-            buttons: [
-              {
-                text: "Adjust the linter-mypy setting",
-                onDidClick: ->
-                  atom.workspace.open("atom://config/packages/linter-mypy")
-                  notification.dismiss()
-              }
-            ],
-            dismissable: true,
-          }
-        )
-      else if (0 <= err.message.indexOf("No module named mypy"))
-        ###
-        The Problem: The error is about the absence of the mypy module in the python installation.
-
-        The Context: Mypy has to be installed manually and it is base on the error message not installed in the python installation provided in the executable path setting.
-
-        The Conclusion: It is most likely the user which haven't installed the module, but it is also possible that the user has more than one python installation on his system and didn't provide the good one in the settings.
-
-        The Solution: Let's:
-          1- Inform the user about the situation with a pop-up
-          2- Show him an example of command line to install mypy
-            * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
-        ###
-        atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
-      else if (0 <= err.message.indexOf("AssertionError: Neither id, path nor source given"))
-        ###
-        The Problem: When Mypy encouters a relative import from a toplevel, it crashes with an assert Stacktrace.
-
-        The Context: Mypy has a recorded bug #2974.
-
-        The Conclusion: We can't do much, other than not crashing ourself with annoying pop-ups.
-
-        The Solution: Let's:
-          1- Inform the user about the situation with a lint error
-        ###
-        return [[filePath + ":0:0: error: MypyBug2974"]]
       else
-        ###
-        The Problem: Something unknown went wrong.
-
-        The Context: Many known possible error were managed in a user friendly manner, but this error is not.
-
-        The Conclusion: Not much can be done.
-
-        The Solution: Since it is an unknown error let't keep the error message intact
-          1- Inform the user about the situation with an error pop-up containing the full error message, hopefully he will provide a bug report with this information so that it can be better handle.
-        ###
+        # An unknown bad thing occured.
         atom.notifications.addError(err.message)
-
       #Something went wrong there is therefore no mypy warnings to report.
       return [""]
 
@@ -610,16 +661,21 @@ module.exports =
         theEndCol += 10
         theSeverity = 'info'
 
-      #Rational: Mypy Bug #2974
+      #Rational: Mypy Internal Bug
       if "MypyBug2974" == theMessage
         theSeverity = 'error'
         theMessage = "Top-level module cannot use a relative import"
         theDescription = "Mypy does not support relative import in top-level module, mypy process aborted for this file"
         theUrl = "https://github.com/python/mypy/issues/2974"
+      else if "INTERNAL MYPY ERROR" == theMessage
+        theSeverity = 'error'
+        theMessage = "INTERNAL MYPY ERROR"
+        theDescription = "Mypy crashed"
+        theUrl = "https://github.com/python/mypy/issues/"
 
       #TODO: Put more heuristic
 
-      #Append the current warning to the final result.
+      #Append the current lint to the final result.
       result.push(
         {
           severity: theSeverity,
