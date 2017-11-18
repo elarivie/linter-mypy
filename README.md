@@ -44,7 +44,6 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Disallow Subclassing Any                    |     `True`     |
 | Disallow Any Unimported                     |     `True`     |
 | Disallow Any Expr                           |     `True`     |
-| Disallow Any Unannotated                    |     `True`     |
 | Disallow Any Decorated                      |     `True`     |
 | Disallow Any Explicit                       |     `True`     |
 | Disallow Any Generics                       |     `True`     |

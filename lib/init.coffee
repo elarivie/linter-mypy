@@ -124,51 +124,46 @@ module.exports =
       default: true
       description: 'disallows all expressions in the module that have type Any'
       order: 18
-    disallowAnyUnannotated:
-      type: 'boolean'
-      default: true
-      description: 'disallows function definitions that are not fully typed'
-      order: 19
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'disallows functions that have Any in their signature after decorator transformation'
-      order: 20
+      order: 19
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'disallows explicit Any in type positions'
-      order: 21
+      order: 20
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'disallows usage of generic types that do not specify explicit type parameters'
-      order: 22
+      order: 21
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 23
+      order: 22
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "warn about unnused '[mypy-<pattern>]' config sections"
-      order: 24
+      order: 23
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 25
+      order: 24
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 26
+      order: 25
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "don't assume arguments with default values of None are Optional"
-      order: 27
+      order: 26
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -217,9 +212,6 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyExpr',
       (disallowAnyExpr) =>
         @disallowAnyExpr = disallowAnyExpr
-    @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyUnannotated',
-      (disallowAnyUnannotated) =>
-        @disallowAnyUnannotated = disallowAnyUnannotated
     @subscriptions.add atom.config.observe 'linter-mypy.disallowAnyDecorated',
       (disallowAnyDecorated) =>
         @disallowAnyDecorated = disallowAnyDecorated
@@ -326,22 +318,16 @@ module.exports =
       else
         params.push("--allow-subclassing-any")
 
-      c_disallowAnyArgs = []
       if (@disallowAnyUnimported)
-        c_disallowAnyArgs.push("unimported")
+        params.push("--disallow-any-unimported")
       if (@disallowAnyExpr)
-        c_disallowAnyArgs.push("expr")
-      if (@disallowAnyUnannotated)
-        c_disallowAnyArgs.push("unannotated")
+        params.push("--disallow-any-expr")
       if (@disallowAnyDecorated)
-        c_disallowAnyArgs.push("decorated")
+        params.push("--disallow-any-decorated")
       if (@disallowAnyExplicit)
-        c_disallowAnyArgs.push("explicit")
+        params.push("--disallow-any-explicit")
       if (@disallowAnyGenerics)
-        c_disallowAnyArgs.push("generics")
-      if 0 < (c_disallowAnyArgs.length)
-        params.push("--disallow-any")
-        params.push(c_disallowAnyArgs.join())
+        params.push("--disallow-any-generics")
 
       if (@warnUnusedIgnores)
         params.push("--warn-unused-ignores")

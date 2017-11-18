@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.4.3 2017-11-17
+
+### Changed
+- Adapt to settings to match [Mypy 0.550](http://mypy-lang.blogspot.ca/2017/11/mypy-0550-released.html) command lines parameters changes.
+
 ## [Released] - 2.4.2 2017-11-09
 
 ### Added
