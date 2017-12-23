@@ -582,8 +582,9 @@ module.exports =
     # - line = The line number where the warning is.
     # - col = The column where the warning is within the line.
     # - message = The warning text.
+
+    # Declare regex which extract information about the lint details.
     regexLine = new NamedRegexp("^(?<file>([A-Z]:)?[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)")
-    regexHeuristic01 = new NamedRegexp("^Argument . to .(?<name>.+). has incompatible type ..+.; expected ..+.$")
 
     # Prepare an array of all the warnings to report.
     result = []
@@ -637,18 +638,12 @@ module.exports =
         #Rational: Since mypy points to something it must at least be one character long.
         theEndCol += 1
 
-      #Rational: Since we know the method name we can underline its length.
-      rawMatch = regexHeuristic01.execGroups(v_CurrMessageRaw.message)
-      if rawMatch
-        theEndCol += rawMatch.name.length - 1
-
-      #Rational: Since we know the method name is "reveal_type", we can underline its length.
+      # Use specialized heuristic base on the lint message...
       if ("Revealed type is '" == theMessage.substr(0, 18))
+        #Rational: Since we know the method name is "reveal_type", we can underline its length.
         theEndCol += 10
         theSeverity = 'info'
-
-      #Rational: Mypy Internal Bug
-      if "MypyBug2974" == theMessage
+      else if "MypyBug2974" == theMessage#Rational: Mypy Internal Bug
         theSeverity = 'error'
         theMessage = "Top-level module cannot use a relative import"
         theDescription = "Mypy does not support relative import in top-level module, mypy process aborted for this file"
@@ -658,6 +653,36 @@ module.exports =
         theMessage = "INTERNAL MYPY ERROR"
         theDescription = "Mypy crashed"
         theUrl = "https://github.com/python/mypy/issues/"
+      else if "invalid syntax" == theMessage
+        theSeverity = 'error'
+        #Rational: We can't really know where in the line the invalid syntax is, so let's underline the whole line.
+        theStartCol = 0
+      else if "inconsistent use of tabs and spaces in indentation" == theMessage
+        theSeverity = 'error'
+        #Rational: Indentation is obviously at the start of the line.
+        theStartCol = 0
+      else if "unindent does not match any outer indentation level" == theMessage
+        theSeverity = 'error'
+        #Rational: Indentation is obviously at the start of the line.
+        theStartCol = 0
+      else if "unexpected unindent" == theMessage
+        theSeverity = 'error'
+        #Rational: Indentation is obviously at the start of the line.
+        theStartCol = 0
+      else
+        # Use regex...
+        regexHeuristic = new NamedRegexp("^Argument . to .(?<name>.+). has incompatible type ..+.; expected ..+.$")
+        rawMatch = regexHeuristic.execGroups(v_CurrMessageRaw.message)
+        if rawMatch
+          #Rational: Since we know the method name we can underline its length.
+          theEndCol += rawMatch.name.length - 1
+        else
+          regexHeuristic = new NamedRegexp("^Name '(?<name>.+)' is not defined$")
+          rawMatch = regexHeuristic.execGroups(v_CurrMessageRaw.message)
+          if rawMatch
+            theSeverity = 'error'
+            #Rational: Since we know the method name we can underline its length.
+            theEndCol += rawMatch.name.length - 1
 
       #TODO: Put more heuristic
 

@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Heuristics for certain lint message.
+
+### Changed
+- Some lint now have a severity of Error (undefined name, invalid syntax, inconsistent indentation).
+- Micro speed optimization related to not verifying some heuristics when we already can deduce they won't apply.
+
 ## [Released] - 2.4.3 2017-11-17
 
 ### Changed
