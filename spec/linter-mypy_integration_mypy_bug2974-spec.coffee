@@ -5,6 +5,7 @@
 #  * * https://github.com/python/mypy/issues/2974
 #
 #  If it fails:
+#  * Check if the Mypy bug has been fix
 #  * Adjust the the command line vs cwd vs heuristics
 
 LinterMyPystyle = require '../lib/init'

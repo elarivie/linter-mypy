@@ -1,17 +1,21 @@
 #!/usr/bin/env coffee
 #
 # This spec file validates:
-#  * That no warnings are reported which are outside of the file being linted.
+#  * The very basic integration with mypy.
+#    * Make sure nothing is detected when the file is valid.
+#    * Make sure warnings are detecteds when the file is invalid.
 #
 #  If it fails:
-#  * Adjust the ignore logic within the parsing logic.
+#  * Adjust the mypy output parsing logic and regexes.
 
 LinterMyPystyle = require '../lib/init'
 path = require 'path'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-goodExternalPath = path.join(__dirname, 'fixtures', 'goodexternal.py')
+goodPath = path.join(__dirname, 'fixtures', 'smoke', 'good', 'good.py')
+badPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'HelloWorld.py')
+badPathRegex = /.+HelloWorld\.py/
 
 describe "The MyPy provider for Linter", ->
   lint = require('../lib/init').provideLinter().lint
@@ -27,11 +31,11 @@ describe "The MyPy provider for Linter", ->
   it 'should have activated the package', ->
     expect(atom.packages.isPackageActive('linter-mypy')).toBe true
 
-  describe "lints goodexternal.py and", ->
+  describe "lints good", ->
     editor = null
     beforeEach ->
       waitsForPromise ->
-        atom.workspace.open(goodExternalPath).then (e) ->
+        atom.workspace.open(goodPath).then (e) ->
           editor = e
 
     it 'finds nothing to complain about', ->
@@ -40,3 +44,17 @@ describe "The MyPy provider for Linter", ->
         lint(editor).then (msgs) -> messages = msgs
       runs ->
         expect(messages.length).toEqual 0
+
+  describe "lints bad", ->
+    editor = null
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open(badPath).then (e) ->
+          editor = e
+
+    it 'finds something to complain about', ->
+      messages = null
+      waitsForPromise ->
+        lint(editor).then (msgs) -> messages = msgs
+      runs ->
+        expect(messages.length).toBeGreaterThan 0

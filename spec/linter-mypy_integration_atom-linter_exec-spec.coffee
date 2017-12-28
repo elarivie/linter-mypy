@@ -1,19 +1,17 @@
 #!/usr/bin/env coffee
 #
 # This spec file validates:
-#  * The atom-linter method used by linter-mypy.
-#    * Make sure that over time the behavior is as expected.
+#  * The integration with atom-linter exec method.
 #
 #  If it fails:
 #  * Validate everywhere in the code where the problematic method is used and validate that linter-mypy still works.
 
 {CompositeDisposable} = require 'atom'
-helpers = require 'atom-linter'
-
-describe "The Helpers `exec` method", ->
-  dummyExecName = "aNonExistingExecutable"
-  describe "When is launching a non-existing executable", ->
-    it 'returns the expected error message', ->
+describe "The atom-linter library", ->
+  helpers = require 'atom-linter'
+  describe "The `exec` method", ->
+    it 'returns the expected error message when launching a non-existing executable', ->
+      dummyExecName = "aNonExistingExecutable"
       return helpers.exec(dummyExecName, [], {}).then ((outputStream) ->
         #'This promise is not expected to be successful
         expect(true).toBe(false)

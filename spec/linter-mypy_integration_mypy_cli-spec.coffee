@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 #
 #  This spec file validates:
-#  * That the mypy command line interface does not change.
+#  * That the mypy command line interface of Mypy.
 #
 #  If it fails:
 #  * run "mypy --help" and do a diff with spec/fixtures/mypy.help
@@ -13,38 +13,35 @@ path = require 'path'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-helpPath = path.join(__dirname, 'fixtures', 'mypy.help')
+helpPath = path.join(__dirname, 'fixtures', 'integration', 'mypy.help')
 
-describe "The MyPy provider for Linter", ->
-  lint = require('../lib/init').provideLinter().lint
+describe "The MyPy tool", ->
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
 
-  it 'should be in the package list', ->
-    expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true
-
-  it 'should have activated the package', ->
-    expect(atom.packages.isPackageActive('linter-mypy')).toBe true
-
-  describe "reads mypy.help and fetch mypy --help", ->
-    supportedHelp = null
-    mypyHelp = null
-
+  describe "CLI", ->
+    supportedHelp = "A"
+    mypyHelp = "B"
+    mypyInvalidMsg = ""
     beforeEach ->
+      mypyPath = atom.config.get('linter-mypy.executablePath')
       waitsForPromise ->
         atom.workspace.open(helpPath).then (e) ->
           supportedHelp = e.getText().trim()
-          expect(supportedHelp).not.toBe("")
-
-    beforeEach ->
       waitsForPromise ->
-        mypyPath = atom.config.get('linter-mypy.executablePath')
         helpers.exec(mypyPath, ["-m", "mypy", "--help"], { stream: 'stdout', ignoreExitCode: true}).then (helpMsg) ->
           mypyHelp = helpMsg.trim()
-          expect(mypyHelp).not.toBe("")
+      waitsForPromise ->
+        helpers.exec(mypyPath, ["-m", "mypy", "--ABCXXXDEFNONEXISTINGARGUMENT"], { stream: 'stderr', ignoreExitCode: true}).then (invalidMsg) ->
+          mypyInvalidMsg = invalidMsg.trim()
 
-    it 'Makes sure the supported "mypy" command interface has not change.', ->
+    it 'Matches the supported "mypy" CLI.', ->
+      expect(mypyHelp).not.toBe("")
       expect(mypyHelp).toBe(supportedHelp)
+
+    it 'Provides the expected error message when provided with unknown arguments.', ->
+      expect(mypyInvalidMsg).not.toBe("")
+      expect(0 <= mypyInvalidMsg.indexOf("usage: mypy")).toBe(true)

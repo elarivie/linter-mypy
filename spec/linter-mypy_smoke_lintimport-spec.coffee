@@ -1,21 +1,20 @@
-#!/usr/bin/env coffee
-#
-# This spec file validates:
-#  * The very basic integration with mypy.
-#    * Make sure nothing is detected when the file is valid.
-#    * Make sure warnings are detecteds when the file is invalid.
+# This spec file quickly validates:
+#  * Base on the followImports setting...
+#  ** That either
+#        - no warnings are reported which are outside of the file being linted.
+#        OR
+#        - warnings are reported about imported files content.
 #
 #  If it fails:
-#  * Adjust the mypy output parsing logic and regexes.
+#  * Visually validate the underline of the related fixtures file.
+#  * Adjust the related heuristic/regex.
 
 LinterMyPystyle = require '../lib/init'
 path = require 'path'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-goodPath = path.join(__dirname, 'fixtures', 'good.py')
-badPath = path.join(__dirname, 'fixtures', 'bad.py')
-badPathRegex = /.+bad\.py/
+badimportPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badimport.py')
 
 describe "The MyPy provider for Linter", ->
   lint = require('../lib/init').provideLinter().lint
@@ -31,30 +30,33 @@ describe "The MyPy provider for Linter", ->
   it 'should have activated the package', ->
     expect(atom.packages.isPackageActive('linter-mypy')).toBe true
 
-  describe "lints good.py and", ->
+  describe "lints bad import (silent)", ->
     editor = null
     beforeEach ->
       waitsForPromise ->
-        atom.workspace.open(goodPath).then (e) ->
+        atom.workspace.open(badimportPath).then (e) ->
           editor = e
 
-    it 'finds nothing to complain about', ->
+    it 'finds local message only', ->
+      atom.config.set("linter-mypy.followImports", 'silent')
       messages = null
       waitsForPromise ->
         lint(editor).then (msgs) -> messages = msgs
       runs ->
-        expect(messages.length).toEqual 0
+        expect(messages.length).toEqual 1
 
-  describe "lints bad.py and", ->
+  describe "lints bad import (normal)", ->
     editor = null
     beforeEach ->
       waitsForPromise ->
-        atom.workspace.open(badPath).then (e) ->
+        atom.workspace.open(badimportPath).then (e) ->
           editor = e
 
     it 'finds something to complain about', ->
+      atom.config.set("linter-mypy.followImports", 'normal')
       messages = null
       waitsForPromise ->
-        lint(editor).then (msgs) -> messages = msgs
+        lint(editor).then (msgs) ->
+          messages = msgs
       runs ->
-        expect(messages.length).toBeGreaterThan 0
+        expect(messages.length).toBeGreaterThan 1

@@ -22,7 +22,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
     apm install linter-mypy
     ```
 
-## Configuration
+## Available settings
 
 | Setting                                     | Default Values |
 | ------------------------------------------- | -------------- |

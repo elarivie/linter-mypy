@@ -1,10 +1,10 @@
 #!/usr/bin/env coffee
 #
 # This spec file validates:
-#  * The use of $PROJECT_NAME variable in the config path
+#  * The use of $PROJECT_NAME & $PROJECT_PATH variable in the config path
 #
 #  If it fails:
-#  * Adjust the project_name method
+#  * Adjust the resolvePath method
 
 LinterMyPystyle = require '../lib/init'
 path = require 'path'

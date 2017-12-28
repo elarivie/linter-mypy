@@ -1,11 +1,10 @@
 #!/usr/bin/env coffee
 #
 # This spec file validates:
-#  * The heuristic related ot the warning "Argument A to "B" has incompatible type "C"; expected "D""
-#    * Make sure the range and the attributes are correctly set.
+#  * That warnings are correctly reported mainly about the underline location.
 #
 #  If it fails:
-#  * Visually validate the underline of the file "bad0.py"
+#  * Visually validate the underline of the related fixtures file.
 #  * Adjust the related heuristic/regex.
 
 LinterMyPystyle = require '../lib/init'
@@ -13,8 +12,11 @@ path = require 'path'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-badPath0 = path.join(__dirname, 'fixtures', 'bad0.py')
-badPath0Regex = /.+bad0\.py/
+badPath0 = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badIndent0.py')
+badPath0Regex = /.+badIndent0\.py/
+
+badPath1 = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badIndent1.py')
+badPath1Regex = /.+badIndent1\.py/
 
 describe "The MyPy provider for Linter", ->
   lint = require('../lib/init').provideLinter().lint
@@ -30,11 +32,51 @@ describe "The MyPy provider for Linter", ->
   it 'should have activated the package', ->
     expect(atom.packages.isPackageActive('linter-mypy')).toBe true
 
-  describe "reads bad0.py and", ->
+  describe "reads badindent0.py", ->
     editor = null
     beforeEach ->
       waitsForPromise ->
         atom.workspace.open(badPath0).then (e) ->
+          editor = e
+
+    describe "validates reported warnings", ->
+      messages = null
+      beforeEach ->
+        waitsForPromise ->
+          lint(editor).then (msgs) ->
+            messages = msgs
+      it 'should have detected all the errors', ->
+        expect(messages.length).toBe(11)
+      it 'should have put the good attributes in each warnings', ->
+        msg0 = 'Incompatible types in assignment (expression has type "str", variable has type "int")'
+        msg1 = 'Function is missing a type annotation'
+        msg = [msg0, msg1]
+        messages.forEach (item, index) ->
+          expect(item.location.file).toMatch(badPath0Regex)
+          expect(item.severity).toBe('warning')
+          if index <= 9
+            expect(item.excerpt).toBe(msg[index %% 2])
+          else
+            expect(item.excerpt).toBe(msg1)
+      it 'should have put the good range base on heuristic', ->
+        #Before setting those expected location.position, visually make sure that the underlines of badindent1.py make sens.
+        expect(messages[0].location.position).toEqual([[1,0],[1,1]])
+        expect(messages[1].location.position).toEqual([[2,0],[2,1]])
+        expect(messages[2].location.position).toEqual([[4,1],[4,2]])
+        expect(messages[3].location.position).toEqual([[5,1],[5,2]])
+        expect(messages[4].location.position).toEqual([[7,2],[7,3]])
+        expect(messages[5].location.position).toEqual([[8,2],[8,3]])
+        expect(messages[6].location.position).toEqual([[10,3],[10,4]])
+        expect(messages[7].location.position).toEqual([[11,3],[11,4]])
+        expect(messages[8].location.position).toEqual([[13,4],[13,5]])
+        expect(messages[9].location.position).toEqual([[16,1],[16,2]])
+        expect(messages[10].location.position).toEqual([[18,3],[18,4]])
+
+  describe "reads badindent1.py", ->
+    editor = null
+    beforeEach ->
+      waitsForPromise ->
+        atom.workspace.open(badPath1).then (e) ->
           editor = e
 
     describe "validates reported warnings", ->
@@ -50,14 +92,14 @@ describe "The MyPy provider for Linter", ->
         msg2 = 'Unsupported operand types for + ("int" and "str")'
         msg = [msg0, msg1, msg2]
         messages.forEach (item, index) ->
-          expect(item.location.file).toMatch(badPath0Regex)
+          expect(item.location.file).toMatch(badPath1Regex)
           expect(item.severity).toBe('warning')
           if index <= 43
             expect(item.excerpt).toBe(msg[index %% 3])
           else
             expect(item.excerpt).toBe(msg[2])
       it 'should have put the good range base on heuristic', ->
-        #Before setting those expected location.position, visually make sure that the underlines of bad0.py make sens.
+        #Before setting those expected location.position, visually make sure that the underlines of badindent1.py make sens.
         expect(messages[0].location.position).toEqual([[3,0],[3,3]])
         expect(messages[1].location.position).toEqual([[3,0],[3,3]])
         expect(messages[2].location.position).toEqual([[3,0],[3,1]])
