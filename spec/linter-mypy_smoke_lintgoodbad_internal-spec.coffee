@@ -17,7 +17,7 @@ goodPath = path.join(__dirname, 'fixtures', 'smoke', 'good', 'good.py')
 badPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'HelloWorld.py')
 badPathRegex = /.+HelloWorld\.py/
 
-describe "The MyPy provider for Linter", ->
+describe "linter-mypy ... Linting smoke test", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->

@@ -7,7 +7,7 @@
 #  * Validate everywhere in the code where the problematic method is used and validate that linter-mypy still works.
 
 {CompositeDisposable} = require 'atom'
-describe "The atom-linter library", ->
+describe "atom-linter ... (integration)", ->
   helpers = require 'atom-linter'
   describe "The `exec` method", ->
     it 'returns the expected error message when launching a non-existing executable', ->

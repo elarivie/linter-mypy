@@ -19,7 +19,7 @@ helpers = require 'atom-linter'
 goodExternalPath = path.join(__dirname, 'fixtures', 'smoke', 'good', 'goodexternal.py')
 badExternalPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badexternal.py')
 
-describe "The MyPy provider for Linter", ->
+describe "linter-mypy ... import", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->

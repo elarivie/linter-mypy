@@ -211,7 +211,7 @@ test_pyfile = (p_lint, p_data) ->
 
 # Given a fully installed and activated linter-mypy package.
 
-describe "Given a fully installed and activated linter-mypy package.", ->
+describe "linter-mypy ... lint heuristics.", ->
 
   lint = require('../lib/init').provideLinter().lint
 

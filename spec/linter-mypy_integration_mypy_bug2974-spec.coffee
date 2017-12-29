@@ -15,7 +15,7 @@ os = require 'os'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-describe "The MyPy provider for Linter", ->
+describe "MyPy ... bug 2974", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->

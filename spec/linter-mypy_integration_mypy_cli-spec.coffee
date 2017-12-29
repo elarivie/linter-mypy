@@ -15,7 +15,7 @@ helpers = require 'atom-linter'
 
 helpPath = path.join(__dirname, 'fixtures', 'integration', 'mypy.help')
 
-describe "The MyPy tool", ->
+describe "MyPy ... (integration) Command Line Interface", ->
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')

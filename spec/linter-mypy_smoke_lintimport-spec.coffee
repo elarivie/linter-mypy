@@ -16,7 +16,7 @@ helpers = require 'atom-linter'
 
 badimportPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badimport.py')
 
-describe "The MyPy provider for Linter", ->
+describe "linter-mypy ... Linting + follow imports", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->

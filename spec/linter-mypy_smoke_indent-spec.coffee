@@ -18,7 +18,7 @@ badPath0Regex = /.+badIndent0\.py/
 badPath1 = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badIndent1.py')
 badPath1Regex = /.+badIndent1\.py/
 
-describe "The MyPy provider for Linter", ->
+describe "linter-mypy ... Linting smoke test (indentation)", ->
   lint = require('../lib/init').provideLinter().lint
   beforeEach ->
     waitsForPromise ->
