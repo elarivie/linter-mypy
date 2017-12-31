@@ -230,6 +230,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.strictOptional',
       (strictOptional) =>
         @strictOptional = strictOptional
+    @subscriptions.add atom.config.observe 'linter-mypy.noImplicitOptional',
+      (noImplicitOptional) =>
+        @noImplicitOptional = noImplicitOptional
     @subscriptions.add atom.config.observe 'linter-mypy.warnUnusedConfigs',
       (warnUnusedConfigs) =>
         @warnUnusedConfigs = warnUnusedConfigs
@@ -249,11 +252,9 @@ module.exports =
   deactivate: ->
     @subscriptions.dispose()
 
-  lintPath: (filePath)->
-    rootPath = path.dirname(filePath)
-    # This is the entry point for Lint requests for a given file.
+  getMypyCommandLine: (filePath)->
 
-    # Prepare the command line parameters.
+    # Get the command line arguments to lint a given file path.
     params = []
 
     ## Use the python module mypy
@@ -365,6 +366,13 @@ module.exports =
     # Provide the filename to lint.
     params.push(filePath)
 
+    return params
+
+  lintPath: (filePath)->
+    # This is the entry point for Lint requests for a given file.
+
+    rootPath = path.dirname(filePath)
+
     # Extract the file system root.
     c_RootRoot = path.parse(filePath).root
 
@@ -394,7 +402,7 @@ module.exports =
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
     # https://github.com/steelbrain/exec
-    return helpers.exec(executablePath, params, options).then (({stdout, stderr, exitCode}) ->
+    return helpers.exec(executablePath, @getMypyCommandLine(filePath), options).then (({stdout, stderr, exitCode}) ->
       # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = []
 

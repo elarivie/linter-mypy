@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Some lint now have a severity of Error (undefined name, invalid syntax, inconsistent indentation).
 - Micro speed optimization related to not verifying some heuristics when we already can deduce they won't apply.
 - Reorganized specs.
+- Isolated some logic in their own function.
+- Fix a bug related to the setting "noImplicitOptional" not being refreshed live
 
 ## [Released] - 2.4.3 2017-11-17
 
