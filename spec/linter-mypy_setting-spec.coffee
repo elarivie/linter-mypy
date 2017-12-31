@@ -1,11 +1,10 @@
 #!/usr/bin/env coffee
 #
 # This spec file validates:
-#  * That warnings are correctly reported mainly about the underline location.
+#  * That the settings are correctly implemented.
 #
 #  If it fails:
-#  * Visually validate the underline of the related fixtures file.
-#  * Adjust the related heuristic/regex.
+#  * Validate the settings declaration & observation.
 
 LinterMyPystyle = require '../lib/init'
 path = require 'path'

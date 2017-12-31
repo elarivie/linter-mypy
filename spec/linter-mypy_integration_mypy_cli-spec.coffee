@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 #
 #  This spec file validates:
-#  * That the mypy command line interface of Mypy.
+#  * That the Command Line Interface of Mypy.
 #
 #  If it fails:
 #  * run "mypy --help" and do a diff with spec/fixtures/mypy.help
@@ -44,4 +44,6 @@ describe "MyPy ... (integration) Command Line Interface", ->
 
     it 'Provides the expected error message when provided with unknown arguments.', ->
       expect(mypyInvalidMsg).not.toBe("")
+      expect(mypyInvalidMsg).toContain("usage: mypy")
+      #The following line is how the check is actually done:
       expect(0 <= mypyInvalidMsg.indexOf("usage: mypy")).toBe(true)
