@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.4.4 2017-12-31
+
 ### Added
 - A lot of new Specs
 - Heuristics for certain lint message.
