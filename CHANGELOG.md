@@ -6,10 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- A setting to choose between "Lint as you type" or "Lint on file save".
+
+### Changed
+- Improve some Specs structure.
+
 ## [Released] - 2.4.4 2017-12-31
 
 ### Added
-- A lot of new Specs
+- A lot of new Specs.
 - Heuristics for certain lint message.
 
 ### Changed
@@ -17,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Micro speed optimization related to not verifying some heuristics when we already can deduce they won't apply.
 - Reorganized specs.
 - Isolated some logic in their own function.
-- Fix a bug related to the setting "noImplicitOptional" not being refreshed live
+- Fix a bug related to the setting "noImplicitOptional" not being refreshed live.
 
 ## [Released] - 2.4.3 2017-11-17
 

@@ -19,12 +19,14 @@ badPath1 = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badIndent1.py')
 badPath1Regex = /.+badIndent1\.py/
 
 describe "linter-mypy ... Linting smoke test (indentation)", ->
-  lint = require('../lib/init').provideLinter().lint
+  lint = undefined
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
+  beforeEach ->
+    lint = require('../lib/init').provideLinter().lint
 
   it 'should be in the package list', ->
     expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true

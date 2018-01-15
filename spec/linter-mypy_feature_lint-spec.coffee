@@ -13,19 +13,31 @@ path = require 'path'
 {CompositeDisposable} = require 'atom'
 helpers = require 'atom-linter'
 
-test_pyfile = (p_lint, p_data) ->
+test_pyfile = (p_data) ->
   describe "When linting the file: " + p_data.filename, ->
     pyPath = path.join(__dirname, 'fixtures', 'specificLint', p_data.filename + '.py')
     editor = null
     messages = null
+    lint = undefined
+    beforeEach -> #aka Before each it
+      waitsForPromise -> atom.packages.activatePackage('linter-mypy')
+      waitsForPromise -> atom.packages.activatePackage('language-python')
+    beforeEach ->
+      lint = require('../lib/init').provideLinter().lint
     beforeEach ->
       waitsForPromise ->
         atom.workspace.open(pyPath).then (e) ->
           editor = e
           messages = null
+    it 'Then should be in the package list and activated', ->
+      expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true
+      expect(atom.packages.isPackageLoaded('language-python')).toBe true
+      expect(atom.packages.isPackageActive('linter-mypy')).toBe true
+      expect(atom.packages.isPackageActive('language-python')).toBe true
+
     it 'Then should detect all the errors of the file: ' + p_data.filename, ->
       runs ->
-        waitsForPromise -> p_lint(editor).then (msgs) ->
+        waitsForPromise -> lint(editor).then (msgs) ->
           messages = msgs
           expect(messages.length).toBe(p_data.lintcount)
           messages.forEach (item, index) ->
@@ -213,18 +225,6 @@ test_pyfile = (p_lint, p_data) ->
 
 describe "linter-mypy ... lint heuristics.", ->
 
-  lint = require('../lib/init').provideLinter().lint
-
-  beforeEach -> #aka Before each it
-    waitsForPromise -> atom.packages.activatePackage('linter-mypy')
-    waitsForPromise -> atom.packages.activatePackage('language-python')
-
-  it 'Then should be in the package list and activated A', ->
-    expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true
-    expect(atom.packages.isPackageLoaded('language-python')).toBe true
-    expect(atom.packages.isPackageActive('linter-mypy')).toBe true
-    expect(atom.packages.isPackageActive('language-python')).toBe true
-
   testdata = [
     {
       filename: "lint_argumenthasincompatibletype",
@@ -268,4 +268,4 @@ describe "linter-mypy ... lint heuristics.", ->
     }
   ]
   for c_currFile in testdata
-    test_pyfile(lint, c_currFile)
+    test_pyfile(c_currFile)

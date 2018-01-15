@@ -14,6 +14,16 @@ NamedRegexp = require('named-js-regexp')
 
 module.exports =
   config:
+    lintTrigger:
+      title: 'Lint Trigger'
+      type: 'string'
+      default: 'LintOnFileSave'
+      enum: [
+        {value: 'LintOnFileSave', description: 'Lint on file save'}
+        {value: 'LintAsYouType', description: 'Lint as you type'}
+      ]
+      description: "Specify the lint trigger"
+      order: 1
     executablePath:
       title: 'Executable Path'
       type: 'string'
@@ -23,17 +33,17 @@ module.exports =
       dynamically depending of the current project. For example:
       `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
       '''
-      order: 1
+      order: 2
     mypyNotifyInternalError:
       type: 'boolean'
       default: true
       description: 'Pop-up a detailed error if a Mypy Internal error occurs'
-      order: 2
+      order: 3
     ignoreFiles:
       type: 'string'
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
-      order: 3
+      order: 4
     mypyPath:
       type: 'string'
       default: ''
@@ -43,7 +53,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/stubs`.
       '''
-      order: 4
+      order: 5
     mypyIniFile:
       type: 'string'
       default: ''
@@ -52,7 +62,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
-      order: 5
+      order: 6
     followImports:
       type: 'string'
       default: 'silent'
@@ -63,107 +73,107 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: "how to treat imports"
-      order: 6
+      order: 7
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'disallow calling functions without type annotations from functions with type annotations'
-      order: 7
+      order: 8
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 8
+      order: 9
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'disallow defining functions with incomplete type annotations'
-      order: 9
+      order: 10
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'type check the interior of functions without type annotations'
-      order: 10
+      order: 11
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 11
+      order: 12
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'disallow decorating typed functions with untyped decorators'
-      order: 12
+      order: 13
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'warn about casting an expression to its inferred type'
-      order: 13
+      order: 14
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'warn about functions that end without returning'
-      order: 14
+      order: 15
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 15
+      order: 16
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 16
+      order: 17
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'disallows usage of types that come from unfollowed imports'
-      order: 17
+      order: 18
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'disallows all expressions in the module that have type Any'
-      order: 18
+      order: 19
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'disallows functions that have Any in their signature after decorator transformation'
-      order: 19
+      order: 20
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'disallows explicit Any in type positions'
-      order: 20
+      order: 21
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'disallows usage of generic types that do not specify explicit type parameters'
-      order: 21
+      order: 22
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "warn about unneeded '# type: ignore' comments"
-      order: 22
+      order: 23
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "warn about unnused '[mypy-<pattern>]' config sections"
-      order: 23
+      order: 24
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "warn about imports of missing modules"
-      order: 24
+      order: 25
     strictOptional:
       type: 'boolean'
       default: true
       description: "enable experimental strict Optional checks"
-      order: 25
+      order: 26
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "don't assume arguments with default values of None are Optional"
-      order: 26
+      order: 27
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
@@ -252,7 +262,7 @@ module.exports =
   deactivate: ->
     @subscriptions.dispose()
 
-  getMypyCommandLine: (filePath)->
+  getMypyCommandLine: (filePath, filePathShadow)->
 
     # Get the command line arguments to lint a given file path.
     params = []
@@ -267,6 +277,11 @@ module.exports =
 
     ## In case a Mypy INTERNAL ERROR is encountered, print the stacktrace to ease bug reporting.
     params.push("--show-traceback")
+
+    if filePath != filePathShadow
+      params.push("--shadow-file")
+      params.push(filePath)
+      params.push(filePathShadow)
 
     iniPath = @resolvePath @mypyIniFile, filePath
 
@@ -368,7 +383,7 @@ module.exports =
 
     return params
 
-  lintPath: (filePath)->
+  lintPath: (filePath, filePathShadow) ->
     # This is the entry point for Lint requests for a given file.
 
     rootPath = path.dirname(filePath)
@@ -398,11 +413,12 @@ module.exports =
     options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/^:+|:+$/g, '')
 
     executablePath = @resolvePath @executablePath, filePath
+    params = @getMypyCommandLine(filePath, filePathShadow)
     mypyNotifyInternalError = @mypyNotifyInternalError
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
     # https://github.com/steelbrain/exec
-    return helpers.exec(executablePath, @getMypyCommandLine(filePath), options).then (({stdout, stderr, exitCode}) ->
+    return helpers.exec(executablePath, params, options).then (({stdout, stderr, exitCode}) ->
       # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = []
 
@@ -544,7 +560,7 @@ module.exports =
 
           The Conclusion: Not much can be done.
 
-          The Solution: Since it is an unknown error let't keep the error message intact
+          The Solution: Since it is an unknown error let's keep the error message intact
             1- Inform the user about the situation with an error pop-up containing the full error message, hopefully he will provide a bug report with this information so that it can be better handle.
           ###
           atom.notifications.addError(stderr)
@@ -552,7 +568,7 @@ module.exports =
       # Return the result.
       return [result]
     ), (err) ->
-      if err.message.match /^Failed\sto\sspawn\scommand\s.+\.\sMake\ssure\s.+\sis\sinstalled\sand\son\syour\sPATH$/gi || stderr.match /^The\ssystem\scannot\sfind\sthe\spath\sspecified\.$/gi
+      if ('ENOENT' == err.code)
         ###
         The Problem: The error is about a process spawn which failed
 
@@ -717,13 +733,23 @@ module.exports =
       scope: 'file'
       lintsOnChange: false
       lint: (textEditor) =>
-        if (@ignoreFiles == '' || !textEditor.getPath().match(@ignoreFiles))
-          # The file is not to be ignored, let's lint it and returns the mypy warnings...
-          return @lintPath textEditor.getPath()
-            .then @parseMessages
-        else
+        filePath = textEditor.getPath()
+        if (@ignoreFiles != '') && filePath.match(@ignoreFiles)
           # The file is to be ignored, we therefore return an empty set of warning.
           return []
+
+        # Let's lint it and returns the Mypy warnings...
+        if provider.lintsOnChange && textEditor.isModified()
+          return helpers.tempFile path.basename(filePath), textEditor.getBuffer().getText(), (filePathShadow) =>
+            return @lintPath(filePath, filePathShadow).then @parseMessages
+        else
+          return @lintPath(filePath, filePath).then @parseMessages
+
+    @subscriptions.add atom.config.observe 'linter-mypy.lintTrigger',
+      (lintTrigger) =>
+        @lintTrigger = lintTrigger
+        provider.lintsOnChange = "LintAsYouType" == lintTrigger
+    return provider
 
   resolvePath: (targetPath, filepath) ->
     # Replace variables ($PROJECT_PATH, $PROJECT_NAME) from the targetPath string base on the filepath location.

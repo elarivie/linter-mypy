@@ -13,7 +13,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 1.  Install python package [mypy][mypy], run:
 
     ```ShellSession
-    python3 -m pip install mypy
+    python3 -m pip install -U mypy
     ```
 
 2.  Install atom package, run:
@@ -24,34 +24,35 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 
 ## Available settings
 
-| Setting                                     | Default Values |
-| ------------------------------------------- | -------------- |
-| Path to the executable of [Python][python]  |     `python3`  |
-| Mypy Notify Internal Error                  |     `True`     |
-| Ignore File name Regex                      |                |
-| [Mypy Path][MypyPath]                       |                |
-| [Mypy ini File][OptMypyIni]                 |                |
-| [Follow Imports][OptFollowImports]          |     `silent`   |
-| Disallow Untyped Calls                      |     `True`     |
-| Disallow Untyped Defs                       |     `True`     |
-| Disallow Incomplete Defs                    |     `True`     |
-| Check Untyped Defs                          |     `True`     |
-| Warn Incomplete Stub                        |     `True`     |
-| Disallow Untyped Decorators                 |     `True`     |
-| Warn Redundant Casts                        |     `True`     |
-| Warn No Return                              |     `True`     |
-| Warn Return Any                             |     `True`     |
-| Disallow Subclassing Any                    |     `True`     |
-| Disallow Any Unimported                     |     `True`     |
-| Disallow Any Expr                           |     `True`     |
-| Disallow Any Decorated                      |     `True`     |
-| Disallow Any Explicit                       |     `True`     |
-| Disallow Any Generics                       |     `True`     |
-| Warn Unused Ignores                         |     `True`     |
-| Warn Unused Configs                         |     `True`     |
-| Warn Missing Imports                        |     `True`     |
-| Strict Optional                             |     `True`     |
-| No Implicit Optional                        |     `True`     |
+| Setting                                     | Default Values       |
+| ------------------------------------------- | -------------------- |
+| Lint trigger                                |  `Lint on file save` |
+| Path to the executable of [Python][python]  |     `python3`        |
+| Mypy Notify Internal Error                  |     `True`           |
+| Ignore File path Regex                      |                      |
+| [Mypy Path][MypyPath]                       |                      |
+| [Mypy ini File][OptMypyIni]                 |                      |
+| [Follow Imports][OptFollowImports]          |     `silent`         |
+| Disallow Untyped Calls                      |     `True`           |
+| Disallow Untyped Defs                       |     `True`           |
+| Disallow Incomplete Defs                    |     `True`           |
+| Check Untyped Defs                          |     `True`           |
+| Warn Incomplete Stub                        |     `True`           |
+| Disallow Untyped Decorators                 |     `True`           |
+| Warn Redundant Casts                        |     `True`           |
+| Warn No Return                              |     `True`           |
+| Warn Return Any                             |     `True`           |
+| Disallow Subclassing Any                    |     `True`           |
+| Disallow Any Unimported                     |     `True`           |
+| Disallow Any Expr                           |     `True`           |
+| Disallow Any Decorated                      |     `True`           |
+| Disallow Any Explicit                       |     `True`           |
+| Disallow Any Generics                       |     `True`           |
+| Warn Unused Ignores                         |     `True`           |
+| Warn Unused Configs                         |     `True`           |
+| Warn Missing Imports                        |     `True`           |
+| Strict Optional                             |     `True`           |
+| No Implicit Optional                        |     `True`           |
 
 [linter]: https://github.com/atom-community/linter
 [install linter]: https://github.com/atom-community/linter#installation

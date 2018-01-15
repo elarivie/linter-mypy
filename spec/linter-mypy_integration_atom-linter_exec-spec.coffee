@@ -13,11 +13,11 @@ describe "atom-linter ... (integration)", ->
   describe "The `exec` method", ->
     it 'returns the expected error message when launching a non-existing executable', ->
       dummyExecName = "aNonExistingExecutable"
-      return helpers.exec(dummyExecName, [], {}).then ((outputStream) ->
+      return helpers.exec(dummyExecName, [], {}).then (({stdout, stderr, exitCode}) ->
         #'This promise is not expected to be successful
         expect(true).toBe(false)
       ), (err) ->
-        expect(err.message).toBe('Failed to spawn command `' + dummyExecName + '`. Make sure `' + dummyExecName + '` is installed and on your PATH')
+        expect('ENOENT' == err.code).toBe(true)
 
     it 'Stores stdout, stderr and exitcode', ->
       scriptPath = path.join(__dirname, 'fixtures', 'integration', 'echo_stderrout_hello123.sh')

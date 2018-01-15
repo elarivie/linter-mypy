@@ -17,12 +17,14 @@ helpers = require 'atom-linter'
 badimportPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badimport.py')
 
 describe "linter-mypy ... Linting + follow imports", ->
-  lint = require('../lib/init').provideLinter().lint
+  lint = undefined
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
+  beforeEach ->
+    lint = require('../lib/init').provideLinter().lint
 
   it 'should be in the package list', ->
     expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true

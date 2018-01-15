@@ -18,12 +18,14 @@ badPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'HelloWorld.py')
 badPathRegex = /.+HelloWorld\.py/
 
 describe "linter-mypy ... Linting smoke test", ->
-  lint = require('../lib/init').provideLinter().lint
+  lint = undefined
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
+  beforeEach ->
+    lint = require('../lib/init').provideLinter().lint
 
   it 'should be in the package list', ->
     expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true

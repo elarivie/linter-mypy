@@ -14,12 +14,14 @@ os = require 'os'
 helpers = require 'atom-linter'
 
 describe "linter-mypy ... resolvePath", ->
-  lint = require('../lib/init').provideLinter().lint
+  lint = undefined
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
+  beforeEach ->
+    lint = require('../lib/init').provideLinter().lint
 
   it 'should be in the package list', ->
     expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true

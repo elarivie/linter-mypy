@@ -20,12 +20,14 @@ goodExternalPath = path.join(__dirname, 'fixtures', 'smoke', 'good', 'goodextern
 badExternalPath = path.join(__dirname, 'fixtures', 'smoke', 'bad', 'badexternal.py')
 
 describe "linter-mypy ... import", ->
-  lint = require('../lib/init').provideLinter().lint
+  lint = undefined
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
+  beforeEach ->
+    lint = require('../lib/init').provideLinter().lint
 
   it 'should be in the package list', ->
     expect(atom.packages.isPackageLoaded('linter-mypy')).toBe true

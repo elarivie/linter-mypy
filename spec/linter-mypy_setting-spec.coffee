@@ -16,12 +16,14 @@ pyPath = path.join(__dirname, 'fixtures', 'integration', 'aFile.py')
 pseudoPythonExecutable = path.join(__dirname, 'fixtures', 'integration', 'echo_stdout_args_lint.sh')
 
 describe "linter-mypy ... settings.", ->
-  lint = require('../lib/init').provideLinter().lint
+  lint = undefined
   beforeEach ->
     waitsForPromise ->
       atom.packages.activatePackage('linter-mypy')
     waitsForPromise ->
       atom.packages.activatePackage('language-python')
+  beforeEach ->
+    lint = require('../lib/init').provideLinter().lint
     atom.config.set('linter-mypy.executablePath', pseudoPythonExecutable)
 
   afterEach ->

@@ -203,7 +203,7 @@ Exit code 0 if build is successfull
 					c_ActualPathOut = tempfile.mkdtemp(suffix='', prefix='', dir=v_TmpPath)
 				if c_ActualPathSrc is None:
 					c_ActualPathSrc = tempfile.mkdtemp(suffix='', prefix='', dir=v_TmpPath)
-				assert os.path.isdir(c_ActualPathSrc), "The source folder has to be a folder"
+				assert os.path.isdir(c_ActualPathSrc), "The source folder has to be a folder: " + c_ActualPathSrc
 				assert (c_ActualPathTmp is None) or os.path.isdir(c_ActualPathTmp), "The temporary folder has to be a folder"
 				assert (c_ActualPathTmp is None) or not c_ActualPathTmp.startswith(c_ActualPathSrc + os.sep), "The temporary folder cannot be within the source folder"
 				assert not c_ActualPathOut.startswith(c_ActualPathSrc + os.sep), "The output folder cannot be within the source folder"
