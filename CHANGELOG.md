@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - A setting to choose between "Lint as you type" or "Lint on file save".
+- A setting to use Mypy experimental incremental analysis.
+- Create & delete a random temporary folder to store the Mypy cache data.
+- Documentation links on the README and within the settings.
 
 ### Changed
 - Improve some Specs structure.
+- If not using incremental mode, then no ".mypy_cache" folder gets created.
 
 ## [Released] - 2.4.4 2017-12-31
 

@@ -8,6 +8,7 @@ fs = require 'fs'
 os = require 'os'
 path = require 'path'
 NamedRegexp = require('named-js-regexp')
+md5 = require('md5')
 
 # Define every available settings.
 ## Those settings are also documented in the README file.
@@ -24,6 +25,11 @@ module.exports =
       ]
       description: "Specify the lint trigger"
       order: 1
+    mypyIncremental:
+      type: 'boolean'
+      default: true
+      description: 'Use <a href="http://mypy.readthedocs.io/en/latest/command_line.html#incremental">Mypy experimental incremental</a> analysis to improve lint process time.'
+      order: 2
     executablePath:
       title: 'Executable Path'
       type: 'string'
@@ -33,17 +39,17 @@ module.exports =
       dynamically depending of the current project. For example:
       `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
       '''
-      order: 2
+      order: 3
     mypyNotifyInternalError:
       type: 'boolean'
       default: true
       description: 'Pop-up a detailed error if a Mypy Internal error occurs'
-      order: 3
+      order: 4
     ignoreFiles:
       type: 'string'
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
-      order: 4
+      order: 5
     mypyPath:
       type: 'string'
       default: ''
@@ -53,7 +59,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/stubs`.
       '''
-      order: 5
+      order: 6
     mypyIniFile:
       type: 'string'
       default: ''
@@ -62,7 +68,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
-      order: 6
+      order: 7
     followImports:
       type: 'string'
       default: 'silent'
@@ -72,117 +78,143 @@ module.exports =
         {value: 'skip', description: 'Skip. Don’t follow imports.'}
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
-      description: "how to treat imports"
-      order: 7
+      description: '''Should mypy analysis <a href="http://mypy.readthedocs.io/en/latest/command_line.html#follow-imports">follow imports</a>'''
+      order: 8
     disallowUntypedCalls:
       type: 'boolean'
       default: true
-      description: 'disallow calling functions without type annotations from functions with type annotations'
-      order: 8
+      description: 'Disallow calling functions without type annotations from functions with type annotations'
+      order: 9
     disallowUntypedDefs:
       type: 'boolean'
       default: true
-      description: 'disallow defining functions without type annotations or with incomplete type annotations'
-      order: 9
+      description: 'Disallow defining functions without type annotations or with incomplete type annotations'
+      order: 10
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
-      description: 'disallow defining functions with incomplete type annotations'
-      order: 10
+      description: 'Disallow defining functions with incomplete type annotations'
+      order: 11
     checkUntypedDefs:
       type: 'boolean'
       default: true
-      description: 'type check the interior of functions without type annotations'
-      order: 11
+      description: 'Type check the interior of functions without type annotations'
+      order: 12
     warnIncompleteStub:
       type: 'boolean'
       default: true
-      description: 'warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 12
+      description: 'Warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
+      order: 13
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
-      description: 'disallow decorating typed functions with untyped decorators'
-      order: 13
+      description: 'Disallow decorating typed functions with untyped decorators'
+      order: 14
     warnRedundantCasts:
       type: 'boolean'
       default: true
-      description: 'warn about casting an expression to its inferred type'
-      order: 14
+      description: 'Warn about casting an expression to its inferred type'
+      order: 15
     warnNoReturn:
       type: 'boolean'
       default: true
-      description: 'warn about functions that end without returning'
-      order: 15
+      description: 'Warn about functions that end without returning'
+      order: 16
     warnReturnAny:
       type: 'boolean'
       default: true
-      description: 'warn about returning values of type Any from non-Any typed functions'
-      order: 16
+      description: 'Warn about returning values of type Any from non-Any typed functions'
+      order: 17
     disallowSubclassingAny:
       type: 'boolean'
       default: true
-      description: 'disallow subclassing values of type "Any" when defining classes'
-      order: 17
+      description: 'Disallow subclassing values of type "Any" when defining classes'
+      order: 18
     disallowAnyUnimported:
       type: 'boolean'
       default: true
-      description: 'disallows usage of types that come from unfollowed imports'
-      order: 18
+      description: 'Disallows usage of types that come from unfollowed imports'
+      order: 19
     disallowAnyExpr:
       type: 'boolean'
       default: true
-      description: 'disallows all expressions in the module that have type Any'
-      order: 19
+      description: 'Disallows all expressions in the module that have type Any'
+      order: 20
     disallowAnyDecorated:
       type: 'boolean'
       default: true
-      description: 'disallows functions that have Any in their signature after decorator transformation'
-      order: 20
+      description: 'Disallows functions that have Any in their signature after decorator transformation'
+      order: 21
     disallowAnyExplicit:
       type: 'boolean'
       default: true
-      description: 'disallows explicit Any in type positions'
-      order: 21
+      description: 'Disallows explicit Any in type positions'
+      order: 22
     disallowAnyGenerics:
       type: 'boolean'
       default: true
-      description: 'disallows usage of generic types that do not specify explicit type parameters'
-      order: 22
+      description: 'Disallows usage of generic types that do not specify explicit type parameters'
+      order: 23
     warnUnusedIgnores:
       type: 'boolean'
       default: true
-      description: "warn about unneeded '# type: ignore' comments"
-      order: 23
+      description: "Warn about unneeded '# type: ignore' comments"
+      order: 24
     warnUnusedConfigs:
       type: 'boolean'
       default: true
-      description: "warn about unnused '[mypy-<pattern>]' config sections"
-      order: 24
+      description: "Warn about unnused '[mypy-<pattern>]' config sections"
+      order: 25
     warnMissingImports:
       type: 'boolean'
       default: true
-      description: "warn about imports of missing modules"
-      order: 25
+      description: "Warn about imports of missing modules"
+      order: 26
     strictOptional:
       type: 'boolean'
       default: true
-      description: "enable experimental strict Optional checks"
-      order: 26
+      description: "Enable experimental strict Optional checks"
+      order: 27
     noImplicitOptional:
       type: 'boolean'
       default: true
-      description: "don't assume arguments with default values of None are Optional"
-      order: 27
+      description: "Don't assume arguments with default values of None are Optional"
+      order: 28
+
+  theTempFolder: undefined
+
+  removeFromDisk: (p_path) ->
+    if p_path
+      if fs.existsSync(p_path)
+        stat = fs.statSync p_path
+
+        if stat.isDirectory()
+          # Remove Directory content
+          for item in fs.readdirSync p_path
+            @removeFromDisk path.join(p_path, item)
+          fs.rmdirSync p_path
+        else
+          # Remove File
+          fs.unlinkSync p_path
 
   activate: ->
     require('atom-package-deps').install('linter-mypy')
+
+    # Create a temporary folder which will exists for the lifetime of the linter-mypy session.
+    fs.mkdtemp os.tmpdir() + path.sep + "atom_linter-mypy_", (err, folder) =>
+      if err
+        # Bah it's not that bad... it will just not use incremental analysis even if requested by the user in the settings.
+      else
+        @theTempFolder = folder
 
     #Listen and reload any settings changes to prevent having to restart Atom.
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
       (executablePath) =>
         @executablePath = executablePath
+    @subscriptions.add atom.config.observe 'linter-mypy.mypyIncremental',
+      (mypyIncremental) =>
+        @mypyIncremental = mypyIncremental
     @subscriptions.add atom.config.observe 'linter-mypy.mypyNotifyInternalError',
       (mypyNotifyInternalError) =>
         @mypyNotifyInternalError = mypyNotifyInternalError
@@ -260,10 +292,14 @@ module.exports =
         @mypyPath = mypyPath
 
   deactivate: ->
-    @subscriptions.dispose()
+    # Clean up the temp files created on the hard drive
+    @removeFromDisk(@theTempFolder)
+
+    # Unsubscribe any registered atom's event.
+    if @subscriptions
+      @subscriptions.dispose()
 
   getMypyCommandLine: (filePath, filePathShadow)->
-
     # Get the command line arguments to lint a given file path.
     params = []
 
@@ -282,6 +318,32 @@ module.exports =
       params.push("--shadow-file")
       params.push(filePath)
       params.push(filePathShadow)
+
+    # Create a temporary cache folder if incremental mode is activated.
+    v_cacheFolder = undefined
+    if @mypyIncremental
+      if @theTempFolder
+        v_cacheFolder = path.join(@theTempFolder, md5(filePathShadow))
+        try
+          fs.mkdirSync(v_cacheFolder)
+        catch err
+          if "EEXIST" == err.code then
+          else
+            v_cacheFolder = undefined
+    if v_cacheFolder
+      # Everything is ok to use mypy incremental
+      params.push("--incremental")
+    else
+      # Do not use incremental & make sure that no cache file gets created anywhere.
+      switch os.platform()
+        when "win32"
+          v_cacheFolder = "nul"
+        #when "linux"
+        #when "darwin"
+        else
+          v_cacheFolder = "/dev/null"
+    params.push("--cache-dir")
+    params.push(v_cacheFolder)
 
     iniPath = @resolvePath @mypyIniFile, filePath
 

@@ -28,6 +28,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | ------------------------------------------- | -------------------- |
 | Lint trigger                                |  `Lint on file save` |
 | Path to the executable of [Python][python]  |     `python3`        |
+| [Mypy Incremental][MypyIncremental]         |     `True`           |
 | Mypy Notify Internal Error                  |     `True`           |
 | Ignore File path Regex                      |                      |
 | [Mypy Path][MypyPath]                       |                      |
@@ -67,3 +68,4 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 [OptMypyIni]: http://mypy.readthedocs.io/en/stable/config_file.html
 [OptFollowImports]: http://mypy.readthedocs.io/en/stable/command_line.html#following-imports-or-not
 [MypyPath]: http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found
+[MypyIncremental]: http://mypy.readthedocs.io/en/latest/command_line.html#incremental

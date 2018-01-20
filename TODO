@@ -3,9 +3,6 @@ TODO
 
 This file contains tasks which should be done.
 
-Priority: High, Difficulty: Medium
-* Use the cachedir option (in a temp folder) to increase lint speed and to avoid creation of annoying ".mypy_cache" folder
-
 Priority: Low, Difficulty High
 * Notify the user to update mypy with a pop-up if its installed mypy version is not the one that linter-mypy was configured to use (use mypy --version to get the information)
 
