@@ -323,7 +323,7 @@ module.exports =
     v_cacheFolder = undefined
     if @mypyIncremental
       if @theTempFolder
-        v_cacheFolder = path.join(@theTempFolder, md5(filePathShadow))
+        v_cacheFolder = path.join(@theTempFolder, md5(filePath))
         try
           fs.mkdirSync(v_cacheFolder)
         catch err

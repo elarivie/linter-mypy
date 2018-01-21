@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.5.1 2018-01-20
+
+### Changed
+
+- Fix a bug where a new temp folder was created for each lint run instead of reusing those previously created.
+
 ## [Released] - 2.5.0 2018-01-20
 
 ### Added
