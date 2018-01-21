@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.5.0 2018-01-20
+
 ### Added
 - A setting to choose between "Lint as you type" or "Lint on file save".
 - A setting to use Mypy experimental incremental analysis.
