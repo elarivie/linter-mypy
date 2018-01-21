@@ -201,7 +201,7 @@ module.exports =
     require('atom-package-deps').install('linter-mypy')
 
     # Create a temporary folder which will exists for the lifetime of the linter-mypy session.
-    fs.mkdtemp os.tmpdir() + path.sep + "atom_linter-mypy_", (err, folder) =>
+    fs.mkdtemp path.join(os.tmpdir(), "atom_linter-mypy_"), (err, folder) =>
       if err
         # Bah it's not that bad... it will just not use incremental analysis even if requested by the user in the settings.
       else
