@@ -796,6 +796,8 @@ module.exports =
       lintsOnChange: false
       lint: (textEditor) =>
         filePath = textEditor.getPath()
+        if !filePath?
+          return null
         if (@ignoreFiles != '') && filePath.match(@ignoreFiles)
           # The file is to be ignored, we therefore return an empty set of warning.
           return []
