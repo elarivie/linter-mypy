@@ -69,8 +69,6 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 		c_ProcRun = subprocess.run(
 			[c_BuildpackagePath],
 			check=False,
-			stdout=subprocess.PIPE,
-			stderr=subprocess.STDOUT,
 			env={
 				"PATH": os.environ["PATH"],
 				"TRAVIS_OS_NAME": env_TRAVIS_OS_NAME,
@@ -78,7 +76,6 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 				"HOME": env_HOME
 			}
 		)
-		print(c_ProcRun.stdout.decode("utf-8"))
 		c_ProcRun.check_returncode()
 
 		ATOM_SCRIPT_NAME="atom" + ("" if currChannel == "stable" else ("-" + currChannel))
@@ -86,8 +83,6 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 		c_ProcRun = subprocess.run(
 			["./node_modules/npm-check-updates/bin/ncu"],
 			check=False,
-			stdout=subprocess.PIPE,
-			stderr=subprocess.STDOUT,
 			env={
 				"PATH": "/atom/usr/share/"+ ATOM_SCRIPT_NAME + "/resources/app/apm/bin" + os.pathsep + os.environ["PATH"],
 				"TRAVIS_OS_NAME": env_TRAVIS_OS_NAME,
@@ -95,7 +90,6 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 				"HOME": env_HOME
 			}
 		)
-		print(c_ProcRun.stdout.decode("utf-8"))
 		#c_ProcRun.check_returncode()
 	return 0
 

@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- The possibility to specify the Mypy Incremental cache location.
+
+### Changed
+
+- Reordered the settings.
+- Display more output when running BUILDME
+
 ## [Released] - 2.5.2 2018-02-08
 
 ### Changed

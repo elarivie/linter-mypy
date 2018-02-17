@@ -15,21 +15,6 @@ md5 = require('md5')
 
 module.exports =
   config:
-    lintTrigger:
-      title: 'Lint Trigger'
-      type: 'string'
-      default: 'LintOnFileSave'
-      enum: [
-        {value: 'LintOnFileSave', description: 'Lint on file save'}
-        {value: 'LintAsYouType', description: 'Lint as you type'}
-      ]
-      description: "Specify the lint trigger"
-      order: 1
-    mypyIncremental:
-      type: 'boolean'
-      default: true
-      description: 'Use <a href="http://mypy.readthedocs.io/en/latest/command_line.html#incremental">Mypy experimental incremental</a> analysis to improve lint process time.'
-      order: 2
     executablePath:
       title: 'Executable Path'
       type: 'string'
@@ -39,17 +24,47 @@ module.exports =
       dynamically depending of the current project. For example:
       `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
       '''
-      order: 3
+      order: 1
     mypyNotifyInternalError:
       type: 'boolean'
       default: true
       description: 'Pop-up a detailed error if a Mypy Internal error occurs'
-      order: 4
+      order: 2
     ignoreFiles:
       type: 'string'
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
+      order: 3
+    lintTrigger:
+      title: 'Lint Trigger'
+      type: 'string'
+      default: 'LintOnFileSave'
+      enum: [
+        {value: 'LintOnFileSave', description: 'Lint on file save'}
+        {value: 'LintAsYouType', description: 'Lint as you type'}
+      ]
+      description: "Specify the lint trigger"
+      order: 4
+    mypyIncremental:
+      type: 'boolean'
+      default: true
+      description: 'Use <a href="http://mypy.readthedocs.io/en/latest/command_line.html#incremental">Mypy experimental incremental analysis</a> to improve lint process time.'
       order: 5
+    mypyIncrementalCacheFolderPath:
+      title: 'Mypy Incremental Cache Folder Path'
+      type: 'string'
+      default: ''
+      description: '''Path to an existing folder where Mypy can use to cache data.
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project.<br />For example: `$PROJECT_PATH/mypy_cache`.
+      <br/><strong>Note:</strong><ul>
+          <li>If `/dev/null` is provided, no cache will be use.</li>
+          <li>If no path is provided, folders under the OS temp folder will be use.</li>
+          <li>If a path is provided, and the folder exists, then it will be use.</li>
+          <li>If a dot is provided, the default behavior of MyPy will be use (a .mypy_cache folder next to the file being linted)</li>
+      </ul>
+      '''
+      order: 6
     mypyPath:
       type: 'string'
       default: ''
@@ -59,7 +74,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/stubs`.
       '''
-      order: 6
+      order: 7
     mypyIniFile:
       type: 'string'
       default: ''
@@ -68,7 +83,7 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
-      order: 7
+      order: 8
     followImports:
       type: 'string'
       default: 'silent'
@@ -79,109 +94,109 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: '''Should mypy analysis <a href="http://mypy.readthedocs.io/en/latest/command_line.html#follow-imports">follow imports</a>'''
-      order: 8
+      order: 9
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'Disallow calling functions without type annotations from functions with type annotations'
-      order: 9
+      order: 10
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions without type annotations or with incomplete type annotations'
-      order: 10
+      order: 11
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions with incomplete type annotations'
-      order: 11
+      order: 12
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Type check the interior of functions without type annotations'
-      order: 12
+      order: 13
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'Warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 13
+      order: 14
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'Disallow decorating typed functions with untyped decorators'
-      order: 14
+      order: 15
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'Warn about casting an expression to its inferred type'
-      order: 15
+      order: 16
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'Warn about functions that end without returning'
-      order: 16
+      order: 17
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'Warn about returning values of type Any from non-Any typed functions'
-      order: 17
+      order: 18
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'Disallow subclassing values of type "Any" when defining classes'
-      order: 18
+      order: 19
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'Disallows usage of types that come from unfollowed imports'
-      order: 19
+      order: 20
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'Disallows all expressions in the module that have type Any'
-      order: 20
+      order: 21
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'Disallows functions that have Any in their signature after decorator transformation'
-      order: 21
+      order: 22
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'Disallows explicit Any in type positions'
-      order: 22
+      order: 23
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'Disallows usage of generic types that do not specify explicit type parameters'
-      order: 23
+      order: 24
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "Warn about unneeded '# type: ignore' comments"
-      order: 24
+      order: 25
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "Warn about unnused '[mypy-<pattern>]' config sections"
-      order: 25
+      order: 26
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "Warn about imports of missing modules"
-      order: 26
+      order: 27
     strictOptional:
       type: 'boolean'
       default: true
       description: "Enable experimental strict Optional checks"
-      order: 27
+      order: 28
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "Don't assume arguments with default values of None are Optional"
-      order: 28
+      order: 29
 
-  theTempFolder: undefined
+  theOSTempFolder: undefined
 
   removeFromDisk: (p_path) ->
     if p_path
@@ -205,7 +220,7 @@ module.exports =
       if err
         # Bah it's not that bad... it will just not use incremental analysis even if requested by the user in the settings.
       else
-        @theTempFolder = folder
+        @theOSTempFolder = folder
 
     #Listen and reload any settings changes to prevent having to restart Atom.
     @subscriptions = new CompositeDisposable
@@ -215,6 +230,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.mypyIncremental',
       (mypyIncremental) =>
         @mypyIncremental = mypyIncremental
+    @subscriptions.add atom.config.observe 'linter-mypy.mypyIncrementalCacheFolderPath',
+      (mypyIncrementalCacheFolderPath) =>
+        @mypyIncrementalCacheFolderPath = mypyIncrementalCacheFolderPath
     @subscriptions.add atom.config.observe 'linter-mypy.mypyNotifyInternalError',
       (mypyNotifyInternalError) =>
         @mypyNotifyInternalError = mypyNotifyInternalError
@@ -292,8 +310,8 @@ module.exports =
         @mypyPath = mypyPath
 
   deactivate: ->
-    # Clean up the temp files created on the hard drive
-    @removeFromDisk(@theTempFolder)
+    # Clean up the OS temp files created on the hard drive
+    @removeFromDisk(@theOSTempFolder)
 
     # Unsubscribe any registered atom's event.
     if @subscriptions
@@ -319,22 +337,68 @@ module.exports =
       params.push(filePath)
       params.push(filePathShadow)
 
-    # Create a temporary cache folder if incremental mode is activated.
+    # Cache Strategy #0: Do not use cache folder at all
+    # Cache Strategy #1: Use a unique cache folder for each file under OS temp
+    # Cache Strategy #2: Use default MyPy behavior of creating a ".mypy_cache" folder next to the file
+    # Cache Strategy #3: Use the user provided cache folder
+    #
+    # Fallback hierarchy:
+    #   (#2|#3) -> #1 -> #0
     v_cacheFolder = undefined
+
     if @mypyIncremental
-      if @theTempFolder
-        v_cacheFolder = path.join(@theTempFolder, md5(filePath))
-        try
-          fs.mkdirSync(v_cacheFolder)
-        catch err
-          if "EEXIST" == err.code then
-          else
-            v_cacheFolder = undefined
-    if v_cacheFolder
-      # Everything is ok to use mypy incremental
+      # Use mypy incremental
       params.push("--incremental")
+
+      v_cacheFolder = @resolvePath @mypyIncrementalCacheFolderPath, filePath
+      if ("/dev/null" == v_cacheFolder) || ("nul" == v_cacheFolder)
+        v_cacheFolder = undefined
+      else
+        if "" == v_cacheFolder
+        else if "." == v_cacheFolder
+          # We need to explicitely compute the .mypy_cache folder path next to the file being linted
+          #     since by default mypy creates it in the CWD
+          #         but linter-mypy sets CWD to the root of the hard drive... (due to a bug in Mypy)
+          #            Therefore it would either pollute the root or mostly silently fail to create the folder.
+          v_cacheFolder = path.join path.dirname(filePath), ".mypy_cache"
+          # Make sure the cache folder exists & create it if needed
+          try
+            fs.mkdirSync(v_cacheFolder)
+          catch err
+            if "EEXIST" == err.code
+            else
+              # Bah it's not that bad... We fallback to Strategy #1.
+              v_cacheFolder = ""
+
+        # Make sure the cache folder exists
+        if fs.existsSync(v_cacheFolder)
+          stat = fs.statSync v_cacheFolder
+          if stat.isDirectory()
+          else
+            #We fallback to Strategy #1 if the directory does not already exist
+            v_cacheFolder = ""
+        else
+          #We fallback to Strategy #1 if the directory does not already exist
+          v_cacheFolder = ""
+
+        if "" == v_cacheFolder
+          if @theOSTempFolder
+            v_cacheFolder = path.join(@theOSTempFolder, md5(filePath))
+            try
+              fs.mkdirSync(v_cacheFolder)
+            catch err
+              if "EEXIST" == err.code then
+              else
+                # Bah it's not that bad... We fallback to Strategy #0.
+                v_cacheFolder = undefined
+          else
+            # Bah it's not that bad... We fallback to Strategy #0.
+            v_cacheFolder = undefined
+
+    # Note: At this point, v_cacheFolder is either a path to an existing folder or undefined
+    if v_cacheFolder
     else
-      # Do not use incremental & make sure that no cache file gets created anywhere.
+      # Do not create any cache file anywhere.
       switch os.platform()
         when "win32"
           v_cacheFolder = "nul"
@@ -342,6 +406,7 @@ module.exports =
         #when "darwin"
         else
           v_cacheFolder = "/dev/null"
+
     params.push("--cache-dir")
     params.push(v_cacheFolder)
 
