@@ -10,8 +10,8 @@ usage: mypy [-h] [-v] [-V] [--python-version x.y] [--platform PLATFORM] [-2]
             [--warn-redundant-casts] [--no-warn-no-return] [--warn-return-any]
             [--warn-unused-ignores] [--warn-unused-configs]
             [--show-error-context] [--no-implicit-optional] [-i]
-            [--quick-and-dirty] [--cache-dir DIR] [--skip-version-check]
-            [--strict-optional]
+            [--quick-and-dirty] [--cache-dir DIR] [--cache-fine-grained]
+            [--skip-version-check] [--strict-optional]
             [--strict-optional-whitelist [GLOB [GLOB ...]]]
             [--junit-xml JUNIT_XML] [--pdb] [--show-traceback] [--stats]
             [--inferstats] [--custom-typing MODULE]
@@ -76,7 +76,7 @@ optional arguments:
                             any)
   --warn-unused-ignores     warn about unneeded '# type: ignore' comments
                             (inverse: --no-warn-unused-ignores)
-  --warn-unused-configs     warn about unnused '[mypy-<pattern>]' config
+  --warn-unused-configs     warn about unused '[mypy-<pattern>]' config
                             sections (inverse: --no-warn-unused-configs)
   --show-error-context      Precede errors with "note:" messages explaining
                             context (inverse: --hide-error-context)
@@ -87,6 +87,8 @@ optional arguments:
                             (implies --incremental)
   --cache-dir DIR           store module cache info in the given folder in
                             incremental mode (defaults to '.mypy_cache')
+  --cache-fine-grained      include fine-grained dependency information in the
+                            cache
   --skip-version-check      allow using cache written by older mypy version
   --strict-optional         enable experimental strict Optional checks
                             (inverse: --no-strict-optional)
