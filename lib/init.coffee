@@ -760,7 +760,7 @@ module.exports =
       theMessage = v_CurrMessageRaw.message
       theUrl = ""
       theStartLine = parseInt(v_CurrMessageRaw.line, 10) - 1
-      theStartCol = parseInt(v_CurrMessageRaw.col, 10)
+      theStartCol = parseInt(v_CurrMessageRaw.col, 10) - 1
 
       if theStartLine
         if theStartLine < 0
