@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.6.1 2018-03-09
+
+### Changed
+
+- Adjusted to change of MyPy 0.570
+
 ## [Released] - 2.6.0 2018-02-17
 
 ### Added
