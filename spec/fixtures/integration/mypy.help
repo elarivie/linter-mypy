@@ -23,7 +23,7 @@ usage: mypy [-h] [-v] [-V] [--python-version x.y] [--platform PLATFORM] [-2]
             [--linecount-report DIR] [--linecoverage-report DIR]
             [--memory-xml-report DIR] [--txt-report DIR] [--xml-report DIR]
             [--xslt-html-report DIR] [--xslt-txt-report DIR] [-m MODULE]
-            [-c PROGRAM_TEXT] [-p PACKAGE]
+            [-p PACKAGE] [-c PROGRAM_TEXT]
             [files [files ...]]
 
 optional arguments:
@@ -142,10 +142,10 @@ report generation:
 How to specify the code to type check:
   -m MODULE, --module MODULE
                             type-check module; can repeat for more modules
+  -p PACKAGE, --package PACKAGE
+                            type-check package recursively; can be repeated
   -c PROGRAM_TEXT, --command PROGRAM_TEXT
                             type-check program passed in as string
-  -p PACKAGE, --package PACKAGE
-                            type-check all files in a directory
   files                     type-check given files or directories
 
 environment variables: MYPYPATH additional module search path
