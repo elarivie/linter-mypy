@@ -394,7 +394,8 @@ module.exports =
           else
             # Bah it's not that bad... We fallback to Strategy #0.
             v_cacheFolder = undefined
-
+    else
+      params.push("--no-incremental")
     # Note: At this point, v_cacheFolder is either a path to an existing folder or undefined
     if v_cacheFolder
     else
