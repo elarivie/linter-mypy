@@ -12,7 +12,7 @@ usage: mypy [-h] [-v] [-V] [--python-version x.y]
             [--warn-unused-ignores] [--warn-unused-configs]
             [--show-error-context] [--no-implicit-optional] [--no-incremental]
             [--quick-and-dirty] [--cache-dir DIR] [--cache-fine-grained]
-            [--skip-version-check] [--strict-optional]
+            [--skip-version-check] [--no-strict-optional]
             [--strict-optional-whitelist [GLOB [GLOB ...]]]
             [--always-true NAME] [--always-false NAME] [--junit-xml JUNIT_XML]
             [--pdb] [--show-traceback] [--stats] [--inferstats]
@@ -96,8 +96,8 @@ optional arguments:
   --cache-fine-grained      include fine-grained dependency information in the
                             cache
   --skip-version-check      allow using cache written by older mypy version
-  --strict-optional         enable experimental strict Optional checks
-                            (inverse: --no-strict-optional)
+  --no-strict-optional      disable strict Optional checks (inverse: --strict-
+                            optional)
   --strict-optional-whitelist [GLOB [GLOB ...]]
                             suppress strict Optional errors in all but the
                             provided files (experimental -- read documentation
@@ -119,7 +119,7 @@ optional arguments:
   --scripts-are-modules     Script x becomes module x instead of __main__
   --config-file CONFIG_FILE
                             Configuration file, must have a [mypy] section
-                            (defaults to mypy.ini)
+                            (defaults to mypy.ini, setup.cfg, ~/.mypy.ini)
   --show-column-numbers     Show column numbers in error messages (inverse:
                             --hide-column-numbers)
   --find-occurrences CLASS.MEMBER
@@ -131,7 +131,7 @@ optional arguments:
                             --disallow-subclassing-any, --disallow-untyped-
                             decorators, --warn-redundant-casts, --warn-return-
                             any, --warn-unused-ignores, --warn-unused-configs,
-                            --no-implicit-optional, --strict-optional
+                            --no-implicit-optional
   --shadow-file SOURCE_FILE SHADOW_FILE
                             Typecheck SHADOW_FILE in place of SOURCE_FILE.
 
