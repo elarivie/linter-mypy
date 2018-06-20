@@ -133,7 +133,8 @@ optional arguments:
                             any, --warn-unused-ignores, --warn-unused-configs,
                             --no-implicit-optional
   --shadow-file SOURCE_FILE SHADOW_FILE
-                            Typecheck SHADOW_FILE in place of SOURCE_FILE.
+                            When encountering SOURCE_FILE, read and typecheck
+                            the contents of SHADOW_FILE instead.
 
 report generation:
   Generate a report in the specified format.
