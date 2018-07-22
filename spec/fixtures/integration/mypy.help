@@ -1,57 +1,95 @@
-usage: mypy [-h] [-v] [-V] [--python-version x.y]
-            [--python-executable EXECUTABLE] [--no-site-packages]
-            [--platform PLATFORM] [-2] [--ignore-missing-imports]
+usage: mypy [-h] [-v] [-V] [--config-file CONFIG_FILE] [--warn-unused-configs]
+            [--ignore-missing-imports]
             [--follow-imports {normal,silent,skip,error}]
-            [--disallow-any-unimported] [--disallow-any-expr]
-            [--disallow-any-decorated] [--disallow-any-explicit]
-            [--disallow-any-generics] [--disallow-untyped-calls]
-            [--disallow-untyped-defs] [--disallow-incomplete-defs]
-            [--check-untyped-defs] [--disallow-subclassing-any]
-            [--warn-incomplete-stub] [--disallow-untyped-decorators]
-            [--warn-redundant-casts] [--no-warn-no-return] [--warn-return-any]
-            [--warn-unused-ignores] [--warn-unused-configs]
-            [--show-error-context] [--no-implicit-optional] [--no-incremental]
-            [--quick-and-dirty] [--cache-dir DIR] [--cache-fine-grained]
-            [--skip-version-check] [--no-strict-optional]
+            [--python-executable EXECUTABLE] [--no-site-packages]
+            [--no-silence-site-packages] [--python-version x.y] [-2]
+            [--platform PLATFORM] [--always-true NAME] [--always-false NAME]
+            [--disallow-any-unimported] [--disallow-subclassing-any]
+            [--disallow-any-expr] [--disallow-any-decorated]
+            [--disallow-any-explicit] [--disallow-any-generics]
+            [--disallow-untyped-calls] [--disallow-untyped-defs]
+            [--disallow-incomplete-defs] [--check-untyped-defs]
+            [--warn-incomplete-stub] [--no-implicit-optional]
+            [--no-strict-optional]
             [--strict-optional-whitelist [GLOB [GLOB ...]]]
-            [--always-true NAME] [--always-false NAME] [--junit-xml JUNIT_XML]
-            [--pdb] [--show-traceback] [--stats] [--inferstats]
-            [--custom-typing MODULE] [--custom-typeshed-dir DIR]
-            [--scripts-are-modules] [--config-file CONFIG_FILE]
+            [--warn-redundant-casts] [--no-warn-no-return] [--warn-return-any]
+            [--warn-unused-ignores] [--disallow-untyped-decorators]
+            [--no-incremental] [--cache-dir DIR] [--cache-fine-grained]
+            [--quick-and-dirty] [--skip-version-check] [--pdb]
+            [--show-traceback] [--custom-typing MODULE]
+            [--custom-typeshed-dir DIR]
+            [--shadow-file SOURCE_FILE SHADOW_FILE] [--show-error-context]
             [--show-column-numbers] [--find-occurrences CLASS.MEMBER]
-            [--strict] [--shadow-file SOURCE_FILE SHADOW_FILE]
-            [--any-exprs-report DIR] [--cobertura-xml-report DIR]
+            [--strict] [--any-exprs-report DIR] [--cobertura-xml-report DIR]
             [--html-report DIR] [--linecount-report DIR]
             [--linecoverage-report DIR] [--memory-xml-report DIR]
             [--txt-report DIR] [--xml-report DIR] [--xslt-html-report DIR]
-            [--xslt-txt-report DIR] [-m MODULE] [-p PACKAGE] [-c PROGRAM_TEXT]
+            [--xslt-txt-report DIR] [--junit-xml JUNIT_XML]
+            [--scripts-are-modules] [-m MODULE] [-p PACKAGE] [-c PROGRAM_TEXT]
             [files [files ...]]
 
 optional arguments:
   -h, --help                show this help message and exit
   -v, --verbose             more verbose messages
   -V, --version             show program's version number and exit
-  --python-version x.y      use Python x.y
-  --python-executable EXECUTABLE
-                            Python executable used for finding PEP 561
-                            compliant installed packages and stubs
-  --no-site-packages        Do not search for installed PEP 561 compliant
-                            packages
-  --platform PLATFORM       typecheck special-cased code for the given OS
-                            platform (defaults to sys.platform)
-  -2, --py2                 use Python 2 mode
+
+config file:
+  Use a config file instead of command line arguments.
+
+  --config-file CONFIG_FILE
+                            configuration file, must have a [mypy] section
+                            (defaults to mypy.ini, setup.cfg, ~/.mypy.ini)
+  --warn-unused-configs     warn about unused '[mypy-<pattern>]' config
+                            sections (inverse: --no-warn-unused-configs)
+
+import discovery:
+  Configure how imports are discovered and followed.
+
   --ignore-missing-imports  silently ignore imports of missing modules
   --follow-imports {normal,silent,skip,error}
                             how to treat imports (default normal)
+  --python-executable EXECUTABLE
+                            Python executable used for finding PEP 561
+                            compliant installed packages and stubs
+  --no-site-packages        do not search for installed PEP 561 compliant
+                            packages
+  --no-silence-site-packages
+                            Do not silence errors in PEP 561 compliant
+                            installed packages
+
+platform configuration:
+  Type check code assuming certain runtime conditions.
+
+  --python-version x.y      type check code assuming it will be running on
+                            Python x.y
+  -2, --py2                 use Python 2 mode (same as --python-version 2.7)
+  --platform PLATFORM       type check special-cased code for the given OS
+                            platform (defaults to sys.platform)
+  --always-true NAME        additional variable to be considered True (may be
+                            repeated)
+  --always-false NAME       additional variable to be considered False (may be
+                            repeated)
+
+Any type restrictions:
+  Disallow the use of the 'Any' type under certain conditions.
+
   --disallow-any-unimported
                             disallow Any types resulting from unfollowed
                             imports
+  --disallow-subclassing-any
+                            disallow subclassing values of type 'Any' when
+                            defining classes (inverse: --allow-subclassing-
+                            any)
   --disallow-any-expr       disallow all expressions that have type Any
   --disallow-any-decorated  disallow functions that have Any in their
                             signature after decorator transformation
   --disallow-any-explicit   disallow explicit Any in type positions
   --disallow-any-generics   disallow usage of generic types that do not
                             specify explicit type parameters
+
+untyped definitions and calls:
+  Configure how untyped definitions and calls are handled.
+
   --disallow-untyped-calls  disallow calling functions without type
                             annotations from functions with type annotations
                             (inverse: --allow-untyped-calls)
@@ -63,16 +101,26 @@ optional arguments:
                             annotations (inverse: --allow-incomplete-defs)
   --check-untyped-defs      type check the interior of functions without type
                             annotations (inverse: --no-check-untyped-defs)
-  --disallow-subclassing-any
-                            disallow subclassing values of type 'Any' when
-                            defining classes (inverse: --allow-subclassing-
-                            any)
   --warn-incomplete-stub    warn if missing type annotation in typeshed, only
                             relevant with --check-untyped-defs enabled
                             (inverse: --no-warn-incomplete-stub)
-  --disallow-untyped-decorators
-                            disallow decorating typed functions with untyped
-                            decorators (inverse: --allow-untyped-decorators)
+
+None and Optional handling:
+  Adjust how values of type 'None' are handled.
+
+  --no-implicit-optional    don't assume arguments with default values of None
+                            are Optional (inverse: --implicit-optional)
+  --no-strict-optional      disable strict Optional checks (inverse: --strict-
+                            optional)
+  --strict-optional-whitelist [GLOB [GLOB ...]]
+                            suppress strict Optional errors in all but the
+                            provided files; implies --strict-optional (may
+                            suppress certain other errors in non-whitelisted
+                            files)
+
+warnings:
+  Detect code that is sound but redundant or problematic.
+
   --warn-redundant-casts    warn about casting an expression to its inferred
                             type (inverse: --no-warn-redundant-casts)
   --no-warn-no-return       do not warn about functions that end without
@@ -82,59 +130,59 @@ optional arguments:
                             any)
   --warn-unused-ignores     warn about unneeded '# type: ignore' comments
                             (inverse: --no-warn-unused-ignores)
-  --warn-unused-configs     warn about unused '[mypy-<pattern>]' config
-                            sections (inverse: --no-warn-unused-configs)
-  --show-error-context      Precede errors with "note:" messages explaining
-                            context (inverse: --hide-error-context)
-  --no-implicit-optional    don't assume arguments with default values of None
-                            are Optional (inverse: --implicit-optional)
-  --no-incremental          disable module cache, (inverse: --incremental)
-  --quick-and-dirty         use cache even if dependencies out of date
-                            (implies --incremental)
+
+other strictness checks:
+  Other miscellaneous strictness checks.
+
+  --disallow-untyped-decorators
+                            disallow decorating typed functions with untyped
+                            decorators (inverse: --allow-untyped-decorators)
+  --strict                  strict mode; enables the following flags: --warn-
+                            unused-configs, --disallow-subclassing-any,
+                            --disallow-untyped-calls, --disallow-untyped-defs,
+                            --disallow-incomplete-defs, --check-untyped-defs,
+                            --no-implicit-optional, --warn-redundant-casts,
+                            --warn-return-any, --warn-unused-ignores,
+                            --disallow-untyped-decorators
+
+incremental mode:
+  Adjust how mypy incrementally type checks and caches modules.
+
+  --no-incremental          disable module cache (inverse: --incremental)
   --cache-dir DIR           store module cache info in the given folder in
                             incremental mode (defaults to '.mypy_cache')
   --cache-fine-grained      include fine-grained dependency information in the
-                            cache
+                            cache for the mypy daemon
+  --quick-and-dirty         use cache even if dependencies out of date
+                            (implies --incremental)
   --skip-version-check      allow using cache written by older mypy version
-  --no-strict-optional      disable strict Optional checks (inverse: --strict-
-                            optional)
-  --strict-optional-whitelist [GLOB [GLOB ...]]
-                            suppress strict Optional errors in all but the
-                            provided files (experimental -- read documentation
-                            before using!). Implies --strict-optional. Has the
-                            undesirable side-effect of suppressing other
-                            errors in non-whitelisted files.
-  --always-true NAME        Additional variable to be considered True (may be
-                            repeated)
-  --always-false NAME       Additional variable to be considered False (may be
-                            repeated)
-  --junit-xml JUNIT_XML     write junit.xml to the given file
+
+mypy internals:
+  Debug and customize mypy internals.
+
   --pdb                     invoke pdb on fatal error
   --show-traceback, --tb    show traceback on fatal error
-  --stats                   dump stats
-  --inferstats              dump type inference stats
   --custom-typing MODULE    use a custom typing module
   --custom-typeshed-dir DIR
                             use the custom typeshed in DIR
-  --scripts-are-modules     Script x becomes module x instead of __main__
-  --config-file CONFIG_FILE
-                            Configuration file, must have a [mypy] section
-                            (defaults to mypy.ini, setup.cfg, ~/.mypy.ini)
-  --show-column-numbers     Show column numbers in error messages (inverse:
+  --shadow-file SOURCE_FILE SHADOW_FILE
+                            when encountering SOURCE_FILE, read and type check
+                            the contents of SHADOW_FILE instead.
+
+error reporting:
+  Adjust the amount of detail shown in error messages.
+
+  --show-error-context      precede errors with "note:" messages explaining
+                            context (inverse: --hide-error-context)
+  --show-column-numbers     show column numbers in error messages (inverse:
                             --hide-column-numbers)
+
+extra analysis:
+  Extract additional information and analysis.
+
   --find-occurrences CLASS.MEMBER
                             print out all usages of a class member
                             (experimental)
-  --strict                  Strict mode. Enables the following flags:
-                            --disallow-untyped-calls, --disallow-untyped-defs,
-                            --disallow-incomplete-defs, --check-untyped-defs,
-                            --disallow-subclassing-any, --disallow-untyped-
-                            decorators, --warn-redundant-casts, --warn-return-
-                            any, --warn-unused-ignores, --warn-unused-configs,
-                            --no-implicit-optional
-  --shadow-file SOURCE_FILE SHADOW_FILE
-                            When encountering SOURCE_FILE, read and typecheck
-                            the contents of SHADOW_FILE instead.
 
 report generation:
   Generate a report in the specified format.
@@ -150,7 +198,13 @@ report generation:
   --xslt-html-report DIR
   --xslt-txt-report DIR
 
-How to specify the code to type check:
+miscellaneous:
+  Other miscellaneous flags.
+
+  --junit-xml JUNIT_XML     write junit.xml to the given file
+  --scripts-are-modules     script x becomes module x instead of __main__
+
+specifying which code to type check:
   -m MODULE, --module MODULE
                             type-check module; can repeat for more modules
   -p PACKAGE, --package PACKAGE
@@ -159,4 +213,5 @@ How to specify the code to type check:
                             type-check program passed in as string
   files                     type-check given files or directories
 
-environment variables: MYPYPATH additional module search path
+environment variables: Define MYPYPATH for additional module search path
+entries.
