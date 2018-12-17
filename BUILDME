@@ -28,7 +28,6 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	import os
 	import platform
 	import requests
-	import stat
 	import shutil
 
 	# Validate the presence of Required external requirement.
@@ -43,9 +42,6 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	with open(c_BuildpackagePath, "wb") as handle:
 		for data in response.iter_content():
 			handle.write(data)
-	print(os.stat(c_BuildpackagePath).st_mode)
-	os.chmod(c_BuildpackagePath, os.stat(c_BuildpackagePath).st_mode | stat.S_IEXEC | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-	print(os.stat(c_BuildpackagePath).st_mode)
 	#Copy SRC → TMP
 	for c_CurrTarget in [p_Tmp]:
 		for c_CurrFile in ["package.json"]:
@@ -68,7 +64,7 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 		env_HOME = p_Tmp
 		import subprocess
 		c_ProcRun = subprocess.run(
-			[c_BuildpackagePath],
+			["/bin/sh", c_BuildpackagePath],
 			check=False,
 			env={
 				"PATH": os.environ["PATH"],
