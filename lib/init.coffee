@@ -95,106 +95,116 @@ module.exports =
       ]
       description: '''Should mypy analysis <a href="http://mypy.readthedocs.io/en/latest/command_line.html#follow-imports">follow imports</a>'''
       order: 9
+    namespacePackages:
+      type: 'boolean'
+      default: true
+      description: 'Support namespace packages (PEP 420, __init__.py-less'
+      order: 10
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'Disallow calling functions without type annotations from functions with type annotations'
-      order: 10
+      order: 11
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions without type annotations or with incomplete type annotations'
-      order: 11
+      order: 12
+    disallowUntypedGlobals:
+      type: 'boolean'
+      default: true
+      description: 'toplevel errors about missing annotations'
+      order: 13
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions with incomplete type annotations'
-      order: 12
+      order: 14
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Type check the interior of functions without type annotations'
-      order: 13
+      order: 15
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'Warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 14
+      order: 16
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'Disallow decorating typed functions with untyped decorators'
-      order: 15
+      order: 17
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'Warn about casting an expression to its inferred type'
-      order: 16
+      order: 18
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'Warn about functions that end without returning'
-      order: 17
+      order: 19
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'Warn about returning values of type Any from non-Any typed functions'
-      order: 18
+      order: 20
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'Disallow subclassing values of type "Any" when defining classes'
-      order: 19
+      order: 21
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'Disallows usage of types that come from unfollowed imports'
-      order: 20
+      order: 22
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'Disallows all expressions in the module that have type Any'
-      order: 21
+      order: 23
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'Disallows functions that have Any in their signature after decorator transformation'
-      order: 22
+      order: 24
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'Disallows explicit Any in type positions'
-      order: 23
+      order: 25
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'Disallows usage of generic types that do not specify explicit type parameters'
-      order: 24
+      order: 26
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "Warn about unneeded '# type: ignore' comments"
-      order: 25
+      order: 27
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "Warn about unnused '[mypy-<pattern>]' config sections"
-      order: 26
+      order: 28
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "Warn about imports of missing modules"
-      order: 27
+      order: 29
     strictOptional:
       type: 'boolean'
       default: true
       description: "Enable experimental strict Optional checks"
-      order: 28
+      order: 30
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "Don't assume arguments with default values of None are Optional"
-      order: 29
+      order: 31
 
   theOSTempFolder: undefined
 
@@ -245,6 +255,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedCalls',
       (disallowUntypedCalls) =>
         @disallowUntypedCalls = disallowUntypedCalls
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedGlobals',
+      (disallowUntypedGlobals) =>
+        @disallowUntypedGlobals = disallowUntypedGlobals
     @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedDefs',
       (disallowUntypedDefs) =>
         @disallowUntypedDefs = disallowUntypedDefs
@@ -305,6 +318,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.followImports',
       (followImports) =>
         @followImports = followImports
+    @subscriptions.add atom.config.observe 'linter-mypy.namespacePackages',
+      (namespacePackages) =>
+        @namespacePackages = namespacePackages
     @subscriptions.add atom.config.observe 'linter-mypy.mypyPath',
       (mypyPath) =>
         @mypyPath = mypyPath
@@ -422,6 +438,16 @@ module.exports =
       params.push("--follow-imports")
       params.push(@followImports)
 
+      if (@namespacePackages)
+        params.push("--namespace-packages")
+      else
+        params.push("--no-namespace-packages")
+
+      if (@disallowUntypedGlobals)
+        params.push("--disallow-untyped-globals")
+      else
+        params.push("--allow-untyped-globals")
+
       if (@disallowUntypedCalls)
         params.push("--disallow-untyped-calls")
       else
@@ -470,8 +496,11 @@ module.exports =
         params.push("--disallow-any-decorated")
       if (@disallowAnyExplicit)
         params.push("--disallow-any-explicit")
+
       if (@disallowAnyGenerics)
         params.push("--disallow-any-generics")
+      else
+        params.push("--allow-any-generics")
 
       if (@warnUnusedIgnores)
         params.push("--warn-unused-ignores")

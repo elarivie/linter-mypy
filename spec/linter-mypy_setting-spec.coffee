@@ -70,7 +70,62 @@ describe "linter-mypy ... settings.", ->
           expect(messages[0].excerpt).not.toContain(" --disallow-untyped-calls ")
           expect(messages[0].excerpt).toContain(" --allow-untyped-calls ")
           atom.config.set(settingName, oldValue)
-
+    describe "With the setting: disallowUntypedGlobals", ->
+      settingName = "linter-mypy.disallowUntypedGlobals"
+      describe 'Set to True', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, true)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).toContain(" --disallow-untyped-globals ")
+          expect(messages[0].excerpt).not.toContain(" --allow-untyped-globals ")
+          atom.config.set(settingName, oldValue)
+      describe 'Set to False', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, false)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).not.toContain(" --disallow-untyped-globals ")
+          expect(messages[0].excerpt).toContain(" --allow-untyped-globals ")
+          atom.config.set(settingName, oldValue)
+    describe "With the setting: namespacePackages", ->
+      settingName = "linter-mypy.namespacePackages"
+      describe 'Set to True', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, true)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).toContain(" --namespace-packages ")
+          expect(messages[0].excerpt).not.toContain(" --no-namespace-packages ")
+          atom.config.set(settingName, oldValue)
+      describe 'Set to False', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, false)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).not.toContain(" --namespace-packages ")
+          expect(messages[0].excerpt).toContain(" --no-namespace-packages ")
+          atom.config.set(settingName, oldValue)
     describe "With the setting: disallowUntypedDefs", ->
       settingName = "linter-mypy.disallowUntypedDefs"
       describe 'Set to True', ->

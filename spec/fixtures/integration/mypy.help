@@ -51,6 +51,8 @@ Import discovery:
   --no-silence-site-packages
                             Do not silence errors in PEP 561 compliant
                             installed packages
+  --namespace-packages      Support namespace packages (PEP 420, __init__.py-
+                            less) (inverse: --no-namespace-packages)
 
 Platform configuration:
   Type check code assuming it will be run under certain runtime conditions.
@@ -67,8 +69,8 @@ Platform configuration:
   --always-false NAME       Additional variable to be considered False (may be
                             repeated)
 
-Any type restrictions:
-  Disallow the use of the 'Any' type under certain conditions.
+Dynamic typing:
+  Disallow the use of the dynamic 'Any' type under certain conditions.
 
   --disallow-any-unimported
                             Disallow Any types resulting from unfollowed
@@ -82,7 +84,8 @@ Any type restrictions:
                             signature after decorator transformation
   --disallow-any-explicit   Disallow explicit Any in type positions
   --disallow-any-generics   Disallow usage of generic types that do not
-                            specify explicit type parameters
+                            specify explicit type parameters (inverse:
+                            --allow-any-generics)
 
 Untyped definitions and calls:
   Configure how untyped definitions and calls are handled. Note: by default,
@@ -133,13 +136,16 @@ Warnings:
                             any)
 
 Other strictness checks:
+  --allow-untyped-globals   Suppress toplevel errors caused by missing
+                            annotations (inverse: --disallow-untyped-globals)
   --strict                  Strict mode; enables the following flags: --warn-
                             unused-configs, --disallow-subclassing-any,
-                            --disallow-untyped-calls, --disallow-untyped-defs,
-                            --disallow-incomplete-defs, --check-untyped-defs,
-                            --disallow-untyped-decorators, --no-implicit-
-                            optional, --warn-redundant-casts, --warn-unused-
-                            ignores, --warn-return-any
+                            --disallow-any-generics, --disallow-untyped-calls,
+                            --disallow-untyped-defs, --disallow-incomplete-
+                            defs, --check-untyped-defs, --disallow-untyped-
+                            decorators, --no-implicit-optional, --warn-
+                            redundant-casts, --warn-unused-ignores, --warn-
+                            return-any
 
 Incremental mode:
   Adjust how mypy incrementally type checks and caches modules. Mypy caches
@@ -152,8 +158,6 @@ Incremental mode:
                             incremental mode (defaults to '.mypy_cache')
   --cache-fine-grained      Include fine-grained dependency information in the
                             cache for the mypy daemon
-  --quick-and-dirty         Use cache even if dependencies out of date
-                            (implies --incremental)
   --skip-version-check      Allow using cache written by older mypy version
 
 Mypy internals:
@@ -161,6 +165,7 @@ Mypy internals:
 
   --pdb                     Invoke pdb on fatal error
   --show-traceback, --tb    Show traceback on fatal error
+  --raise-exceptions        Raise exception on fatal error
   --custom-typing MODULE    Use a custom typing module
   --custom-typeshed-dir DIR
                             Use the custom typeshed in DIR
