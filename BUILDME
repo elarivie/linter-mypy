@@ -16,6 +16,7 @@ This script:
 from typing import Sequence
 from typing import Optional
 
+
 def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	"""
 	Build the project.
@@ -32,7 +33,7 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 
 	# Validate the presence of Required external requirement.
 	assert os.path.isfile("/bin/sh"), "Requirement not found (/bin/sh)"
-	assert os.path.isfile("/usr/bin/Xvfb"), "Requirement not found (/usr/bin/Xvfb), run \"sudo apt-get install Xvfb\""
+	assert os.path.isfile("/usr/bin/Xvfb"), "Requirement not found (/usr/bin/Xvfb), run \"sudo apt install xvfb\""
 	assert shutil.which("mypy") is not None, "Requirement not found (mypy), run \"python3 -m pip install mypy\""
 
 	#Fetch the latest common atom Continuous Integration Script.
@@ -170,7 +171,7 @@ Exit code 0 if build is successfull
 		try:
 			#Use RAM temp folder if available
 			c_ActualPathTmpRAM = os.path.abspath(os.path.join(os.sep, "run", "user", str(os.getuid())))
-			if os.path.isdir(c_ActualPathTmpRAM):
+			if False and os.path.isdir(c_ActualPathTmpRAM):
 				c_ActualPathTmp = c_ActualPathTmpRAM
 		except AttributeError:
 			pass#os.getuid() is only available on Unix (it is the only os which might have a ram temp folder anyway)
