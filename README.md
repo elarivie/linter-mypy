@@ -39,6 +39,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Disallow Untyped Calls                                |     `True`           |
 | Disallow Untyped Defs                                 |     `True`           |
 | Disallow Untyped Globals                              |     `True`           |
+| Disallow Redefinition                                 |     `True`           |
 | Disallow Incomplete Defs                              |     `True`           |
 | Check Untyped Defs                                    |     `True`           |
 | Warn Incomplete Stub                                  |     `True`           |

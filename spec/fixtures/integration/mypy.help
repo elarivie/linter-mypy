@@ -33,7 +33,8 @@ Config file:
 
   --config-file CONFIG_FILE
                             Configuration file, must have a [mypy] section
-                            (defaults to mypy.ini, setup.cfg, ~/.mypy.ini)
+                            (defaults to mypy.ini, setup.cfg,
+                            ~/.config/mypy/config, ~/.mypy.ini)
   --warn-unused-configs     Warn about unused '[mypy-<pattern>]' config
                             sections (inverse: --no-warn-unused-configs)
 
@@ -138,6 +139,8 @@ Warnings:
 Other strictness checks:
   --allow-untyped-globals   Suppress toplevel errors caused by missing
                             annotations (inverse: --disallow-untyped-globals)
+  --allow-redefinition      Allow unconditional variable redefinition with a
+                            new type (inverse: --disallow-redefinition)
   --strict                  Strict mode; enables the following flags: --warn-
                             unused-configs, --disallow-subclassing-any,
                             --disallow-any-generics, --disallow-untyped-calls,
@@ -156,6 +159,8 @@ Incremental mode:
   --no-incremental          Disable module cache (inverse: --incremental)
   --cache-dir DIR           Store module cache info in the given folder in
                             incremental mode (defaults to '.mypy_cache')
+  --sqlite-cache            Use a sqlite database to store the cache (inverse:
+                            --no-sqlite-cache)
   --cache-fine-grained      Include fine-grained dependency information in the
                             cache for the mypy daemon
   --skip-version-check      Allow using cache written by older mypy version

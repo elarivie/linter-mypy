@@ -115,96 +115,101 @@ module.exports =
       default: true
       description: 'toplevel errors about missing annotations'
       order: 13
+    disallowRedefinition:
+      type: 'boolean'
+      default: true
+      description: 'Disallow unconditional variable redefinition with a new type'
+      order: 14
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions with incomplete type annotations'
-      order: 14
+      order: 15
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Type check the interior of functions without type annotations'
-      order: 15
+      order: 16
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'Warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 16
+      order: 17
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'Disallow decorating typed functions with untyped decorators'
-      order: 17
+      order: 18
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'Warn about casting an expression to its inferred type'
-      order: 18
+      order: 19
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'Warn about functions that end without returning'
-      order: 19
+      order: 20
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'Warn about returning values of type Any from non-Any typed functions'
-      order: 20
+      order: 21
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'Disallow subclassing values of type "Any" when defining classes'
-      order: 21
+      order: 22
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'Disallows usage of types that come from unfollowed imports'
-      order: 22
+      order: 23
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'Disallows all expressions in the module that have type Any'
-      order: 23
+      order: 24
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'Disallows functions that have Any in their signature after decorator transformation'
-      order: 24
+      order: 25
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'Disallows explicit Any in type positions'
-      order: 25
+      order: 26
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'Disallows usage of generic types that do not specify explicit type parameters'
-      order: 26
+      order: 27
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "Warn about unneeded '# type: ignore' comments"
-      order: 27
+      order: 28
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "Warn about unnused '[mypy-<pattern>]' config sections"
-      order: 28
+      order: 29
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "Warn about imports of missing modules"
-      order: 29
+      order: 30
     strictOptional:
       type: 'boolean'
       default: true
       description: "Enable experimental strict Optional checks"
-      order: 30
+      order: 31
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "Don't assume arguments with default values of None are Optional"
-      order: 31
+      order: 32
 
   theOSTempFolder: undefined
 
@@ -258,6 +263,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedGlobals',
       (disallowUntypedGlobals) =>
         @disallowUntypedGlobals = disallowUntypedGlobals
+    @subscriptions.add atom.config.observe 'linter-mypy.disallowRedefinition',
+      (disallowRedefinition) =>
+        @disallowRedefinition = disallowRedefinition
     @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedDefs',
       (disallowUntypedDefs) =>
         @disallowUntypedDefs = disallowUntypedDefs
@@ -443,10 +451,16 @@ module.exports =
       else
         params.push("--no-namespace-packages")
 
+
       if (@disallowUntypedGlobals)
         params.push("--disallow-untyped-globals")
       else
         params.push("--allow-untyped-globals")
+
+      if (@disallowRedefinition)
+        params.push("--disallow-redefinition")
+      else
+        params.push("--allow-redefinition")
 
       if (@disallowUntypedCalls)
         params.push("--disallow-untyped-calls")
