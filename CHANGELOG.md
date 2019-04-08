@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.6.4 2019-04-07
+
 ### Added
 
 - Argument Strict Equality
