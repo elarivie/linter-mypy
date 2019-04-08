@@ -141,6 +141,9 @@ Other strictness checks:
                             annotations (inverse: --disallow-untyped-globals)
   --allow-redefinition      Allow unconditional variable redefinition with a
                             new type (inverse: --disallow-redefinition)
+  --strict-equality         Prohibit equality, identity, and container checks
+                            for non-overlapping types (inverse: --no-strict-
+                            equality)
   --strict                  Strict mode; enables the following flags: --warn-
                             unused-configs, --disallow-subclassing-any,
                             --disallow-any-generics, --disallow-untyped-calls,
@@ -164,6 +167,9 @@ Incremental mode:
   --cache-fine-grained      Include fine-grained dependency information in the
                             cache for the mypy daemon
   --skip-version-check      Allow using cache written by older mypy version
+  --skip-cache-mtime-checks
+                            Skip cache internal consistency checks based on
+                            mtime
 
 Mypy internals:
   Debug and customize mypy internals.

@@ -129,6 +129,35 @@ describe "linter-mypy ... settings.", ->
           expect(messages[0].excerpt).toContain(" --allow-redefinition ")
           atom.config.set(settingName, oldValue)
 
+    describe "With the setting: strictEquality", ->
+      settingName = "linter-mypy.strictEquality"
+      describe 'Set to True', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, true)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).toContain(" --strict-equality ")
+          expect(messages[0].excerpt).not.toContain(" --no-strict-equality ")
+          atom.config.set(settingName, oldValue)
+      describe 'Set to False', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, false)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).toContain(" --no-strict-equality ")
+          expect(messages[0].excerpt).not.toContain(" --strict-equality ")
+          atom.config.set(settingName, oldValue)
+
     describe "With the setting: namespacePackages", ->
       settingName = "linter-mypy.namespacePackages"
       describe 'Set to True', ->
