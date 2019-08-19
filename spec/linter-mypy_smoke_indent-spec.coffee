@@ -48,7 +48,7 @@ describe "linter-mypy ... Linting smoke test (indentation)", ->
           lint(editor).then (msgs) ->
             messages = msgs
       it 'should have detected all the errors', ->
-        expect(messages.length).toBe(11)
+        expect(messages.length).toBe(17)
       it 'should have put the good attributes in each warnings', ->
         msg0 = 'Incompatible types in assignment (expression has type "str", variable has type "int")'
         msg1 = 'Function is missing a type annotation'
