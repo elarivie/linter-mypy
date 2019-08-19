@@ -24,8 +24,8 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 
 ## Available settings
 
-| Setting                                     | Default Values       |
-| ------------------------------------------- | -------------------- |
+| Setting                                               | Default Values       |
+| -------------------------------------------           | -------------------- |
 | Lint trigger                                          |  `Lint on file save` |
 | Path to the executable of [Python][python]            |     `python3`        |
 | [Mypy Incremental][MypyIncremental]                   |     `True`           |
@@ -33,6 +33,8 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | Mypy Notify Internal Error                            |     `True`           |
 | Ignore File path Regex                                |                      |
 | [Mypy Path][MypyPath]                                 |                      |
+| Warn Unreachable                                      |     `True`           |
+| No Implicit Reexport                                  |     `True`           |
 | [Mypy ini File][OptMypyIni]                           |                      |
 | [Follow Imports][OptFollowImports]                    |     `silent`         |
 | [Namespace Packages][OptNamespacePackages]            |     `True`           |

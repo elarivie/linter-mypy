@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Argument no-implicit-reexport
+- Argument warn-unreachable
+
 ### Fixed
 - Fix 'reveal_type'.
 

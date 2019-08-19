@@ -725,3 +725,61 @@ describe "linter-mypy ... settings.", ->
           expect(messages[0].excerpt).not.toContain(" --no-implicit-optional ")
           expect(messages[0].excerpt).toContain(" --implicit-optional ")
           atom.config.set(settingName, oldValue)
+
+    describe "With the setting: warnUnreachable", ->
+      settingName = "linter-mypy.warnUnreachable"
+      describe 'Set to True', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, true)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).toContain(" --warn-unreachable ")
+          expect(messages[0].excerpt).not.toContain(" --warn-unreachable ")
+          atom.config.set(settingName, oldValue)
+      describe 'Set to False', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, false)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).not.toContain(" --no-warn-unreachable ")
+          expect(messages[0].excerpt).toContain(" --warn-unreachable ")
+          atom.config.set(settingName, oldValue)
+
+    describe "With the setting: noImplicitReexport", ->
+      settingName = "linter-mypy.noImplicitReexport"
+      describe 'Set to True', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, true)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).toContain(" --no-implicit-reexport ")
+          expect(messages[0].excerpt).not.toContain(" --no-implicit-reexport ")
+          atom.config.set(settingName, oldValue)
+      describe 'Set to False', ->
+        oldValue = atom.config.get(settingName)
+        messages = null
+        beforeEach ->
+          atom.config.set(settingName, false)
+          waitsForPromise ->
+            lint(editor).then (msgs) ->
+              messages = msgs
+        it 'Adds the expected arguments', ->
+          expect(messages.length).toBe(1)
+          expect(messages[0].excerpt).not.toContain(" --implicit-reexport ")
+          expect(messages[0].excerpt).toContain(" --implicit-reexport ")
+          atom.config.set(settingName, oldValue)

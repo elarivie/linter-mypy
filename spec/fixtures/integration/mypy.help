@@ -135,6 +135,9 @@ Warnings:
   --warn-return-any         Warn about returning values of type Any from non-
                             Any typed functions (inverse: --no-warn-return-
                             any)
+  --warn-unreachable        Warn about statements or expressions inferred to
+                            be unreachable or redundant (inverse: --no-warn-
+                            unreachable)
 
 Other strictness checks:
   --allow-untyped-globals   Suppress toplevel errors caused by missing
@@ -144,6 +147,8 @@ Other strictness checks:
   --strict-equality         Prohibit equality, identity, and container checks
                             for non-overlapping types (inverse: --no-strict-
                             equality)
+  --no-implicit-reexport    Treat imports as private unless aliased (inverse:
+                            --implicit-reexport)
   --strict                  Strict mode; enables the following flags: --warn-
                             unused-configs, --disallow-subclassing-any,
                             --disallow-any-generics, --disallow-untyped-calls,
@@ -151,7 +156,7 @@ Other strictness checks:
                             defs, --check-untyped-defs, --disallow-untyped-
                             decorators, --no-implicit-optional, --warn-
                             redundant-casts, --warn-unused-ignores, --warn-
-                            return-any
+                            return-any, --no-implicit-reexport
 
 Incremental mode:
   Adjust how mypy incrementally type checks and caches modules. Mypy caches

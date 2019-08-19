@@ -84,6 +84,16 @@ module.exports =
       `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
       '''
       order: 8
+    warnUnreachable:
+      type: 'boolean'
+      default: true
+      description: 'Warn about statements or expressions inferred to be unreachable or redundant'
+      order: 9
+    noImplicitReexport:
+      type: 'boolean'
+      default: true
+      description: 'Treat imports as private unless aliased'
+      order: 10
     followImports:
       type: 'string'
       default: 'silent'
@@ -94,127 +104,127 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: '''Should mypy analysis <a href="http://mypy.readthedocs.io/en/latest/command_line.html#follow-imports">follow imports</a>'''
-      order: 9
+      order: 11
     namespacePackages:
       type: 'boolean'
       default: true
       description: 'Support namespace packages (PEP 420, __init__.py-less'
-      order: 10
+      order: 12
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'Disallow calling functions without type annotations from functions with type annotations'
-      order: 11
+      order: 13
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions without type annotations or with incomplete type annotations'
-      order: 12
+      order: 14
     disallowUntypedGlobals:
       type: 'boolean'
       default: true
       description: 'toplevel errors about missing annotations'
-      order: 13
+      order: 15
     disallowRedefinition:
       type: 'boolean'
       default: true
       description: 'Disallow unconditional variable redefinition with a new type'
-      order: 14
+      order: 16
     strictEquality:
       type: 'boolean'
       default: true
       description: 'Prohibit equality, identity, and container checks for non-overlapping types'
-      order: 15
+      order: 17
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions with incomplete type annotations'
-      order: 16
+      order: 18
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Type check the interior of functions without type annotations'
-      order: 17
+      order: 19
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'Warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 18
+      order: 20
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'Disallow decorating typed functions with untyped decorators'
-      order: 19
+      order: 21
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'Warn about casting an expression to its inferred type'
-      order: 20
+      order: 22
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'Warn about functions that end without returning'
-      order: 21
+      order: 23
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'Warn about returning values of type Any from non-Any typed functions'
-      order: 22
+      order: 24
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'Disallow subclassing values of type "Any" when defining classes'
-      order: 23
+      order: 25
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'Disallows usage of types that come from unfollowed imports'
-      order: 24
+      order: 26
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'Disallows all expressions in the module that have type Any'
-      order: 25
+      order: 27
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'Disallows functions that have Any in their signature after decorator transformation'
-      order: 26
+      order: 28
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'Disallows explicit Any in type positions'
-      order: 27
+      order: 29
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'Disallows usage of generic types that do not specify explicit type parameters'
-      order: 28
+      order: 30
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "Warn about unneeded '# type: ignore' comments"
-      order: 29
+      order: 31
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "Warn about unnused '[mypy-<pattern>]' config sections"
-      order: 30
+      order: 32
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "Warn about imports of missing modules"
-      order: 31
+      order: 33
     strictOptional:
       type: 'boolean'
       default: true
       description: "Enable experimental strict Optional checks"
-      order: 32
+      order: 34
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "Don't assume arguments with default values of None are Optional"
-      order: 33
+      order: 35
 
   theOSTempFolder: undefined
 
@@ -313,6 +323,12 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.warnUnusedIgnores',
       (warnUnusedIgnores) =>
         @warnUnusedIgnores = warnUnusedIgnores
+    @subscriptions.add atom.config.observe 'linter-mypy.warnUnreachable',
+      (warnUnreachable) =>
+        @warnUnreachable = warnUnreachable
+    @subscriptions.add atom.config.observe 'linter-mypy.noImplicitReexport',
+      (noImplicitReexport) =>
+        @noImplicitReexport = noImplicitReexport
     @subscriptions.add atom.config.observe 'linter-mypy.warnMissingImports',
       (warnMissingImports) =>
         @warnMissingImports = warnMissingImports
@@ -453,6 +469,16 @@ module.exports =
       # Add the parameters base on user selected settings.
       params.push("--follow-imports")
       params.push(@followImports)
+
+      if (@unreachable)
+        params.push("--no-implicit-reexport")
+      else
+        params.push("--warn-unreachable")
+
+      if (@noImplicitReexport)
+        params.push("--implicit-reexport")
+      else
+        params.push("--no-implicit-reexport")
 
       if (@namespacePackages)
         params.push("--namespace-packages")
