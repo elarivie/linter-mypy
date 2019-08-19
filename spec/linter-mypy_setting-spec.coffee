@@ -780,6 +780,6 @@ describe "linter-mypy ... settings.", ->
               messages = msgs
         it 'Adds the expected arguments', ->
           expect(messages.length).toBe(1)
-          expect(messages[0].excerpt).not.toContain(" --implicit-reexport ")
+          expect(messages[0].excerpt).not.toContain(" --no-implicit-reexport ")
           expect(messages[0].excerpt).toContain(" --implicit-reexport ")
           atom.config.set(settingName, oldValue)
