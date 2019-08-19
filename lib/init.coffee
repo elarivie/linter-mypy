@@ -791,7 +791,7 @@ module.exports =
     # - message = The warning text.
 
     # Declare regex which extract information about the lint details.
-    regexLine = new NamedRegexp("^(?<file>([A-Z]:)?[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? error: (?<message>.+)")
+    regexLine = new NamedRegexp("^(?<file>([A-Z]:)?[^:]+)[:](?<line>\\d+):(?:(?<col>\\d+):)? (?<severity>[a-z]+): (?<message>.+)")
 
     # Prepare an array of all the warnings to report.
     result = []
@@ -810,8 +810,13 @@ module.exports =
       # At this point every messages will be reported, we won't filter them
       # But we will improve them a little to make them more helpful.
 
-      #Prepare the warn characteristics.
+      #Prepare the lint characteristics.
       theSeverity = 'warning'
+      if v_CurrMessageRaw.severity == "error"
+        theSeverity = 'warning'
+      else if v_CurrMessageRaw.severity == "note"
+        theSeverity = "info"
+
       theDescription = ""
       theMessage = v_CurrMessageRaw.message
       theUrl = ""

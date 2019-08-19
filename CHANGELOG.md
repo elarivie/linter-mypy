@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Fix 'reveal_type'.
+
 ## [Released] - 2.6.4 2019-04-07
 
 ### Added
