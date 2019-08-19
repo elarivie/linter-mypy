@@ -51,7 +51,7 @@ describe "linter-mypy ... Linting smoke test (indentation)", ->
         expect(messages.length).toBe(17)
       it 'should have put the good attributes in each warnings', ->
         msg0 = 'Incompatible types in assignment (expression has type "str", variable has type "int")'
-        msg1 = 'Function is missing a return type annotation'
+        msg1 = 'Use "-> None" if function does not return a value'
         msg = [msg0, msg1]
         messages.forEach (item, index) ->
           expect(item.location.file).toMatch(badPath0Regex)
