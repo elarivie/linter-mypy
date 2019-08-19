@@ -51,15 +51,14 @@ describe "linter-mypy ... Linting smoke test (indentation)", ->
         expect(messages.length).toBe(17)
       it 'should have put the good attributes in each warnings', ->
         msg0 = 'Incompatible types in assignment (expression has type "str", variable has type "int")'
-        msg1 = 'Function is missing a type annotation'
-        msg = [msg0, msg1]
+        msg1 = 'Function is missing a return type annotation'
+        msg2 = 'Use "-> None" if function does not return a value'
+        msg = [msg0, msg1, msg2]
+        severities = ['warning', 'warning', 'info']
         messages.forEach (item, index) ->
           expect(item.location.file).toMatch(badPath0Regex)
-          expect(item.severity).toBe('warning')
-          if index <= 9
-            expect(item.excerpt).toBe(msg[index %% 2])
-          else
-            expect(item.excerpt).toBe(msg1)
+          expect(item.severity).toBe(severities[index %% 3])
+          expect(item.excerpt).toBe(msg[index %% 3])
       it 'should have put the good range base on heuristic', ->
         #Before setting those expected location.position, visually make sure that the underlines of badindent1.py make sens.
         expect(messages[0].location.position).toEqual([[1,0],[1,1]])
@@ -96,7 +95,7 @@ describe "linter-mypy ... Linting smoke test (indentation)", ->
         messages.forEach (item, index) ->
           expect(item.location.file).toMatch(badPath1Regex)
           expect(item.severity).toBe('warning')
-          if index <= 43
+          if index <= 44
             expect(item.excerpt).toBe(msg[index %% 3])
           else
             expect(item.excerpt).toBe(msg[2])

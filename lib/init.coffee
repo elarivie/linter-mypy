@@ -470,15 +470,15 @@ module.exports =
       params.push("--follow-imports")
       params.push(@followImports)
 
-      if (@unreachable)
-        params.push("--no-implicit-reexport")
-      else
+      if (@warnUnreachable)
         params.push("--warn-unreachable")
+      else
+        params.push("--no-warn-unreachable")
 
       if (@noImplicitReexport)
-        params.push("--implicit-reexport")
-      else
         params.push("--no-implicit-reexport")
+      else
+        params.push("--implicit-reexport")
 
       if (@namespacePackages)
         params.push("--namespace-packages")
