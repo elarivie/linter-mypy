@@ -478,7 +478,7 @@ module.exports =
       if (@noImplicitReexport)
         params.push("--no-implicit-reexport")
       else
-        params.push("implicit-reexport")
+        params.push("--implicit-reexport")
 
       if (@namespacePackages)
         params.push("--namespace-packages")
