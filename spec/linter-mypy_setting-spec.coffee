@@ -739,7 +739,7 @@ describe "linter-mypy ... settings.", ->
         it 'Adds the expected arguments', ->
           expect(messages.length).toBe(1)
           expect(messages[0].excerpt).toContain(" --warn-unreachable ")
-          expect(messages[0].excerpt).not.toContain(" --warn-unreachable ")
+          expect(messages[0].excerpt).not.toContain(" --no--warn-unreachable ")
           atom.config.set(settingName, oldValue)
       describe 'Set to False', ->
         oldValue = atom.config.get(settingName)
@@ -751,8 +751,8 @@ describe "linter-mypy ... settings.", ->
               messages = msgs
         it 'Adds the expected arguments', ->
           expect(messages.length).toBe(1)
-          expect(messages[0].excerpt).not.toContain(" --no-warn-unreachable ")
-          expect(messages[0].excerpt).toContain(" --warn-unreachable ")
+          expect(messages[0].excerpt).not.toContain(" --warn-unreachable ")
+          expect(messages[0].excerpt).toContain(" --no--warn-unreachable ")
           atom.config.set(settingName, oldValue)
 
     describe "With the setting: noImplicitReexport", ->
@@ -768,7 +768,7 @@ describe "linter-mypy ... settings.", ->
         it 'Adds the expected arguments', ->
           expect(messages.length).toBe(1)
           expect(messages[0].excerpt).toContain(" --no-implicit-reexport ")
-          expect(messages[0].excerpt).not.toContain(" --no-implicit-reexport ")
+          expect(messages[0].excerpt).not.toContain(" --implicit-reexport ")
           atom.config.set(settingName, oldValue)
       describe 'Set to False', ->
         oldValue = atom.config.get(settingName)
