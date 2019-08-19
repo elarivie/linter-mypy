@@ -470,7 +470,7 @@ module.exports =
       params.push("--follow-imports")
       params.push(@followImports)
 
-      if (@unreachable)
+      if (@warnUnreachable)
         params.push("--warn-unreachable")
       else
         params.push("--no-warn-unreachable")
