@@ -373,9 +373,14 @@ module.exports =
     params.push("-m")
     params.push("mypy")
     params.push("--hide-error-context")
+    params.push("--no-error-summary")
+    params.push("--no-pretty")
+    params.push("--no-color-output")
 
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
+
+    params.push("--show-error-codes")
 
     ## In case a Mypy INTERNAL ERROR is encountered, print the stacktrace to ease bug reporting.
     params.push("--show-traceback")
@@ -630,6 +635,7 @@ module.exports =
     return helpers.exec(executablePath, params, options).then (({stdout, stderr, exitCode}) ->
       # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = []
+      # alert(stdout)
 
       # Each line of the mypy output may be a potential warning so we create an array of string containing each line of the output.
       # We split the text using the new line as a separator and handle any OS kind of new lines.
@@ -891,19 +897,19 @@ module.exports =
         theMessage = "INTERNAL MYPY ERROR"
         theDescription = "Mypy crashed"
         theUrl = "https://github.com/python/mypy/issues/"
-      else if "invalid syntax" == theMessage
+      else if "invalid syntax  [syntax]" == theMessage
         theSeverity = 'error'
         #Rational: We can't really know where in the line the invalid syntax is, so let's underline the whole line.
         theStartCol = 0
-      else if "inconsistent use of tabs and spaces in indentation" == theMessage
+      else if "inconsistent use of tabs and spaces in indentation  [syntax]" == theMessage
         theSeverity = 'error'
         #Rational: Indentation is obviously at the start of the line.
         theStartCol = 0
-      else if "unindent does not match any outer indentation level" == theMessage
+      else if "unindent does not match any outer indentation level  [syntax]" == theMessage
         theSeverity = 'error'
         #Rational: Indentation is obviously at the start of the line.
         theStartCol = 0
-      else if "unexpected unindent" == theMessage
+      else if "unexpected unindent  [syntax]" == theMessage
         theSeverity = 'error'
         #Rational: Indentation is obviously at the start of the line.
         theStartCol = 0
