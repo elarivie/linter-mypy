@@ -16,5 +16,7 @@ def a():
 class Hello(object):
 	def __init__(self):
 		class World(object):
+			xyz = 0
+			xyz = ""
 			def __init__(self):
 				pass

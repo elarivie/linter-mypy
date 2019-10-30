@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Argument no-implicit-reexport
 - Argument warn-unreachable
 
+### Changed
+
+- Adjusted to change of MyPy 0.740
+
 ### Fixed
+
 - Fix 'reveal_type'.
 
 ## [Released] - 2.6.4 2019-04-07

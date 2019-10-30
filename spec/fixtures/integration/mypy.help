@@ -111,7 +111,8 @@ Untyped definitions and calls:
 None and Optional handling:
   Adjust how values of type 'None' are handled. For more context on how mypy
   handles values of type 'None', see:
-  mypy.readthedocs.io/en/latest/kinds_of_types.html#no-strict-optional
+  http://mypy.readthedocs.io/en/latest/kinds_of_types.html#no-strict-
+  optional
 
   --no-implicit-optional    Don't assume arguments with default values of None
                             are Optional (inverse: --implicit-optional)
@@ -200,6 +201,15 @@ Error reporting:
                             context (inverse: --hide-error-context)
   --show-column-numbers     Show column numbers in error messages (inverse:
                             --hide-column-numbers)
+  --show-error-codes        Show error codes in error messages (inverse:
+                            --hide-error-codes)
+  --pretty                  Use visually nicer output in error messages: Use
+                            soft word wrap, show source code snippets, and
+                            error location markers (inverse: --no-pretty)
+  --no-color-output         Do not colorize error messages (inverse: --color-
+                            output)
+  --no-error-summary        Do not show error stats summary (inverse: --error-
+                            summary)
 
 Report generation:
   Generate a report in the specified format.
@@ -209,6 +219,7 @@ Report generation:
   --html-report DIR
   --linecount-report DIR
   --linecoverage-report DIR
+  --lineprecision-report DIR
   --memory-xml-report DIR
   --txt-report DIR
   --xml-report DIR
@@ -236,3 +247,4 @@ Running code:
 
 Environment variables:
   Define MYPYPATH for additional module search path entries.
+  Define MYPY_CACHE_DIR to override configuration cache_dir path.

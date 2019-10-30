@@ -49,166 +49,166 @@ test_pyfile = (p_data) ->
           j = 0
 
           if ("lint_argumenthasincompatibletype" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[3,0],[3,3]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[3,0],[3,3]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[4,8],[4,11]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[4,8],[4,11]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[5,8],[5,11]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[5,8],[5,11]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[6,9],[6,12]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[6,9],[6,12]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[7,3],[7,6]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[7,3],[7,6]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[10,1],[10,4]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[10,1],[10,4]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[11,9],[11,12]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[11,9],[11,12]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[12,9],[12,12]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[12,9],[12,12]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[13,10],[13,13]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[13,10],[13,13]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[14,4],[14,7]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[14,4],[14,7]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[17,2],[17,5]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[17,2],[17,5]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[18,10],[18,13]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[18,10],[18,13]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[19,10],[19,13]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[19,10],[19,13]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[20,11],[20,14]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[20,11],[20,14]])
 
-            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 1 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[21,5],[21,8]])
 
-            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"')
+            expect(messages[i++].excerpt).toBe('Argument 2 to "add" has incompatible type "str"; expected "int"  [arg-type]')
             expect(messages[j++].location.position).toEqual([[21,5],[21,8]])
           else if ("lint_inconsistentuseoftabsandspacesinindentation" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('inconsistent use of tabs and spaces in indentation')
+            expect(messages[i++].excerpt).toBe('inconsistent use of tabs and spaces in indentation  [syntax]')
             expect(messages[j++].location.position).toEqual([[6,0],[6,8]])
           else if ("lint_invalidsyntax" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('invalid syntax')
+            expect(messages[i++].excerpt).toBe('invalid syntax  [syntax]')
             expect(messages[j++].location.position).toEqual([[4,0],[4,10]])
           else if ("lint_nameisnotdefined" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('Name \'efgh\' is not defined')
+            expect(messages[i++].excerpt).toBe('Name \'efgh\' is not defined  [name-defined]')
             expect(messages[j++].location.position).toEqual([[4,8],[4,12]])
 
-            expect(messages[i++].excerpt).toBe('Name \'ijkl\' is not defined')
+            expect(messages[i++].excerpt).toBe('Name \'ijkl\' is not defined  [name-defined]')
             expect(messages[j++].location.position).toEqual([[5,1],[5,5]])
           else if ("lint_revealtype" == p_data.filename)
             expect(messages[i++].excerpt).toBe('Revealed type is \'builtins.int\'')
             expect(messages[j++].location.position).toEqual([[8,0],[8,11]])
           else if ("lint_unexpectedunindent" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('unexpected unindent')
+            expect(messages[i++].excerpt).toBe('unexpected unindent  [syntax]')
             expect(messages[j++].location.position).toEqual([[5,0],[5,1]])
           else if ("lint_unindentdoesnotmatchanyouterindentationlevel" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('unindent does not match any outer indentation level')
+            expect(messages[i++].excerpt).toBe('unindent does not match any outer indentation level  [syntax]')
             expect(messages[j++].location.position).toEqual([[5,0],[5,10]])
           else if ("lint_unsupportedoperandtypesfor" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[3,0],[3,1]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[4,8],[4,9]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[5,8],[5,9]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[6,9],[6,10]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[7,3],[7,4]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[10,1],[10,2]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[11,9],[11,10]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[12,9],[12,10]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[13,10],[13,11]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[14,4],[14,5]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[17,2],[17,3]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[18,10],[18,11]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[19,10],[19,11]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[20,11],[20,12]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[21,5],[21,6]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[22,15],[22,16]])
 
-            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")')
+            expect(messages[i++].excerpt).toBe('Unsupported operand types for + ("int" and "str")  [operator]')
             expect(messages[j++].location.position).toEqual([[24,14],[24,15]])
 
           else
