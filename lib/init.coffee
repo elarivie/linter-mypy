@@ -885,7 +885,9 @@ module.exports =
       # Use specialized heuristic base on the lint message...
       if ("Revealed type is '" == theMessage.substr(0, 18))
         #Rational: Since we know the method name is "reveal_type", we can underline its length.
-        theEndCol += 10
+        #Rational: Since we know it is a method call we can underline its opening parenthesis.
+        theStartCol -= 10 + 1 + 1
+        theEndCol -= 1
         theSeverity = 'info'
       else if "MypyBug2974" == theMessage#Rational: Mypy Internal Bug
         theSeverity = 'error'
@@ -919,9 +921,9 @@ module.exports =
         rawMatch = regexHeuristic.execGroups(v_CurrMessageRaw.message)
         if rawMatch
           #Rational: Since we know the method name we can underline its length.
-          theEndCol += rawMatch.name.length - 1
+          theEndCol += 0 * (rawMatch.name.length - 1)
         else
-          regexHeuristic = new NamedRegexp("^Name '(?<name>.+)' is not defined$")
+          regexHeuristic = new NamedRegexp("^Name '(?<name>.+)' is not defined  \\[name-defined\\]$")
           rawMatch = regexHeuristic.execGroups(v_CurrMessageRaw.message)
           if rawMatch
             theSeverity = 'error'
