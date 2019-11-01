@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+
+## [Released] - 2.6.5 2019-11-01
+
+
 ### Added
 
 - Argument no-implicit-reexport
