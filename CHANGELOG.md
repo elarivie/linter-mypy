@@ -6,9 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.6.7 2019-11-25
 
-## [Released] - 2.6.5 2019-11-01
 
+### Changed
+
+
+- Rename the linter-mypy setting 'Mypy Ini File' -> 'Mypy Config File' since supported config files are not limited to ini (mypy.ini and setup.cfg)
+
+
+## [Released] - 2.6.6 2019-11-01 [YANKED]
+
+
+## [Released] - 2.6.5 2019-08-19
+
+### Fixed
+
+- Fix unit test.
 
 ### Added
 
