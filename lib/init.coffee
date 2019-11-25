@@ -76,12 +76,13 @@ module.exports =
       '''
       order: 7
     mypyIniFile:
+      title: 'Mypy Config File'
       type: 'string'
       default: ''
-      description: '''Path to a <a href="http://mypy.readthedocs.io/en/latest/config_file.html">mypy.ini</a> file.
-      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      description: '''Path to a <a href="http://mypy.readthedocs.io/en/latest/config_file.html"> mypy configuration file (mypy.ini or setup.cfg)</a>.
+      The optionals variables `$PROJECT_PATH` and `$PROJECT_NAME` can be used to resolve the path
       dynamically depending of the current project. For example:
-      `$PROJECT_PATH/mypy.ini`. <strong>If a mypy.ini file is being found at the given path then all the below settings will be ignore.</strong>
+      `$PROJECT_PATH/mypy.ini`. <strong>If a file is being found at the given path then it will be <a href="https://mypy.readthedocs.io/en/latest/command_line.html#cmdoption-mypy-config-file">provided to mypy</a> and all the below settings will be ignore.</strong>
       '''
       order: 8
     warnUnreachable:
@@ -270,8 +271,8 @@ module.exports =
       (ignoreFiles) =>
         @ignoreFiles = ignoreFiles
     @subscriptions.add atom.config.observe 'linter-mypy.mypyIniFile',
-      (mypyIniFile) =>
-        @mypyIniFile = mypyIniFile
+      (mypyConfigFile) =>
+        @mypyConfigFile = mypyConfigFile
     @subscriptions.add atom.config.observe 'linter-mypy.disallowUntypedCalls',
       (disallowUntypedCalls) =>
         @disallowUntypedCalls = disallowUntypedCalls
@@ -464,12 +465,12 @@ module.exports =
     params.push("--cache-dir")
     params.push(v_cacheFolder)
 
-    iniPath = @resolvePath @mypyIniFile, filePath
+    configPath = @resolvePath @mypyConfigFile, filePath
 
-    if (fs.existsSync iniPath)
+    if (fs.existsSync configPath)
       # Use the provided mypy configuration file.
       params.push("--config-file")
-      params.push(iniPath)
+      params.push(configPath)
     else
       # Add the parameters base on user selected settings.
       params.push("--follow-imports")

@@ -35,7 +35,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | [Mypy Path][MypyPath]                                 |                      |
 | Warn Unreachable                                      |     `True`           |
 | No Implicit Reexport                                  |     `True`           |
-| [Mypy ini File][OptMypyIni]                           |                      |
+| [Mypy Config File][OptMypyConfig]                           |                      |
 | [Follow Imports][OptFollowImports]                    |     `silent`         |
 | [Namespace Packages][OptNamespacePackages]            |     `True`           |
 | Disallow Untyped Calls                                |     `True`           |
@@ -72,7 +72,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 [linter-mypy_package]: https://atom.io/packages/linter-mypy
 [linter-mypy_BugTracker]: https://github.com/elarivie/linter-mypy/issues
 [python]: https://www.python.org
-[OptMypyIni]: http://mypy.readthedocs.io/en/latest/config_file.html
+[OptMypyConfig]: http://mypy.readthedocs.io/en/latest/config_file.html
 [OptFollowImports]: http://mypy.readthedocs.io/en/latest/command_line.html#following-imports-or-not
 [OptNamespacePackages]: https://mypy.readthedocs.io/en/latest/command_line.html#import-discovery
 [MypyPath]: http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found
