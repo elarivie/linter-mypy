@@ -154,7 +154,11 @@ test_pyfile = (p_data) ->
             expect(messages[i++].excerpt).toBe('Revealed type is \'builtins.int\'')
             expect(messages[j++].location.position).toEqual([[8,0],[8,12]])
           else if ("lint_unexpectedunindent" == p_data.filename)
-            expect(messages[i++].excerpt).toBe('unexpected unindent  [syntax]')
+
+            # There are two variant of the message (Starting from Python version 3.8 the message changed slightly)
+            expect(messages[i++].excerpt in ["unexpected unindent  [syntax]", "expected an indented block  [syntax]"]).toBe(true)
+            # expect(messages[i++].excerpt).toBe('unexpected unindent  [syntax]')
+
             expect(messages[j++].location.position).toEqual([[5,0],[5,1]])
           else if ("lint_unindentdoesnotmatchanyouterindentationlevel" == p_data.filename)
             expect(messages[i++].excerpt).toBe('unindent does not match any outer indentation level  [syntax]')

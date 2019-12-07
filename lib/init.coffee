@@ -373,15 +373,21 @@ module.exports =
     ## Use the python module mypy
     params.push("-m")
     params.push("mypy")
+
+    ## Useless feature for linter-mypy use case.
     params.push("--hide-error-context")
     params.push("--no-error-summary")
     params.push("--no-pretty")
     params.push("--no-color-output")
 
+    ## Useful info for the user.
+    params.push("--show-error-codes")
+
     ## We want column number so that we can know where to underline.
     params.push("--show-column-numbers")
 
-    params.push("--show-error-codes")
+    ## We want a stable output format which is independent of cwd.
+    params.push("--show-absolute-path")
 
     ## In case a Mypy INTERNAL ERROR is encountered, print the stacktrace to ease bug reporting.
     params.push("--show-traceback")
@@ -634,9 +640,10 @@ module.exports =
     ## For debug: ## alert(executablePath + " " + params.join(" "))
     # https://github.com/steelbrain/exec
     return helpers.exec(executablePath, params, options).then (({stdout, stderr, exitCode}) ->
+      ## For debug: ## alert(stderr)
+      ## For debug: ## alert(stdout)
       # The goal of this method is to return an array of string where each string is a valid warning in the format: "FILEPATH:LINENO:COLNO:MESSAGE"
       result = []
-      # alert(stdout)
 
       # Each line of the mypy output may be a potential warning so we create an array of string containing each line of the output.
       # We split the text using the new line as a separator and handle any OS kind of new lines.
@@ -645,7 +652,7 @@ module.exports =
       # For each line (aka warnings) we filter out those which are not wanted else we append it to the final list of warnings to reports.
       # Note: The final report must contain the full path to the file so that Atom can find the file.
       for key, val of lines
-        result.push(c_RootRoot + val)
+        result.push(val)
 
       if "" != stderr
         # Well, Well, Well... something went wrong.
@@ -814,7 +821,7 @@ module.exports =
         # An unknown bad thing occured.
         atom.notifications.addError(err.message)
       #Something went wrong there is therefore no mypy warnings to report.
-      return [""]
+      return [err.message]
 
   parseMessages: (output) ->
     # Parse the pre-processed mypy warnings output and isolate:
@@ -829,6 +836,8 @@ module.exports =
     # Prepare an array of all the warnings to report.
     result = []
     for msg, idx in output[0]
+      if "" == msg
+        continue
       v_CurrMessageRaw = regexLine.execGroups(msg)
       if v_CurrMessageRaw
       else
@@ -912,7 +921,7 @@ module.exports =
         theSeverity = 'error'
         #Rational: Indentation is obviously at the start of the line.
         theStartCol = 0
-      else if "unexpected unindent  [syntax]" == theMessage
+      else if theMessage in ["unexpected unindent  [syntax]", "expected an indented block  [syntax]"]  # There are two variant of the message (Starting from Python version 3.8 the message changed slightly)
         theSeverity = 'error'
         #Rational: Indentation is obviously at the start of the line.
         theStartCol = 0

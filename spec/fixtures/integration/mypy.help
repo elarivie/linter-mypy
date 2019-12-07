@@ -41,6 +41,8 @@ Config file:
 Import discovery:
   Configure how imports are discovered and followed.
 
+  --namespace-packages      Support namespace packages (PEP 420, __init__.py-
+                            less) (inverse: --no-namespace-packages)
   --ignore-missing-imports  Silently ignore imports of missing modules
   --follow-imports {normal,silent,skip,error}
                             How to treat imports (default normal)
@@ -52,8 +54,6 @@ Import discovery:
   --no-silence-site-packages
                             Do not silence errors in PEP 561 compliant
                             installed packages
-  --namespace-packages      Support namespace packages (PEP 420, __init__.py-
-                            less) (inverse: --no-namespace-packages)
 
 Platform configuration:
   Type check code assuming it will be run under certain runtime conditions.
@@ -70,16 +70,12 @@ Platform configuration:
   --always-false NAME       Additional variable to be considered False (may be
                             repeated)
 
-Dynamic typing:
+Disallow dynamic typing:
   Disallow the use of the dynamic 'Any' type under certain conditions.
 
   --disallow-any-unimported
                             Disallow Any types resulting from unfollowed
                             imports
-  --disallow-subclassing-any
-                            Disallow subclassing values of type 'Any' when
-                            defining classes (inverse: --allow-subclassing-
-                            any)
   --disallow-any-expr       Disallow all expressions that have type Any
   --disallow-any-decorated  Disallow functions that have Any in their
                             signature after decorator transformation
@@ -87,6 +83,10 @@ Dynamic typing:
   --disallow-any-generics   Disallow usage of generic types that do not
                             specify explicit type parameters (inverse:
                             --allow-any-generics)
+  --disallow-subclassing-any
+                            Disallow subclassing values of type 'Any' when
+                            defining classes (inverse: --allow-subclassing-
+                            any)
 
 Untyped definitions and calls:
   Configure how untyped definitions and calls are handled. Note: by default,
@@ -118,13 +118,8 @@ None and Optional handling:
                             are Optional (inverse: --implicit-optional)
   --no-strict-optional      Disable strict Optional checks (inverse: --strict-
                             optional)
-  --strict-optional-whitelist [GLOB [GLOB ...]]
-                            Suppress strict Optional errors in all but the
-                            provided files; implies --strict-optional (may
-                            suppress certain other errors in non-whitelisted
-                            files)
 
-Warnings:
+Configuring warnings:
   Detect code that is sound but redundant or problematic.
 
   --warn-redundant-casts    Warn about casting an expression to its inferred
@@ -140,24 +135,43 @@ Warnings:
                             be unreachable or redundant (inverse: --no-warn-
                             unreachable)
 
-Other strictness checks:
+Miscellaneous strictness flags:
   --allow-untyped-globals   Suppress toplevel errors caused by missing
                             annotations (inverse: --disallow-untyped-globals)
   --allow-redefinition      Allow unconditional variable redefinition with a
                             new type (inverse: --disallow-redefinition)
+  --no-implicit-reexport    Treat imports as private unless aliased (inverse:
+                            --implicit-reexport)
   --strict-equality         Prohibit equality, identity, and container checks
                             for non-overlapping types (inverse: --no-strict-
                             equality)
-  --no-implicit-reexport    Treat imports as private unless aliased (inverse:
-                            --implicit-reexport)
   --strict                  Strict mode; enables the following flags: --warn-
-                            unused-configs, --disallow-subclassing-any,
-                            --disallow-any-generics, --disallow-untyped-calls,
-                            --disallow-untyped-defs, --disallow-incomplete-
-                            defs, --check-untyped-defs, --disallow-untyped-
-                            decorators, --no-implicit-optional, --warn-
-                            redundant-casts, --warn-unused-ignores, --warn-
-                            return-any, --no-implicit-reexport
+                            unused-configs, --disallow-any-generics,
+                            --disallow-subclassing-any, --disallow-untyped-
+                            calls, --disallow-untyped-defs, --disallow-
+                            incomplete-defs, --check-untyped-defs, --disallow-
+                            untyped-decorators, --no-implicit-optional,
+                            --warn-redundant-casts, --warn-unused-ignores,
+                            --warn-return-any, --no-implicit-reexport
+
+Configuring error messages:
+  Adjust the amount of detail shown in error messages.
+
+  --show-error-context      Precede errors with "note:" messages explaining
+                            context (inverse: --hide-error-context)
+  --show-column-numbers     Show column numbers in error messages (inverse:
+                            --hide-column-numbers)
+  --show-error-codes        Show error codes in error messages (inverse:
+                            --hide-error-codes)
+  --pretty                  Use visually nicer output in error messages: Use
+                            soft word wrap, show source code snippets, and
+                            show error location markers (inverse: --no-pretty)
+  --no-color-output         Do not colorize error messages (inverse: --color-
+                            output)
+  --no-error-summary        Do not show error stats summary (inverse: --error-
+                            summary)
+  --show-absolute-path      Show absolute paths to files (inverse: --hide-
+                            absolute-path)
 
 Incremental mode:
   Adjust how mypy incrementally type checks and caches modules. Mypy caches
@@ -177,13 +191,14 @@ Incremental mode:
                             Skip cache internal consistency checks based on
                             mtime
 
-Mypy internals:
+Advanced options:
   Debug and customize mypy internals.
 
   --pdb                     Invoke pdb on fatal error
   --show-traceback, --tb    Show traceback on fatal error
   --raise-exceptions        Raise exception on fatal error
-  --custom-typing MODULE    Use a custom typing module
+  --custom-typing-module MODULE
+                            Use a custom typing module
   --custom-typeshed-dir DIR
                             Use the custom typeshed in DIR
   --warn-incomplete-stub    Warn if missing type annotation in typeshed, only
@@ -194,23 +209,6 @@ Mypy internals:
                             When encountering SOURCE_FILE, read and type check
                             the contents of SHADOW_FILE instead.
 
-Error reporting:
-  Adjust the amount of detail shown in error messages.
-
-  --show-error-context      Precede errors with "note:" messages explaining
-                            context (inverse: --hide-error-context)
-  --show-column-numbers     Show column numbers in error messages (inverse:
-                            --hide-column-numbers)
-  --show-error-codes        Show error codes in error messages (inverse:
-                            --hide-error-codes)
-  --pretty                  Use visually nicer output in error messages: Use
-                            soft word wrap, show source code snippets, and
-                            error location markers (inverse: --no-pretty)
-  --no-color-output         Do not colorize error messages (inverse: --color-
-                            output)
-  --no-error-summary        Do not show error stats summary (inverse: --error-
-                            summary)
-
 Report generation:
   Generate a report in the specified format.
 
@@ -220,7 +218,6 @@ Report generation:
   --linecount-report DIR
   --linecoverage-report DIR
   --lineprecision-report DIR
-  --memory-xml-report DIR
   --txt-report DIR
   --xml-report DIR
   --xslt-html-report DIR
@@ -228,10 +225,10 @@ Report generation:
 
 Miscellaneous:
   --junit-xml JUNIT_XML     Write junit.xml to the given file
-  --scripts-are-modules     Script x becomes module x instead of __main__
   --find-occurrences CLASS.MEMBER
                             Print out all usages of a class member
                             (experimental)
+  --scripts-are-modules     Script x becomes module x instead of __main__
 
 Running code:
   Specify the code you want to type check. For more details, see

@@ -6,11 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.6.8 2019-12-11
+
+### Changed
+
+- Use the new cli parameter "[--show-absolute-path](https://mypy.readthedocs.io/en/latest/command_line.html#cmdoption-mypy-show-absolute-path)" added in MyPy 0.750 to avoid relying on a black magic trick of setting CWD to root when calling MyPy to obtain full file path.
+
+ - Note: CWD must still be set at root due to one last reason — [Mypy Bug2974](https://github.com/python/mypy/issues/2974).
+
+### Fixed
+
+- Adjusted unit tests to match changes of MyPy 0.750
+
 ## [Released] - 2.6.7 2019-11-25
 
 
 ### Changed
-
 
 - Rename the linter-mypy setting 'Mypy Ini File' -> 'Mypy Config File' since supported config files are not limited to ini (mypy.ini and setup.cfg)
 
