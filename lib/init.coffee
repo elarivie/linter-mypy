@@ -670,7 +670,7 @@ module.exports =
             2- Offer him a link to change the setting.
           ###
           notification = atom.notifications.addWarning(
-            "The mypy configuration file <strong>" + configPath + "</strong> does not contains a [mypy] section as it should.<br />Either correct the configuration file or adjust the mypy configuration path setting of linter-mypy.",
+            "The mypy configuration file does not contains a [mypy] section as it should.<br />Either correct the configuration file or adjust the mypy configuration path setting of linter-mypy.",
             {
               buttons: [
                 {

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Removed an out of scope variable when reporting issue related to mypy config file.
+
 ## [Released] - 2.6.8 2019-12-11
 
 ### Changed
