@@ -27,9 +27,9 @@ python:
     - "3.8"
 
 install:
-  - python3 -m pip install mypy
-  - python3 -m pip install typed-ast
-  - python3 -m pip install requests
+  - python3 -m pip install -U mypy
+  - python3 -m pip install -U typed-ast
+  - python3 -m pip install -U requests
 
 branches:
   only:

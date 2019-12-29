@@ -34,7 +34,7 @@ def BUILDME(p_Src: str, p_Tmp: str, p_Out: str) -> int:
 	# Validate the presence of Required external requirement.
 	assert os.path.isfile("/bin/sh"), "Requirement not found (/bin/sh)"
 	assert os.path.isfile("/usr/bin/Xvfb"), "Requirement not found (/usr/bin/Xvfb), run \"sudo apt install xvfb\""
-	assert shutil.which("mypy") is not None, "Requirement not found (mypy), run \"python3 -m pip install mypy\""
+	assert shutil.which("mypy") is not None, "Requirement not found (mypy), run \"python3 -m pip install -U mypy\""
 
 	#Fetch the latest common atom Continuous Integration Script.
 	url = "https://raw.githubusercontent.com/atom/ci/master/build-package.sh"
