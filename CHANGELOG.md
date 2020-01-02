@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Run mypy with CWD set to the directory of the configuration file if provided (To allow relative path defined in the configuration file to work as expected).
+
+
 ### Fixed
 
 - Removed an out of scope variable when reporting issue related to mypy config file.

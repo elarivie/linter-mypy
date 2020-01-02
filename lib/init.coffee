@@ -607,16 +607,7 @@ module.exports =
   lintPath: (filePath, filePathShadow) ->
     # This is the entry point for Lint requests for a given file.
 
-    rootPath = path.dirname(filePath)
-
-    # Extract the file system root.
-    c_RootRoot = path.parse(filePath).root
-
-    # Run the command giving the full file path and running from the file system root folder where the file being linted is located.
-    # This has the advantage that:
-    # * It allows mypy to find dependencies (import) of the file being linted.
-    # * It always works fine, it is not affected by the mypy bug #2974 (should therefore never run with cwd set to the directory of the file being linted)
-    options = { stream: 'both', ignoreExitCode: true, cwd: c_RootRoot, env: Object.create(process.env), timeout: Infinity }
+    options = { stream: 'both', ignoreExitCode: true, env: Object.create(process.env), timeout: Infinity }
 
     # Set the MYPYPATH as requested
     ##Initialize the environment variable MYPYPATH
@@ -627,7 +618,7 @@ module.exports =
       mypyPathResolved = @resolvePath @mypyPath, filePath
       options.env["MYPYPATH"] = ':' + mypyPathResolved + ':' + options.env["MYPYPATH"] + ':'
     ##Add current folder of the file being linted to MYPYPATH
-    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:\.:/g, ':' + rootPath + ':')
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:\.:/g, ':' + path.dirname(filePath) + ':')
     ##Clean all repeated path separator
     options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:+/g, ':')
     ##Strip not necessary separator
@@ -635,6 +626,27 @@ module.exports =
 
     executablePath = @resolvePath @executablePath, filePath
     params = @getMypyCommandLine(filePath, filePathShadow)
+    configFileIndex = params.lastIndexOf("--config-file") + 1
+    if 0 < configFileIndex
+      # A configuration file is being use, therefore run the command with the cwd set to the folder containing the configuration file
+      # PRO:
+      # * It allows relative path defined in the configuration file to be valid.
+      # CONS:
+      # * It may be affected by the mypy bug #2974
+      #
+      # * But at this point if it is affected than linter-mypy did more than it should to try workaround MyPy issues, Mypy should:
+      # 1- Should better handle config file by considering relative path base on the config file path and not base on cwd.
+      # AND/OR
+      # 2 - Fix mypy bug #2974
+      # Linter-mypy users could as a last resort workaround to not use config file.
+      options.cwd = path.dirname(params[configFileIndex])
+    else
+      # Run the command with the cwd set to the file system root of where the file being linted is located.
+      # This has the advantage that:
+      # * It always works fine, it is not affected by the mypy bug #2974 (should therefore never run with cwd set to the directory of the file being linted)
+      # Extract the file system root.
+      options.cwd = path.parse(filePath).root
+
     mypyNotifyInternalError = @mypyNotifyInternalError
     # We call the mypy process and parse its output.
     ## For debug: ## alert(executablePath + " " + params.join(" "))
