@@ -28,6 +28,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | -------------------------------------------           | -------------------- |
 | Lint trigger                                          |  `Lint on file save` |
 | Path to the executable of [Python][python]            |     `python3`        |
+| PYTHONPATH                                            |                      |
 | [Mypy Incremental][MypyIncremental]                   |     `True`           |
 | [Mypy Incremental][MypyIncremental] Cache Folder Path |                      |
 | Mypy Notify Internal Error                            |     `True`           |
@@ -35,7 +36,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 | [Mypy Path][MypyPath]                                 |                      |
 | Warn Unreachable                                      |     `True`           |
 | No Implicit Reexport                                  |     `True`           |
-| [Mypy Config File][OptMypyConfig]                           |                      |
+| [Mypy Config File][OptMypyConfig]                     |                      |
 | [Follow Imports][OptFollowImports]                    |     `silent`         |
 | [Namespace Packages][OptNamespacePackages]            |     `True`           |
 | Disallow Untyped Calls                                |     `True`           |

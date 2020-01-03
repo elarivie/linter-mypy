@@ -16,7 +16,7 @@ md5 = require('md5')
 module.exports =
   config:
     executablePath:
-      title: 'Executable Path'
+      title: 'Python Executable Path'
       type: 'string'
       default: 'python3'
       description: '''Path to the executable of python.
@@ -25,16 +25,30 @@ module.exports =
       `/home/user/.virtualenvs/$PROJECT_NAME/bin/python`.
       '''
       order: 1
+
+
+    pythonPath:
+      type: 'string'
+      default: ''
+      description: '''PYTHONPATH environment variable to use, is a colon-separated list of directories
+      <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted.
+      The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
+      dynamically depending of the current project.
+      '''
+      order: 2
+
+
+
     mypyNotifyInternalError:
       type: 'boolean'
       default: true
       description: 'Pop-up a detailed error if a Mypy Internal error occurs'
-      order: 2
+      order: 3
     ignoreFiles:
       type: 'string'
       default: ''
       description: 'Regex pattern of filenames to ignore, e.g.: "test.+"'
-      order: 3
+      order: 4
     lintTrigger:
       title: 'Lint Trigger'
       type: 'string'
@@ -44,12 +58,12 @@ module.exports =
         {value: 'LintAsYouType', description: 'Lint as you type'}
       ]
       description: "Specify the lint trigger"
-      order: 4
+      order: 5
     mypyIncremental:
       type: 'boolean'
       default: true
       description: 'Use <a href="http://mypy.readthedocs.io/en/latest/command_line.html#incremental">Mypy experimental incremental analysis</a> to improve lint process time.'
-      order: 5
+      order: 6
     mypyIncrementalCacheFolderPath:
       title: 'Mypy Incremental Cache Folder Path'
       type: 'string'
@@ -64,17 +78,17 @@ module.exports =
           <li>If a dot is provided, the default behavior of MyPy will be use (a .mypy_cache folder next to the file being linted)</li>
       </ul>
       '''
-      order: 6
+      order: 7
     mypyPath:
       type: 'string'
       default: ''
-      description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> to use, is a colon-separated list of directories
+      description: '''<a href="http://mypy.readthedocs.io/en/latest/command_line.html#how-imports-are-found">MYPYPATH</a> environment variable to use, is a colon-separated list of directories
       <br /><strong>Note:</strong> Use a dot to add the directory containing the file being linted.
       The optionals `$PROJECT_PATH` and `$PROJECT_NAME` variables can be used to resolve the path
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/stubs`.
       '''
-      order: 7
+      order: 8
     mypyIniFile:
       title: 'Mypy Config File'
       type: 'string'
@@ -84,17 +98,17 @@ module.exports =
       dynamically depending of the current project. For example:
       `$PROJECT_PATH/mypy.ini`. <strong>If a file is being found at the given path then it will be <a href="https://mypy.readthedocs.io/en/latest/command_line.html#cmdoption-mypy-config-file">provided to mypy</a> and all the below settings will be ignore.</strong>
       '''
-      order: 8
+      order: 9
     warnUnreachable:
       type: 'boolean'
       default: true
       description: 'Warn about statements or expressions inferred to be unreachable or redundant'
-      order: 9
+      order: 10
     noImplicitReexport:
       type: 'boolean'
       default: true
       description: 'Treat imports as private unless aliased'
-      order: 10
+      order: 11
     followImports:
       type: 'string'
       default: 'silent'
@@ -105,127 +119,127 @@ module.exports =
         {value: 'error', description: 'Error. The same behavior as skip but not quite as silent.'}
       ]
       description: '''Should mypy analysis <a href="http://mypy.readthedocs.io/en/latest/command_line.html#follow-imports">follow imports</a>'''
-      order: 11
+      order: 12
     namespacePackages:
       type: 'boolean'
       default: true
       description: 'Support namespace packages (PEP 420, __init__.py-less'
-      order: 12
+      order: 13
     disallowUntypedCalls:
       type: 'boolean'
       default: true
       description: 'Disallow calling functions without type annotations from functions with type annotations'
-      order: 13
+      order: 14
     disallowUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions without type annotations or with incomplete type annotations'
-      order: 14
+      order: 15
     disallowUntypedGlobals:
       type: 'boolean'
       default: true
       description: 'toplevel errors about missing annotations'
-      order: 15
+      order: 16
     disallowRedefinition:
       type: 'boolean'
       default: true
       description: 'Disallow unconditional variable redefinition with a new type'
-      order: 16
+      order: 17
     strictEquality:
       type: 'boolean'
       default: true
       description: 'Prohibit equality, identity, and container checks for non-overlapping types'
-      order: 17
+      order: 18
     disallowIncompleteDefs:
       type: 'boolean'
       default: true
       description: 'Disallow defining functions with incomplete type annotations'
-      order: 18
+      order: 19
     checkUntypedDefs:
       type: 'boolean'
       default: true
       description: 'Type check the interior of functions without type annotations'
-      order: 19
+      order: 20
     warnIncompleteStub:
       type: 'boolean'
       default: true
       description: 'Warn if missing type annotation in typeshed, only relevant with --check-untyped-defs enabled'
-      order: 20
+      order: 21
     disallowUntypedDecorators:
       type: 'boolean'
       default: true
       description: 'Disallow decorating typed functions with untyped decorators'
-      order: 21
+      order: 22
     warnRedundantCasts:
       type: 'boolean'
       default: true
       description: 'Warn about casting an expression to its inferred type'
-      order: 22
+      order: 23
     warnNoReturn:
       type: 'boolean'
       default: true
       description: 'Warn about functions that end without returning'
-      order: 23
+      order: 24
     warnReturnAny:
       type: 'boolean'
       default: true
       description: 'Warn about returning values of type Any from non-Any typed functions'
-      order: 24
+      order: 25
     disallowSubclassingAny:
       type: 'boolean'
       default: true
       description: 'Disallow subclassing values of type "Any" when defining classes'
-      order: 25
+      order: 26
     disallowAnyUnimported:
       type: 'boolean'
       default: true
       description: 'Disallows usage of types that come from unfollowed imports'
-      order: 26
+      order: 27
     disallowAnyExpr:
       type: 'boolean'
       default: true
       description: 'Disallows all expressions in the module that have type Any'
-      order: 27
+      order: 28
     disallowAnyDecorated:
       type: 'boolean'
       default: true
       description: 'Disallows functions that have Any in their signature after decorator transformation'
-      order: 28
+      order: 29
     disallowAnyExplicit:
       type: 'boolean'
       default: true
       description: 'Disallows explicit Any in type positions'
-      order: 29
+      order: 30
     disallowAnyGenerics:
       type: 'boolean'
       default: true
       description: 'Disallows usage of generic types that do not specify explicit type parameters'
-      order: 30
+      order: 31
     warnUnusedIgnores:
       type: 'boolean'
       default: true
       description: "Warn about unneeded '# type: ignore' comments"
-      order: 31
+      order: 32
     warnUnusedConfigs:
       type: 'boolean'
       default: true
       description: "Warn about unnused '[mypy-<pattern>]' config sections"
-      order: 32
+      order: 33
     warnMissingImports:
       type: 'boolean'
       default: true
       description: "Warn about imports of missing modules"
-      order: 33
+      order: 34
     strictOptional:
       type: 'boolean'
       default: true
       description: "Enable experimental strict Optional checks"
-      order: 34
+      order: 35
     noImplicitOptional:
       type: 'boolean'
       default: true
       description: "Don't assume arguments with default values of None are Optional"
-      order: 35
+      order: 36
 
   theOSTempFolder: undefined
 
@@ -258,6 +272,9 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-mypy.executablePath',
       (executablePath) =>
         @executablePath = executablePath
+    @subscriptions.add atom.config.observe 'linter-mypy.pythonPath',
+      (pythonPath) =>
+        pythonPath = pythonPath
     @subscriptions.add atom.config.observe 'linter-mypy.mypyIncremental',
       (mypyIncremental) =>
         @mypyIncremental = mypyIncremental
@@ -608,6 +625,20 @@ module.exports =
     # This is the entry point for Lint requests for a given file.
 
     options = { stream: 'both', ignoreExitCode: true, env: Object.create(process.env), timeout: Infinity }
+
+    # Set the PYTHONPATH as requested
+    ##Initialize the environment variable PYTHONPATH
+    if !(options.env["PYTHONPATH"])?
+      options.env["PYTHONPATH"] = ''
+
+    ##Prepend user setting defined PYTHONPATH to current system env PYTHONPATH
+    if @pythonPath?
+      pythonPathResolved = @resolvePath @pythonPath, filePath
+      options.env["PYTHONPATH"] = path.delimiter + pythonPathResolved + path.delimiter + options.env["PYTHONPATH"] + path.delimiter
+    ##Clean all repeated path separator
+    options.env["PYTHONPATH"] = options.env["PYTHONPATH"].replace(new RegExp(path.delimiter + "+","g"), path.delimiter)
+    ##Strip not necessary separator
+    options.env["PYTHONPATH"] = options.env["PYTHONPATH"].replace(new RegExp("^" + path.delimiter + "+|" + path.delimiter + "+$","g"), '')
 
     # Set the MYPYPATH as requested
     ##Initialize the environment variable MYPYPATH

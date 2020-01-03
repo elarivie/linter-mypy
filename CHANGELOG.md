@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Use path.delimiter instead of hard coded ':' (Windows path separator is ';')
 
+### Added
+
+- New setting to define PYTHONPATH
+
 ### Fixed
 
 - Removed an out of scope variable when reporting issue related to mypy config file.
