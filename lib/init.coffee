@@ -616,13 +616,13 @@ module.exports =
     ##Prepend user setting defined MYPYPATH to current system env MYPYPATH
     if @mypyPath?
       mypyPathResolved = @resolvePath @mypyPath, filePath
-      options.env["MYPYPATH"] = ':' + mypyPathResolved + ':' + options.env["MYPYPATH"] + ':'
+      options.env["MYPYPATH"] = path.delimiter + mypyPathResolved + path.delimiter + options.env["MYPYPATH"] + path.delimiter
     ##Add current folder of the file being linted to MYPYPATH
-    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:\.:/g, ':' + path.dirname(filePath) + ':')
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(new RegExp(path.delimiter + "\\." + path.delimiter, "g"), path.delimiter + path.dirname(filePath) + path.delimiter)
     ##Clean all repeated path separator
-    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/:+/g, ':')
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(new RegExp(path.delimiter + "+","g"), path.delimiter)
     ##Strip not necessary separator
-    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(/^:+|:+$/g, '')
+    options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(new RegExp("^" + path.delimiter + "+|" + path.delimiter + "+$","g"), '')
 
     executablePath = @resolvePath @executablePath, filePath
     params = @getMypyCommandLine(filePath, filePathShadow)

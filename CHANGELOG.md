@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Run mypy with CWD set to the directory of the configuration file if provided (To allow relative path defined in the configuration file to work as expected).
 
+- Use path.delimiter instead of hard coded ':' (Windows path separator is ';')
 
 ### Fixed
 
