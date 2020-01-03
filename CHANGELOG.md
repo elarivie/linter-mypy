@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - New setting to define PYTHONPATH
+- User friendly message to guide a user which does not have the required module 'typed-ast' installed.
 
 ### Fixed
 

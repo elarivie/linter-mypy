@@ -13,7 +13,7 @@ An [Atom][atom] [Linter][linter] plugin which displays warnings related to [Pyth
 1.  Install python package [mypy][mypy], run:
 
     ```ShellSession
-    python3 -m pip install -U mypy
+    python3 -m pip install -U mypy typed-ast
     ```
 
 2.  Install atom package, run:

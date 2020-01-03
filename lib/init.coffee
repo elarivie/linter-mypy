@@ -771,6 +771,20 @@ module.exports =
               * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
           ###
           atom.notifications.addWarning("The python package <strong>mypy</strong> does not seem to be installed.  Install it with:<br /><br /><em>" + executablePath + " -m pip install mypy</em>")
+        else if (0 <= stderr.indexOf("The typed_ast package is not installed"))
+          ###
+          The Problem: The error is about the absence of the typed_ast module in the python installation.
+
+          The Context: Mypy requires the module typed_ast which has to be installed manually and it is base on the error message not installed in the python installation provided in the executable path setting.
+
+          The Conclusion: It is most likely the user which haven't installed the module, but it is also possible that the user has more than one python installation on his system and didn't provide the good one in the settings.
+
+          The Solution: Let's:
+            1- Inform the user about the situation with a pop-up
+            2- Show him an example of command line to install typed_ast
+              * Using the resolved executablePath to build the example will highlight to the user which python installation is being used for users which may have more than one on their system.
+          ###
+          atom.notifications.addWarning("The python package <strong>typed-ast</strong> does not seem to be installed and is required by Mypy.  Install it with:<br /><br /><em>" + executablePath + " -m pip install -U typed-ast</em>")
         else if (0 <= stderr.indexOf("AssertionError: Neither id, path nor source given"))
           ###
           The Problem: When Mypy encouters a relative import from a toplevel, it crashes with an assert Stacktrace.
