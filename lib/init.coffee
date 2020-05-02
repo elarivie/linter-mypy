@@ -797,7 +797,7 @@ module.exports =
             1- Inform the user about the situation with a lint error
           ###
           return [[filePath + ":0:0: error: MypyBug2974"]]
-        else if (0 <= stderr.indexOf(": error: INTERNAL ERROR -- please report a bug at https://github.com/python/mypy/issues"))
+        else if (0 <= stderr.indexOf(": error: INTERNAL ERROR --"))
           ###
           The Problem: Mypy has an internal bug.
 

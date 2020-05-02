@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [Released] - 2.6.11 2020-05-01
+
+### Changed
+
+- Made the Mypy internal error detection less picky
+
 ## [Released] - 2.6.10 2020-04-26
 
 ### Changed
