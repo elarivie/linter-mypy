@@ -33,7 +33,7 @@ Config file:
 
   --config-file CONFIG_FILE
                             Configuration file, must have a [mypy] section
-                            (defaults to mypy.ini, setup.cfg,
+                            (defaults to mypy.ini, .mypy.ini, setup.cfg,
                             ~/.config/mypy/config, ~/.mypy.ini)
   --warn-unused-configs     Warn about unused '[mypy-<pattern>]' config
                             sections (inverse: --no-warn-unused-configs)
