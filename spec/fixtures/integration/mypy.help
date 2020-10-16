@@ -154,6 +154,9 @@ Miscellaneous strictness flags:
                             --warn-redundant-casts, --warn-unused-ignores,
                             --warn-return-any, --no-implicit-reexport,
                             --strict-equality
+  --disable-error-code NAME
+                            Disable a specific error code
+  --enable-error-code NAME  Enable a specific error code
 
 Configuring error messages:
   Adjust the amount of detail shown in error messages.
