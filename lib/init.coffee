@@ -273,8 +273,8 @@ module.exports =
       (executablePath) =>
         @executablePath = executablePath
     @subscriptions.add atom.config.observe 'linter-mypy.pythonPath',
-      (pythonPath) ->
-        pythonPath = pythonPath
+      (pythonPath) =>
+        @pythonPath = pythonPath
     @subscriptions.add atom.config.observe 'linter-mypy.mypyIncremental',
       (mypyIncremental) =>
         @mypyIncremental = mypyIncremental
