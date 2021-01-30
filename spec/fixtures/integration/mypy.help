@@ -132,8 +132,7 @@ Configuring warnings:
                             Any typed functions (inverse: --no-warn-return-
                             any)
   --warn-unreachable        Warn about statements or expressions inferred to
-                            be unreachable or redundant (inverse: --no-warn-
-                            unreachable)
+                            be unreachable (inverse: --no-warn-unreachable)
 
 Miscellaneous strictness flags:
   --allow-untyped-globals   Suppress toplevel errors caused by missing
@@ -238,6 +237,8 @@ Running code:
   Specify the code you want to type check. For more details, see
   mypy.readthedocs.io/en/latest/running_mypy.html#running-mypy
 
+  --explicit-package-bases  Use current directory and MYPYPATH to determine
+                            module names of files passed
   -m MODULE, --module MODULE
                             Type-check module; can repeat for more modules
   -p PACKAGE, --package PACKAGE
