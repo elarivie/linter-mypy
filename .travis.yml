@@ -7,8 +7,6 @@ os:
 
 dist: bionic
 
-sudo: false
-
 addons:
     apt:
         packages:
