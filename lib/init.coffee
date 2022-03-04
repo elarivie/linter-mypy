@@ -655,7 +655,7 @@ module.exports =
     ##Strip not necessary separator
     options.env["MYPYPATH"] = options.env["MYPYPATH"].replace(new RegExp("^" + path.delimiter + "+|" + path.delimiter + "+$","g"), '')
 
-    executablePath = @resolvePath @executablePath, filePath
+    executablePath = @resolveMultiPaths @executablePath, filePath
     params = @getMypyCommandLine(filePath, filePathShadow)
     configFileIndex = params.lastIndexOf("--config-file") + 1
     if 0 < configFileIndex
@@ -1052,3 +1052,9 @@ module.exports =
         resolvedPath = resolvedPath.replace(/\$PROJECT_NAME/g, projectName)
         resolvedPath = resolvedPath.replace(/\$PROJECT_PATH/g, projectPath)
     return resolvedPath
+
+  resolveMultiPaths: (targetMultiPath, filepath) ->
+    for targetPath in targetMultiPath.split(";")
+      resolvedPath = @resolvePath targetPath, filepath
+      if fs.existsSync(resolvedPath)
+        return resolvedPath
